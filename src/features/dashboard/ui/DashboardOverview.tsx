@@ -2,7 +2,7 @@ import type { Profile } from '@/entities/profile/types';
 import { Card } from '@/shared/ui/card';
 
 export function DashboardOverview({ profile }: { profile: Profile }) {
-  const reviewLink = `https://prooforio.com/review/${profile.username}`;
+  const reviewLink = `https://prooforio.vercel.app/review/${profile.username}`;
 
   return (
     <div className="space-y-6">
