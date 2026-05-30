@@ -2,11 +2,20 @@ import { notFound } from 'next/navigation';
 import { ReviewForm } from '@/features/review/ui/ReviewForm';
 import { getProfileByUsername } from '@/shared/api/profile';
 
-export default async function ReviewPage(props: any) {
-  const { params } = props;
-  const profile = await getProfileByUsername(params.username);
+export default async function ReviewPage({ params }: { params: Promise<{ username: string }> }) {
+  const paramsObj = await params;
+  console.log('params', paramsObj);
+  console.log('username', paramsObj.username);
+
+  if (!paramsObj.username) {
+    console.log('missing username param');
+    notFound();
+  }
+
+  const profile = await getProfileByUsername(paramsObj.username);
 
   if (!profile) {
+    console.log('profile not found for username', paramsObj.username);
     notFound();
   }
 
