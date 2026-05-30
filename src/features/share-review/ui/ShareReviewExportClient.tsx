@@ -1,16 +1,39 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toJpeg, toPng } from 'html-to-image';
 import { reviewTemplates } from '../templates';
 import { ShareCardTemplate } from './ShareCardTemplate';
 import type { ReviewTemplateProps } from '../templates/types';
 
+const EXPORT_WIDTH = 1200;
+const EXPORT_HEIGHT = 630;
+
 export function ShareReviewExportClient({ review, templateId }: { review: ReviewTemplateProps; templateId?: string }) {
   const [selectedTemplateId, setSelectedTemplateId] = useState(templateId ?? reviewTemplates[0]?.id ?? 'minimal');
   const exportRef = useRef<HTMLDivElement>(null);
+  const previewContainerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
+  const [previewScale, setPreviewScale] = useState(1);
   const selectedTemplate = reviewTemplates.find((template) => template.id === selectedTemplateId) ?? reviewTemplates[0];
+
+  useEffect(() => {
+    const node = previewContainerRef.current;
+    if (!node) return;
+
+    const updateScale = () => {
+      const width = node.clientWidth;
+      const scale = Math.min(1, width / EXPORT_WIDTH);
+      setPreviewScale(scale);
+    };
+
+    updateScale();
+
+    const observer = new ResizeObserver(() => updateScale());
+    observer.observe(node);
+
+    return () => observer.disconnect();
+  }, []);
 
   const downloadImage = async (format: 'png' | 'jpeg') => {
     if (!exportRef.current) return;
@@ -83,9 +106,23 @@ export function ShareReviewExportClient({ review, templateId }: { review: Review
               </span>
             </div>
             <div className="relative overflow-hidden bg-slate-50 shadow-[0_35px_80px_rgba(15,23,42,0.12)]">
-              <div className="aspect-[1200/630] w-full">
-                <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-                  <div className="relative h-[630px] w-[1200px] -translate-x-1/2 -translate-y-1/2 transform scale-[0.55] origin-center sm:scale-[0.65] lg:scale-[0.75] xl:scale-90 2xl:scale-100" style={{ left: '50%', top: '50%' }}>
+              <div ref={previewContainerRef} className="mx-auto w-full max-w-full overflow-hidden px-2 py-4">
+                <div
+                  className="mx-auto overflow-hidden"
+                  style={{
+                    width: Math.max(0, Math.floor(EXPORT_WIDTH * previewScale)),
+                    height: Math.max(0, Math.floor(EXPORT_HEIGHT * previewScale)),
+                  }}
+                >
+                  <div
+                    className="relative"
+                    style={{
+                      width: EXPORT_WIDTH,
+                      height: EXPORT_HEIGHT,
+                      transform: `scale(${previewScale})`,
+                      transformOrigin: 'top left',
+                    }}
+                  >
                     <ShareCardTemplate ref={exportRef} review={review} templateId={selectedTemplateId} />
                   </div>
                 </div>
