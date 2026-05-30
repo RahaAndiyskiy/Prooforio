@@ -64,9 +64,17 @@ export async function createProfile({
 
   const { data, error } = await supabase
     .from('profiles')
-    .insert({ username, full_name: fullName, auth_user_id: authUserId })
-    .select('id, username, full_name, auth_user_id')
+    .insert({
+      username,
+      full_name: fullName,
+      auth_user_id: authUserId,
+    })
+    .select()
     .single();
+
+  console.log('PROFILE INSERT DATA', data);
+  console.log('PROFILE INSERT ERROR', error);
+  console.log('PROFILE INSERT ERROR JSON', JSON.stringify(error, null, 2));
 
   if (error) {
     console.log('createProfile error', error);
