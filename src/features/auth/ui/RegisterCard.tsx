@@ -81,7 +81,7 @@ export function RegisterCard() {
             type="text"
             value={fullName}
             onChange={(event) => setFullName(event.target.value)}
-            className="mt-2 w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-accent/20"
+            className="mt-2 w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-accent/20"
             required
           />
         </label>
@@ -91,7 +91,7 @@ export function RegisterCard() {
             type="text"
             value={username}
             onChange={(event) => setUsername(event.target.value)}
-            className="mt-2 w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-accent/20"
+            className="mt-2 w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-accent/20"
             required
           />
         </label>
@@ -101,7 +101,7 @@ export function RegisterCard() {
             type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            className="mt-2 w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-accent/20"
+            className="mt-2 w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-accent/20"
             required
           />
         </label>
@@ -111,7 +111,7 @@ export function RegisterCard() {
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            className="mt-2 w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-accent/20"
+            className="mt-2 w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-accent/20"
             required
           />
         </label>

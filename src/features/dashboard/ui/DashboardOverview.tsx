@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Profile } from '@/entities/profile/types';
 import { Card } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
@@ -16,16 +16,50 @@ export function DashboardOverview({
   averageRating: string;
   recentReviewsCount: number;
 }) {
-  const [copied, setCopied] = useState(false);
-  const reviewLink = `https://prooforio.vercel.app/review/${profile.username}`;
+  const [shareSupported, setShareSupported] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [reviewUrl, setReviewUrl] = useState(`https://prooforio.vercel.app/review/${profile.username}`);
+  const reviewPath = `/review/${profile.username}`;
+
+  useEffect(() => {
+    setShareSupported(typeof navigator !== 'undefined' && typeof navigator.share === 'function');
+    if (typeof window !== 'undefined') {
+      setReviewUrl(`${window.location.origin}${reviewPath}`);
+    }
+  }, [reviewPath]);
+
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    window.setTimeout(() => setToastMessage(''), 2000);
+  };
+
+  const handleShare = async () => {
+    try {
+      if (!navigator.share) {
+        throw new Error('Share API not supported');
+      }
+
+      await navigator.share({
+        title: 'Оставьте отзыв',
+        text: 'Буду благодарен за честный отзыв. Это займёт меньше минуты.',
+        url: reviewUrl,
+      });
+      showToast('Ссылка отправлена');
+    } catch (error) {
+      console.error('Share error', error);
+      if (error instanceof Error && error.name !== 'AbortError') {
+        showToast('Не удалось поделиться ссылкой');
+      }
+    }
+  };
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(reviewLink);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2000);
+      await navigator.clipboard.writeText(reviewUrl);
+      showToast('Ссылка скопирована');
     } catch (error) {
       console.error('Failed to copy review link', error);
+      showToast('Не удалось скопировать ссылку');
     }
   };
 
@@ -47,16 +81,34 @@ export function DashboardOverview({
         <div className="space-y-4">
           <div>
             <p className="text-sm font-medium text-slate-500">Ссылка для отзыва</p>
-            <div className="mt-3 rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 break-words">
-              {reviewLink}
+            <div className="mt-3 flex items-center rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900">
+              <span className="min-w-0 flex-1 break-words pr-3">{reviewUrl}</span>
+              <button
+                type="button"
+                onClick={handleCopy}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100"
+                aria-label="Копировать ссылку"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+                  <path d="M16 1H4a2 2 0 00-2 2v12h2V3h12V1z" />
+                  <path d="M20 5H8a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2zm0 16H8V7h12v14z" />
+                </svg>
+              </button>
             </div>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-slate-600">Скопируйте и отправьте ссылку клиенту в мессенджере.</p>
-            <Button type="button" onClick={handleCopy} className="w-full sm:w-auto">
-              {copied ? 'Скопировано!' : 'Скопировать ссылку'}
-            </Button>
+            {shareSupported ? (
+              <Button type="button" onClick={handleShare} className="w-full sm:w-auto">
+                Поделиться
+              </Button>
+            ) : null}
           </div>
+          {toastMessage ? (
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900">
+              {toastMessage}
+            </div>
+          ) : null}
         </div>
       </Card>
 
