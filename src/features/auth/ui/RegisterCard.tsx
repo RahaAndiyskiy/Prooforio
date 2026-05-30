@@ -5,10 +5,12 @@ import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 import { Button } from '@/shared/ui/button';
 import { Card } from '@/shared/ui/card';
-import { signIn } from '@/features/auth/lib/auth';
+import { signUp } from '@/features/auth/lib/auth';
 
-export function LoginCard() {
+export function RegisterCard() {
   const router = useRouter();
+  const [fullName, setFullName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -20,10 +22,10 @@ export function LoginCard() {
     setLoading(true);
 
     try {
-      await signIn({ email, password });
+      await signUp({ email, password, username, fullName });
       router.replace('/dashboard');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unable to sign in');
+      setError(err instanceof Error ? err.message : 'Unable to register');
     } finally {
       setLoading(false);
     }
@@ -32,11 +34,31 @@ export function LoginCard() {
   return (
     <Card className="max-w-xl mx-auto mt-10 space-y-6">
       <div>
-        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">Login</p>
-        <h1 className="mt-4 text-3xl font-semibold text-slate-950 sm:text-4xl">Sign in to your Prooforio workspace</h1>
+        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">Register</p>
+        <h1 className="mt-4 text-3xl font-semibold text-slate-950 sm:text-4xl">Create your Prooforio account</h1>
       </div>
       <form onSubmit={handleSubmit} className="space-y-6 rounded-3xl border border-slate-200 bg-slate-50 p-6">
         {error ? <div className="rounded-2xl bg-red-100 px-4 py-3 text-sm text-red-700">{error}</div> : null}
+        <label className="block">
+          <span className="text-sm font-medium text-slate-700">Full Name</span>
+          <input
+            type="text"
+            value={fullName}
+            onChange={(event) => setFullName(event.target.value)}
+            className="mt-2 w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-accent/20"
+            required
+          />
+        </label>
+        <label className="block">
+          <span className="text-sm font-medium text-slate-700">Username</span>
+          <input
+            type="text"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+            className="mt-2 w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-accent/20"
+            required
+          />
+        </label>
         <label className="block">
           <span className="text-sm font-medium text-slate-700">Email</span>
           <input
@@ -58,13 +80,13 @@ export function LoginCard() {
           />
         </label>
         <Button type="submit" disabled={loading} className="w-full">
-          {loading ? 'Signing in…' : 'Sign in'}
+          {loading ? 'Registering…' : 'Create account'}
         </Button>
       </form>
       <div className="rounded-3xl border border-slate-200 bg-white p-6 text-sm text-slate-600">
-        Нет аккаунта?{' '}
-        <Link href="/register" className="font-semibold text-slate-950 hover:text-accent">
-          Зарегистрироваться
+        Уже есть аккаунт?{' '}
+        <Link href="/login" className="font-semibold text-slate-950 hover:text-accent">
+          Войти
         </Link>
       </div>
     </Card>
