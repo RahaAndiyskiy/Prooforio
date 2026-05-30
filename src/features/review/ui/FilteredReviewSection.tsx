@@ -4,12 +4,13 @@ import { useMemo, useState } from 'react';
 import type { Review } from '@/entities/review/types';
 import { ReviewList } from './ReviewList';
 
-type DateFilter = 'all' | 'today' | 'week' | 'month' | 'year';
+type DateFilter = 'all' | 'today' | 'yesterday' | 'week' | 'month' | 'year';
 type StarFilter = 0 | 1 | 2 | 3 | 4 | 5;
 
 const DATE_FILTERS: { label: string; value: DateFilter }[] = [
   { label: 'Все даты', value: 'all' },
   { label: 'Сегодня', value: 'today' },
+  { label: 'Вчера', value: 'yesterday' },
   { label: 'Неделя', value: 'week' },
   { label: 'Месяц', value: 'month' },
   { label: 'Год', value: 'year' },
@@ -31,11 +32,16 @@ function isWithinDateFilter(date: Date, filter: DateFilter) {
 
   const now = new Date();
   const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const yesterdayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
   const diffMs = now.getTime() - date.getTime();
   const dayMs = 24 * 60 * 60 * 1000;
 
   if (filter === 'today') {
     return date >= dayStart && date <= now;
+  }
+
+  if (filter === 'yesterday') {
+    return date >= yesterdayStart && date < dayStart;
   }
 
   if (filter === 'week') {
@@ -115,7 +121,7 @@ export function FilteredReviewSection({ reviews }: { reviews: Review[] }) {
 
         <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600">
           <p>{filteredReviews.length} отзывов найдено</p>
-          <p className="text-right">Фильтр: {dateFilter === 'all' ? 'все даты' : dateFilter}, {starFilter === 0 ? 'все звезды' : `${starFilter} ★`}</p>
+          <p className="text-right">Фильтр: {DATE_FILTERS.find((filter) => filter.value === dateFilter)?.label ?? 'все даты'}, {starFilter === 0 ? 'все звезды' : `${starFilter} ★`}</p>
         </div>
       </div>
 
