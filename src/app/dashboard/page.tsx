@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { Header } from '@/widgets/header/Header';
 import { DashboardOverview } from '@/features/dashboard/ui/DashboardOverview';
 import { ReviewList } from '@/features/review/ui/ReviewList';
