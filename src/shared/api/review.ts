@@ -31,6 +31,25 @@ export async function getReviewsByProfileId(profileId: string): Promise<Review[]
   return data.map(mapReview);
 }
 
+export async function getReviewById(reviewId: string): Promise<Review | null> {
+  const supabase = getSupabaseClient();
+  if (!supabase) {
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from('reviews')
+    .select('id, profile_id, author, text, rating, created_at')
+    .eq('id', reviewId)
+    .maybeSingle();
+
+  if (error || !data) {
+    return null;
+  }
+
+  return mapReview(data);
+}
+
 export async function createReview({
   profileId,
   author,

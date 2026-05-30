@@ -48,6 +48,25 @@ export async function getProfileByAuthUserId(authUserId: string): Promise<Profil
   return mapProfile(data);
 }
 
+export async function getProfileById(profileId: string): Promise<Profile | null> {
+  const supabase = getSupabaseClient();
+  if (!supabase) {
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('id, username, full_name, auth_user_id')
+    .eq('id', profileId)
+    .maybeSingle();
+
+  if (error || !data) {
+    return null;
+  }
+
+  return mapProfile(data);
+}
+
 export async function createProfile({
   username,
   fullName,
