@@ -18,6 +18,7 @@ export function RegisterCard() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log('RegisterCard submit', { email, username, fullName, passwordPresent: password.length > 0 });
     setError(null);
     setLoading(true);
 
@@ -25,6 +26,7 @@ export function RegisterCard() {
       await signUp({ email, password, username, fullName });
       router.replace('/dashboard');
     } catch (err) {
+      console.log('RegisterCard error', err);
       setError(err instanceof Error ? err.message : 'Unable to register');
     } finally {
       setLoading(false);
