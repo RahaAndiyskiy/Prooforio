@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import { Header } from '@/widgets/header/Header';
 import { DashboardOverview } from '@/features/dashboard/ui/DashboardOverview';
-import { ReviewList } from '@/features/review/ui/ReviewList';
+import { FilteredReviewSection } from '@/features/review/ui/FilteredReviewSection';
 import { getProfileByUsername } from '@/shared/api/profile';
 import { getReviewsByProfileId } from '@/shared/api/review';
 import { notFound } from 'next/navigation';
@@ -24,7 +24,7 @@ export default async function DashboardPage() {
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <div className="space-y-8">
           <DashboardOverview profile={profile} />
-          <ReviewList reviews={reviews} />
+          <FilteredReviewSection reviews={reviews} />
         </div>
       </main>
     </div>
