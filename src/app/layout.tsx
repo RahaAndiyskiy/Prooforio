@@ -3,12 +3,12 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Prooforio',
-  description: 'Collect feedback with a personal review link.',
+  description: 'Собирайте отзывы с помощью персональной ссылки на обзор.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ru">
       <body>{children}</body>
     </html>
   );

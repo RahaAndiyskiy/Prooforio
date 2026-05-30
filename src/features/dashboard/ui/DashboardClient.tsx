@@ -18,6 +18,17 @@ export function DashboardClient() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const reviewCount = reviews.length;
+  const averageRating = reviewCount
+    ? (reviews.reduce((total, review) => total + review.rating, 0) / reviewCount).toFixed(1)
+    : '—';
+  const recentReviewsCount = reviews.filter((review) => {
+    const now = new Date();
+    const reviewDate = new Date(review.createdAt);
+    const diffMs = now.getTime() - reviewDate.getTime();
+    return diffMs < 7 * 24 * 60 * 60 * 1000 && reviewDate <= now;
+  }).length;
+
   useEffect(() => {
     let mounted = true;
 
@@ -58,7 +69,7 @@ export function DashboardClient() {
         <Header />
         <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
           <div className="rounded-3xl border border-slate-200 bg-white p-10 text-center text-slate-600 shadow-card">
-            Loading your dashboard…
+            Загрузка панели…
           </div>
         </main>
       </div>
@@ -85,9 +96,14 @@ export function DashboardClient() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+      <main className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
         <div className="space-y-8">
-          <DashboardOverview profile={profile} />
+          <DashboardOverview
+            profile={profile}
+            reviewCount={reviewCount}
+            averageRating={averageRating}
+            recentReviewsCount={recentReviewsCount}
+          />
           <FilteredReviewSection reviews={reviews} />
         </div>
       </main>

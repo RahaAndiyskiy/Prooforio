@@ -6,9 +6,10 @@ import { Card } from '@/shared/ui/card';
 import { Input } from '@/shared/ui/input';
 import { Textarea } from '@/shared/ui/textarea';
 
-export function ReviewForm({ profileId }: { profileId: string }) {
+export function ReviewForm({ profileId, reviewLink }: { profileId: string; reviewLink: string }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [shareCopied, setShareCopied] = useState(false);
   const [name, setName] = useState('');
   const [rating, setRating] = useState(5);
   const [text, setText] = useState('');
@@ -30,19 +31,49 @@ export function ReviewForm({ profileId }: { profileId: string }) {
     setIsSubmitting(false);
 
     if (!response.ok) {
-      setError('Unable to submit review. Please try again later.');
+      setError('Не удалось отправить отзыв. Пожалуйста, попробуйте позже.');
       return;
     }
 
     setIsSubmitted(true);
   };
 
+  const handleShareLink = async () => {
+    try {
+      await navigator.clipboard.writeText(reviewLink);
+      setShareCopied(true);
+      window.setTimeout(() => setShareCopied(false), 2000);
+    } catch (err) {
+      setError('Не удалось скопировать ссылку. Попробуйте ещё раз.');
+    }
+  };
+
+  const handleReset = () => {
+    setIsSubmitted(false);
+    setName('');
+    setRating(5);
+    setText('');
+    setError(null);
+  };
+
   if (isSubmitted) {
     return (
-      <Card className="max-w-2xl mx-auto text-center">
-        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">Thank you</p>
-        <h2 className="mt-4 text-3xl font-semibold text-slate-950">Your review is sent</h2>
-        <p className="mt-3 text-sm leading-7 text-slate-600">Your feedback helps the owner improve the product and make better decisions.</p>
+      <Card className="max-w-2xl mx-auto text-center space-y-6">
+        <div className="space-y-3">
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">Спасибо</p>
+          <h2 className="text-3xl font-semibold text-slate-950">Ваш отзыв отправлен</h2>
+          <p className="mt-3 text-sm leading-7 text-slate-600">
+            Отзыв принят. Если хотите, отправьте ещё один или поделитесь ссылкой, чтобы получить больше отзывов.
+          </p>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Button type="button" onClick={handleShareLink}>
+            {shareCopied ? 'Скопировано!' : 'Скопировать ссылку'}
+          </Button>
+          <Button type="button" onClick={handleReset}>
+            Оставить ещё отзыв
+          </Button>
+        </div>
       </Card>
     );
   }
@@ -52,31 +83,31 @@ export function ReviewForm({ profileId }: { profileId: string }) {
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
           <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="author">
-            Name
+            Имя
           </label>
           <Input
             id="author"
             value={name}
             onChange={(event) => setName(event.target.value)}
-            placeholder="Your name"
+            placeholder="Ваше имя"
             required
           />
         </div>
         <div>
           <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="text">
-            Review
+            Отзыв
           </label>
           <Textarea
             id="text"
             value={text}
             onChange={(event) => setText(event.target.value)}
-            placeholder="Share your experience"
+            placeholder="Поделитесь опытом"
             required
           />
         </div>
         <div>
           <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="rating">
-            Rating
+            Оценка
           </label>
           <select
             id="rating"
@@ -86,14 +117,14 @@ export function ReviewForm({ profileId }: { profileId: string }) {
           >
             {[5, 4, 3, 2, 1].map((value) => (
               <option key={value} value={value}>
-                {value} star{value > 1 ? 's' : ''}
+                {value} звезда{value > 1 ? 'ы' : ''}
               </option>
             ))}
           </select>
         </div>
         {error ? <p className="text-sm text-red-600">{error}</p> : null}
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Submitting...' : 'Submit review'}
+          {isSubmitting ? 'Отправка...' : 'Отправить отзыв'}
         </Button>
       </form>
     </Card>

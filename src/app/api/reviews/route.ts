@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
   const { profileId, author, text, rating } = body;
 
   if (!profileId || !author || !text || !rating) {
-    return NextResponse.json({ error: 'Missing review data' }, { status: 400 });
+    return NextResponse.json({ error: 'Недостаточно данных для отзыва' }, { status: 400 });
   }
 
   const review = await createReview({
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
   });
 
   if (!review) {
-    return NextResponse.json({ error: 'Unable to create review' }, { status: 500 });
+    return NextResponse.json({ error: 'Не удалось создать отзыв' }, { status: 500 });
   }
 
   return NextResponse.json(review, { status: 201 });

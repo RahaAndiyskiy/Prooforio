@@ -33,7 +33,7 @@ export async function signUp({ email, password, username, fullName }: SignUpData
     } catch (jsonError) {
       console.log('signUp error JSON stringify failed', jsonError);
     }
-    throw error ?? new Error('Unable to create auth user');
+    throw error ?? new Error('Не удалось создать учетную запись');
   }
 
   const profile = await createProfile({
@@ -43,7 +43,7 @@ export async function signUp({ email, password, username, fullName }: SignUpData
   });
 
   if (!profile) {
-    throw new Error('Unable to create user profile');
+    throw new Error('Не удалось создать профиль пользователя');
   }
 
   return profile;
@@ -61,7 +61,7 @@ export async function signIn({ email, password }: SignInData) {
   });
 
   if (error || !data.session) {
-    throw error ?? new Error('Unable to sign in');
+    throw error ?? new Error('Не удалось войти');
   }
 
   return data.session;
