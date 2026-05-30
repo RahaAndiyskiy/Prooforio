@@ -68,6 +68,11 @@ export async function createProfile({
     .select('id, username, full_name, auth_user_id')
     .single();
 
+  if (error) {
+    console.log('createProfile error', error);
+    console.log('createProfile error JSON', JSON.stringify(error, null, 2));
+  }
+
   if (error || !data) {
     return null;
   }
