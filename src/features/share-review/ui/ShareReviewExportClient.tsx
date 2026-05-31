@@ -33,6 +33,44 @@ export function ShareReviewExportClient({ review, templateId }: { review: Review
     return () => observer.disconnect();
   }, []);
 
+  const saveWithDownload = (file: File) => {
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(file);
+    link.download = file.name;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(link.href);
+  };
+
+  const saveWithShare = async (file: File) => {
+    if (typeof navigator === 'undefined' || typeof navigator.share !== 'function') {
+      return false;
+    }
+
+    const sharePayload = {
+      title: 'Экспорт отзыва',
+      text: 'Сохраните или отправьте изображение отзыва.',
+      files: [file],
+    };
+
+    if (typeof navigator.canShare === 'function' && !navigator.canShare(sharePayload)) {
+      return false;
+    }
+
+    try {
+      await navigator.share(sharePayload);
+      return true;
+    } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        return true;
+      }
+
+      console.error('Share export error:', error);
+      return false;
+    }
+  };
+
   const downloadImage = async (format: 'png' | 'jpeg') => {
     setLoading(true);
 
@@ -54,13 +92,14 @@ export function ShareReviewExportClient({ review, templateId }: { review: Review
       }
 
       const blob = await response.blob();
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = `prooforio-review.${format === 'png' ? 'png' : 'jpg'}`;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(link.href);
+      const extension = format === 'png' ? 'png' : 'jpg';
+      const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
+      const file = new File([blob], `prooforio-review.${extension}`, { type: blob.type || mimeType });
+
+      const shared = await saveWithShare(file);
+      if (!shared) {
+        saveWithDownload(file);
+      }
     } catch (error) {
       console.error('Export error:', error);
       window.alert('Не удалось сохранить изображение. Попробуйте ещё раз.');
