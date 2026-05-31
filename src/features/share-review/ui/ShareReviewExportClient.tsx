@@ -1,31 +1,35 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { reviewExportTemplates } from '../export/templates';
+import { reviewExportPresets } from '../export/templates';
 import type { ReviewExportTemplateProps } from '../export/types';
 import {
-  defaultTemplateFilters,
-  filterTemplates,
-  getTemplateCategoryOptions,
-  getTemplateDimensions,
-  getTemplateFormatLabel,
-  getTemplateFormatOptions,
-  type TemplateFilterOption,
-  type TemplateFilterValue,
-} from '../lib/templateCatalog';
-import { ShareCardTemplate } from './ShareCardTemplate';
+  defaultPresetFilters,
+  filterPresets,
+  getPresetDimensions,
+  getPresetFormatLabel,
+  getPresetFormatOptions,
+  getPresetStyleOptions,
+  type PresetFilterOption,
+  type PresetFilterValue,
+} from '../lib/presetCatalog';
+import { ShareCardPreset } from './ShareCardPreset';
 
-type TemplatePreviewOptionProps = {
+function formatPresetDimensions(width: number, height: number) {
+  return `${width}×${height}`;
+}
+
+type PresetPreviewOptionProps = {
   review: ReviewExportTemplateProps;
-  template: (typeof reviewExportTemplates)[number];
+  preset: (typeof reviewExportPresets)[number];
   isSelected: boolean;
-  onSelect: (templateId: string) => void;
+  onSelect: (presetId: string) => void;
 };
 
-function TemplatePreviewOption({ review, template, isSelected, onSelect }: TemplatePreviewOptionProps) {
+function PresetPreviewOption({ review, preset, isSelected, onSelect }: PresetPreviewOptionProps) {
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const [previewScale, setPreviewScale] = useState(1);
-  const dimensions = getTemplateDimensions(template.meta.format);
+  const dimensions = getPresetDimensions(preset.meta.format);
 
   useEffect(() => {
     const node = previewContainerRef.current;
@@ -47,66 +51,68 @@ function TemplatePreviewOption({ review, template, isSelected, onSelect }: Templ
   }, [dimensions.width]);
 
   return (
-    <button
-      type="button"
-      onClick={() => onSelect(template.id)}
-      aria-pressed={isSelected}
-      className={
-        'group w-full rounded-[30px] border bg-white p-3 text-left transition sm:p-4 ' +
-        (isSelected
-          ? 'border-slate-950 shadow-[0_20px_60px_rgba(15,23,42,0.12)] ring-2 ring-slate-950/10'
-          : 'border-slate-200 shadow-sm hover:-translate-y-0.5 hover:border-slate-400 hover:shadow-[0_20px_60px_rgba(15,23,42,0.08)]')
-      }
-    >
-      <div
-        ref={previewContainerRef}
-        className="relative w-full overflow-hidden rounded-[24px] border border-slate-200 bg-slate-100/50"
-        style={{ aspectRatio: `${dimensions.width} / ${dimensions.height}` }}
+    <div className="mb-5 break-inside-avoid">
+      <button
+        type="button"
+        onClick={() => onSelect(preset.id)}
+        aria-pressed={isSelected}
+        className={
+          'group h-fit w-full self-start rounded-[30px] border bg-white p-3 text-left transition sm:p-4 ' +
+          (isSelected
+            ? 'border-slate-950 shadow-[0_20px_60px_rgba(15,23,42,0.12)] ring-2 ring-slate-950/10'
+            : 'border-slate-200 shadow-sm hover:-translate-y-0.5 hover:border-slate-400 hover:shadow-[0_20px_60px_rgba(15,23,42,0.08)]')
+        }
       >
         <div
-          className="pointer-events-none absolute left-0 top-0"
-          style={{
-            width: dimensions.width,
-            height: dimensions.height,
-            transform: `scale(${previewScale})`,
-            transformOrigin: 'top left',
-          }}
+          ref={previewContainerRef}
+          className="relative w-full overflow-hidden rounded-[24px] border border-slate-200 bg-slate-100/50"
+          style={{ aspectRatio: `${dimensions.width} / ${dimensions.height}` }}
         >
-          <ShareCardTemplate review={review} templateId={template.id} />
-        </div>
-      </div>
-
-      <div className="mt-4 flex items-start justify-between gap-4">
-        <div>
-          <p className="text-base font-semibold text-slate-950">{template.label}</p>
-          <p className="mt-1 text-sm leading-6 text-slate-600">{template.description}</p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-600">
-              {getTemplateFormatLabel(template.meta.format)}
-            </span>
+          <div
+            className="pointer-events-none absolute left-0 top-0"
+            style={{
+              width: dimensions.width,
+              height: dimensions.height,
+              transform: `scale(${previewScale})`,
+              transformOrigin: 'top left',
+            }}
+          >
+            <ShareCardPreset review={review} presetId={preset.id} />
           </div>
         </div>
-        <span
-          className={
-            'shrink-0 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] ' +
-            (isSelected ? 'bg-slate-950 text-white' : 'bg-slate-100 text-slate-600')
-          }
-        >
-          {isSelected ? 'Выбран' : 'Выбрать'}
-        </span>
-      </div>
-    </button>
+
+        <div className="mt-4 flex items-start justify-between gap-4">
+          <div>
+            <p className="text-base font-semibold text-slate-950">{preset.label}</p>
+            <p className="mt-1 text-sm leading-6 text-slate-600">{preset.description}</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-600">
+                {getPresetFormatLabel(preset.meta.format)}
+              </span>
+            </div>
+          </div>
+          <span
+            className={
+              'shrink-0 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] ' +
+              (isSelected ? 'bg-slate-950 text-white' : 'bg-slate-100 text-slate-600')
+            }
+          >
+            {isSelected ? 'Выбран' : 'Выбрать'}
+          </span>
+        </div>
+      </button>
+    </div>
   );
 }
 
-type TemplateFilterGroupProps<T extends string> = {
+type PresetFilterGroupProps<T extends string> = {
   title: string;
-  options: Array<TemplateFilterOption<T>>;
-  value: TemplateFilterValue<T>;
-  onChange: (value: TemplateFilterValue<T>) => void;
+  options: Array<PresetFilterOption<T>>;
+  value: PresetFilterValue<T>;
+  onChange: (value: PresetFilterValue<T>) => void;
 };
 
-function TemplateFilterGroup<T extends string>({ title, options, value, onChange }: TemplateFilterGroupProps<T>) {
+function PresetFilterGroup<T extends string>({ title, options, value, onChange }: PresetFilterGroupProps<T>) {
   if (options.length <= 1) {
     return null;
   }
@@ -139,25 +145,26 @@ function TemplateFilterGroup<T extends string>({ title, options, value, onChange
   );
 }
 
-export function ShareReviewExportClient({ review, templateId }: { review: ReviewExportTemplateProps; templateId?: string }) {
-  const [selectedTemplateId, setSelectedTemplateId] = useState(templateId ?? reviewExportTemplates[0]?.id ?? 'minimal');
+export function ShareReviewExportClient({ review, presetId }: { review: ReviewExportTemplateProps; presetId?: string }) {
+  const [selectedPresetId, setSelectedPresetId] = useState(presetId ?? reviewExportPresets[0]?.id ?? 'minimal');
   const [loading, setLoading] = useState(false);
-  const [filters, setFilters] = useState(defaultTemplateFilters);
-  const formatOptions = getTemplateFormatOptions(reviewExportTemplates);
-  const templatesForFormat = filterTemplates(reviewExportTemplates, {
+  const [filters, setFilters] = useState(defaultPresetFilters);
+  const formatOptions = getPresetFormatOptions(reviewExportPresets);
+  const presetsForFormat = filterPresets(reviewExportPresets, {
     format: filters.format,
-    category: 'all',
+    style: 'all',
   });
-  const categoryOptions = getTemplateCategoryOptions(templatesForFormat);
-  const effectiveCategory = categoryOptions.some((option) => option.value === filters.category) ? filters.category : 'all';
-  const filteredTemplates = filterTemplates(reviewExportTemplates, {
+  const styleOptions = getPresetStyleOptions(presetsForFormat);
+  const effectiveStyle = styleOptions.some((option) => option.value === filters.style) ? filters.style : 'all';
+  const filteredPresets = filterPresets(reviewExportPresets, {
     ...filters,
-    category: effectiveCategory,
+    style: effectiveStyle,
   });
-  const effectiveSelectedTemplateId = filteredTemplates.some((template) => template.id === selectedTemplateId)
-    ? selectedTemplateId
-    : filteredTemplates[0]?.id ?? reviewExportTemplates[0]?.id ?? 'minimal';
-  const selectedTemplate = filteredTemplates.find((template) => template.id === effectiveSelectedTemplateId) ?? filteredTemplates[0] ?? reviewExportTemplates[0];
+  const effectiveSelectedPresetId = filteredPresets.some((preset) => preset.id === selectedPresetId)
+    ? selectedPresetId
+    : filteredPresets[0]?.id ?? reviewExportPresets[0]?.id ?? 'minimal';
+  const selectedPreset = filteredPresets.find((preset) => preset.id === effectiveSelectedPresetId) ?? filteredPresets[0] ?? reviewExportPresets[0];
+  const selectedPresetDimensions = getPresetDimensions(selectedPreset.meta.format);
 
   const saveWithDownload = (file: File) => {
     const link = document.createElement('a');
@@ -225,7 +232,8 @@ export function ShareReviewExportClient({ review, templateId }: { review: Review
         },
         body: JSON.stringify({
           ...review,
-          templateId: effectiveSelectedTemplateId,
+          presetId: effectiveSelectedPresetId,
+          templateId: effectiveSelectedPresetId,
           format,
         }),
       });
@@ -263,55 +271,59 @@ export function ShareReviewExportClient({ review, templateId }: { review: Review
         </p>
 
         <div className="mt-6 space-y-4 border-t border-slate-200 pt-5">
-          <TemplateFilterGroup
+          <PresetFilterGroup
             title="Формат"
             options={formatOptions}
             value={filters.format}
             onChange={(format) => {
               setFilters({
                 format,
-                category: 'all',
+                style: 'all',
               });
             }}
           />
-          <TemplateFilterGroup
+          <PresetFilterGroup
             title="Стиль"
-            options={categoryOptions}
-            value={filters.category}
-            onChange={(category) => {
+            options={styleOptions}
+            value={filters.style}
+            onChange={(style) => {
               setFilters((currentFilters) => ({
                 ...currentFilters,
-                category,
+                style,
               }));
             }}
           />
         </div>
       </section>
 
-      <section className="grid gap-5 lg:grid-cols-2">
-        {filteredTemplates.length ? (
-          filteredTemplates.map((template) => (
-            <TemplatePreviewOption
-              key={template.id}
+      {filteredPresets.length ? (
+        <section className="columns-1 gap-5 lg:columns-3">
+          {filteredPresets.map((preset) => (
+            <PresetPreviewOption
+              key={preset.id}
               review={review}
-              template={template}
-              isSelected={template.id === effectiveSelectedTemplateId}
-              onSelect={setSelectedTemplateId}
+              preset={preset}
+              isSelected={preset.id === effectiveSelectedPresetId}
+              onSelect={setSelectedPresetId}
             />
-          ))
-        ) : (
-          <div className="rounded-[28px] border border-dashed border-slate-300 bg-white p-8 text-sm text-slate-600 lg:col-span-2">
-            По выбранным фильтрам шаблоны пока не найдены. Сбросьте стиль или формат и попробуйте снова.
-          </div>
-        )}
-      </section>
+          ))}
+        </section>
+      ) : (
+        <div className="rounded-[28px] border border-dashed border-slate-300 bg-white p-8 text-sm text-slate-600">
+          По выбранным фильтрам шаблоны пока не найдены. Сбросьте стиль или формат и попробуйте снова.
+        </div>
+      )}
 
       <section className="sticky bottom-4 z-10 rounded-[28px] border border-slate-200 bg-white/95 p-4 shadow-[0_24px_80px_rgba(15,23,42,0.12)] backdrop-blur sm:p-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">Выбранный шаблон</p>
-            <p className="mt-2 text-xl font-semibold text-slate-950">{selectedTemplate.label}</p>
-            <p className="mt-1 text-sm text-slate-600">{loading ? 'Генерируем изображение...' : 'Формат экспорта: 1200×630'}</p>
+            <p className="mt-2 text-xl font-semibold text-slate-950">{selectedPreset.label}</p>
+            <p className="mt-1 text-sm text-slate-600">
+              {loading
+                ? 'Генерируем изображение...'
+                : `${getPresetFormatLabel(selectedPreset.meta.format)} · ${formatPresetDimensions(selectedPresetDimensions.width, selectedPresetDimensions.height)}`}
+            </p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2 lg:min-w-[320px]">

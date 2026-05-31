@@ -20,6 +20,7 @@ type ShareReviewPageProps = {
     rating?: string | number | string[];
     createdAt?: string | string[];
     profileName?: string | string[];
+    preset?: string | string[];
     template?: string | string[];
   }>;
 };
@@ -37,7 +38,7 @@ export default async function ShareReviewPage({ params, searchParams }: ShareRev
     createdAt: parseStringParam(resolvedSearchParams?.createdAt) ?? new Date().toISOString(),
     profileName: parseStringParam(resolvedSearchParams?.profileName) ?? 'Prooforio',
   };
-  const templateId = parseStringParam(resolvedSearchParams?.template) ?? 'minimal';
+  const presetId = parseStringParam(resolvedSearchParams?.preset) ?? parseStringParam(resolvedSearchParams?.template) ?? 'minimal';
 
   const hasFallbackReview = Boolean(fallbackReview.author && fallbackReview.text && fallbackReview.rating > 0);
 
@@ -83,7 +84,7 @@ export default async function ShareReviewPage({ params, searchParams }: ShareRev
             <p>Если тут отображается некорректный отзыв, значит проблема в формировании URL.</p>
           </div>
         )}
-        <ShareReviewExportClient review={shareReview} templateId={templateId} />
+        <ShareReviewExportClient review={shareReview} presetId={presetId} />
       </main>
     </div>
   );

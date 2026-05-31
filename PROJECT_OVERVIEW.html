@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prooforio — Краткий обзор проекта</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fb;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --line: #dbe2ea;
+      --accent: #0f172a;
+      --soft: #eef2f7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+      color: var(--text);
+      font: 16px/1.6 "Segoe UI", Arial, sans-serif;
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 40px 20px 64px;
+    }
+
+    .hero,
+    .section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.05);
+    }
+
+    .hero {
+      padding: 32px;
+      margin-bottom: 20px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2 {
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-size: 36px;
+      line-height: 1.1;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 14px;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .section {
+      padding: 24px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    li + li {
+      margin-top: 8px;
+    }
+
+    code {
+      background: var(--soft);
+      border-radius: 8px;
+      padding: 2px 7px;
+      color: var(--accent);
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.95em;
+    }
+
+    .wide {
+      margin-top: 20px;
+      padding: 24px;
+    }
+
+    .tree {
+      white-space: pre-wrap;
+      color: var(--muted);
+      font: 14px/1.7 Consolas, "Courier New", monospace;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 760px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <p class="eyebrow">Prooforio</p>
+      <h1>Краткий обзор проекта</h1>
+      <p style="margin-top: 14px; max-width: 760px;">
+        Prooforio — это сервис для сбора отзывов по персональной ссылке и последующего экспорта отзывов в виде готовых карточек для шаринга.
+      </p>
+    </section>
+
+    <div class="grid">
+      <section class="section">
+        <h2>Что умеет проект</h2>
+        <ul>
+          <li>Регистрация и вход пользователя.</li>
+          <li>Публичная страница для сбора отзывов по ссылке <code>/review/[username]</code>.</li>
+          <li>Панель пользователя с отзывами и ссылкой для распространения.</li>
+          <li>Страница шаринга отзыва с выбором шаблона и живым preview.</li>
+          <li>Экспорт карточек в <code>PNG</code> и <code>JPEG</code>.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>Ключевая идея</h2>
+        <ul>
+          <li>Отзыв сначала собирается как данные.</li>
+          <li>Потом данные нормализуются в общий шаблонный контекст.</li>
+          <li>Дальше один и тот же отзыв можно показать в разных визуальных шаблонах.</li>
+          <li>Preview и экспорт используют общий реестр шаблонов.</li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="grid">
+      <section class="section">
+        <h2>Основные маршруты</h2>
+        <ul>
+          <li><code>/</code> — главная страница.</li>
+          <li><code>/login</code> — вход.</li>
+          <li><code>/register</code> — регистрация.</li>
+          <li><code>/dashboard</code> — панель пользователя.</li>
+          <li><code>/review/[username]</code> — публичная форма отзыва.</li>
+          <li><code>/share/review/[reviewId]</code> — выбор шаблона и экспорт карточки.</li>
+          <li><code>/api/reviews</code> — создание отзыва.</li>
+          <li><code>/api/share/review-image</code> — генерация изображения карточки.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>Основной стек</h2>
+        <ul>
+          <li><code>Next.js App Router</code></li>
+          <li><code>React + TypeScript</code></li>
+          <li><code>Tailwind CSS</code></li>
+          <li><code>Supabase</code> для данных и auth</li>
+          <li><code>satori + @resvg/resvg-js + sharp</code> для экспорта изображений</li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="section wide">
+      <h2>Структура проекта</h2>
+      <div class="tree">src/
+  app/                    Next.js routes и API routes
+  entities/               доменные типы profile/review
+  features/
+    auth/                 логика входа и регистрации
+    dashboard/            панель пользователя
+    review/               форма отзыва и список отзывов
+    share-review/         шаблоны, preview и экспорт карточек
+  shared/
+    api/                  доступ к profile/review данным
+    lib/                  общие утилиты, Supabase client
+    ui/                   кнопки, карточки, input и другие примитивы
+  widgets/
+    header/               общий header проекта</div>
+    </section>
+
+    <section class="section wide">
+      <h2>Как устроен экспорт карточек</h2>
+      <ul>
+        <li>Отзыв передается в шаблонный контекст: <code>brand / header / rating / body / footer</code>.</li>
+        <li>Каждый шаблон описан как отдельный компонент.</li>
+        <li>Выбранный шаблон сначала рендерится в SVG через <code>satori</code>.</li>
+        <li>Потом SVG конвертируется в PNG через <code>Resvg</code>.</li>
+        <li>Для JPEG используется дополнительная конвертация через <code>sharp</code>.</li>
+      </ul>
+    </section>
+
+    <section class="section wide">
+      <h2>Текущее состояние</h2>
+      <ul>
+        <li>Базовый flow проекта уже работает end-to-end.</li>
+        <li>Система шаблонов подготовлена к росту: есть metadata, фильтры и основа под разные форматы.</li>
+        <li>Следующий большой этап — визуальная система шаблонов и расширение библиотеки карточек.</li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

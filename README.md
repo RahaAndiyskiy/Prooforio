@@ -23,3 +23,9 @@ npm run dev
 - `src/features/` — feature-specific UI modules
 - `src/widgets/` — shared widgets like header
 - `src/shared/` — reusable UI primitives and styles
+
+## Documentation
+
+- `PROJECT_OVERVIEW.html` — short overview of current product, routes, stack, structure, and export pipeline
+- `STYLE_BUILDER_CONCEPT.html` — concept of a future style builder as a layer on top of the current template system
+- `Тех долги.md` — current technical debt map with priorities and progress

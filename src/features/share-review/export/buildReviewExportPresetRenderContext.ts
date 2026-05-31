@@ -1,8 +1,18 @@
-import type { ReviewExportTemplateContext, ReviewExportTemplateProps } from './types';
+import { TEMPLATE_FORMAT_DIMENSIONS } from '../constants';
+import type {
+  ReviewExportPresetDefinition,
+  ReviewExportPresetRenderContext,
+  ReviewExportTemplateProps,
+} from './types';
 
-export function buildReviewExportTemplateContext(review: ReviewExportTemplateProps): ReviewExportTemplateContext {
+export function buildReviewExportPresetRenderContext(
+  review: ReviewExportTemplateProps,
+  preset: ReviewExportPresetDefinition
+): ReviewExportPresetRenderContext {
   return {
     review,
+    preset,
+    dimensions: TEMPLATE_FORMAT_DIMENSIONS[preset.meta.format],
     // Нормализованный контекст отделяет данные от визуальной композиции и позволяет добавлять новые шаблоны без переписывания payload.
     content: {
       brand: {

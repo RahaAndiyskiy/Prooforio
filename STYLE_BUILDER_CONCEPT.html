@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Style Builder Concept</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #516074;
+      --line: #d9e2ec;
+      --soft: #eef3f8;
+      --accent: #0f172a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+      color: var(--text);
+      font: 16px/1.65 "Segoe UI", Arial, sans-serif;
+    }
+
+    .wrap {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px 64px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.05);
+      padding: 28px;
+    }
+
+    .card + .card {
+      margin-top: 20px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-size: 36px;
+      line-height: 1.1;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    li + li {
+      margin-top: 8px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .flow {
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      font: 14px/1.75 Consolas, "Courier New", monospace;
+      color: #334155;
+      white-space: pre-wrap;
+    }
+
+    @media (max-width: 760px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card">
+      <p class="eyebrow">Prooforio / Future Layer</p>
+      <h1>Style Builder Concept</h1>
+      <p style="margin-top: 14px; max-width: 780px;">
+        Это не новый отдельный проект и не Canva-клон. Это будущая надстройка над уже существующей системой шаблонов, которая позволит пользователю собирать собственный стиль карточки по шагам, не переписывая текущий preview/export pipeline.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Суть идеи</h2>
+      <p>
+        Пользователь берет уже существующий отзыв и не выбирает только готовый шаблон, а проходит пошаговый конструктор, где настраивает внешний вид карточки: формат, скругления, цвета, шрифты, композицию, расположение рейтинга, текста и декоративных элементов.
+      </p>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Что это не должно быть</h2>
+        <ul>
+          <li>Не отдельная новая платформа с нуля.</li>
+          <li>Не свободный canvas-редактор с бесконечным drag and drop.</li>
+          <li>Не замена текущему экспортному движку.</li>
+          <li>Не полная перезапись текущих шаблонов.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Что это должно быть</h2>
+        <ul>
+          <li>Ограниченный пошаговый конструктор.</li>
+          <li>Надстройка над текущими шаблонами и preview.</li>
+          <li>Система параметров, а не ручного рисования.</li>
+          <li>Управляемая визуальная сборка карточки из готовых блоков.</li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="card">
+      <h2>Как это должно строиться поверх текущего проекта</h2>
+      <div class="flow">Отзыв
+  -> нормализованный контент (brand / header / rating / body / footer)
+  -> style config пользователя
+  -> layout rules
+  -> primitive blocks
+  -> preview
+  -> export PNG / JPEG</div>
+      <p style="margin-top: 14px;">
+        То есть новый слой добавляется между данными отзыва и финальным шаблоном. Существующий экспортный pipeline остается, но вместо жестко написанного шаблона он сможет использовать параметры, выбранные пользователем.
+      </p>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Какие сущности понадобятся</h2>
+        <ol>
+          <li><strong>Style Config</strong> — объект с настройками внешнего вида.</li>
+          <li><strong>Layout Schema</strong> — правила расположения блоков.</li>
+          <li><strong>Primitives</strong> — переиспользуемые элементы карточки.</li>
+          <li><strong>Builder Steps</strong> — пошаговый UI настройки.</li>
+        </ol>
+      </section>
+
+      <section class="card">
+        <h2>Какие параметры логично настраивать</h2>
+        <ol>
+          <li>Формат и ориентация.</li>
+          <li>Скругления и рамки.</li>
+          <li>Цвет фона и цвет карточки.</li>
+          <li>Шрифт, размер и насыщенность текста.</li>
+          <li>Положение текста, автора и рейтинга.</li>
+          <li>Декоративные элементы и акцентные зоны.</li>
+        </ol>
+      </section>
+    </div>
+
+    <section class="card">
+      <h2>Пример будущего flow пользователя</h2>
+      <ol>
+        <li>Выбрать отзыв.</li>
+        <li>Выбрать формат: landscape, square или story.</li>
+        <li>Выбрать базовый стиль или стартовый пресет.</li>
+        <li>Настроить фон, цвета, углы и типографику.</li>
+        <li>Настроить композицию текста, рейтинга и подписи.</li>
+        <li>Посмотреть live preview.</li>
+        <li>Сохранить стиль как preset или сразу экспортировать карточку.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Почему это не потребует переписывать проект заново</h2>
+      <ul>
+        <li>Уже есть нормализованный контент карточки.</li>
+        <li>Уже есть реестр шаблонов и metadata.</li>
+        <li>Уже есть подготовка под форматы и фильтры.</li>
+        <li>Уже есть единый preview/export pipeline.</li>
+        <li>Новый builder можно строить как верхний слой над текущей архитектурой.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Минимальная архитектурная цель на будущее</h2>
+      <p>
+        Дойти до состояния, где <span class="pill">шаблон</span> — это не только вручную написанный компонент, а комбинация из <span class="pill">данных отзыва</span>, <span class="pill">style config</span> и <span class="pill">layout schema</span>. Тогда готовые шаблоны, пользовательские стили и будущий конструктор смогут жить в одной системе.
+      </p>
+    </section>
+  </div>
+</body>
+</html>

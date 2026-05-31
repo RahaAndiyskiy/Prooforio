@@ -30,30 +30,44 @@ export type ReviewExportTemplateContent = {
   };
 };
 
-export type ReviewExportTemplateContext = {
-  review: ReviewExportTemplateProps;
-  content: ReviewExportTemplateContent;
-};
-
 export type ReviewExportTemplateFormat = 'landscape' | 'square' | 'story';
 
-export type ReviewExportTemplateMeta = {
+export type ReviewExportStyleId = 'clean' | 'bold';
+
+export type ReviewExportLayoutId = 'hero-top' | 'split-header';
+
+export type ReviewExportPresetMeta = {
   format: ReviewExportTemplateFormat;
-  category: string;
+  styleId: ReviewExportStyleId;
+  layoutId: ReviewExportLayoutId;
   tags: string[];
   featured: boolean;
   order: number;
 };
 
-export type ReviewExportTemplateDefinition = {
+export type ReviewExportPresetDefinition = {
   id: string;
   label: string;
   description: string;
-  meta: ReviewExportTemplateMeta;
-  Component: (context: ReviewExportTemplateContext) => ReactNode;
+  meta: ReviewExportPresetMeta;
 };
 
+export type ReviewExportCanvasDimensions = {
+  width: number;
+  height: number;
+};
+
+export type ReviewExportPresetRenderContext = {
+  review: ReviewExportTemplateProps;
+  content: ReviewExportTemplateContent;
+  preset: ReviewExportPresetDefinition;
+  dimensions: ReviewExportCanvasDimensions;
+};
+
+export type ReviewExportPresetRenderer = (context: ReviewExportPresetRenderContext) => ReactNode;
+
 export type ReviewExportRequest = ReviewExportTemplateProps & {
+  presetId?: string;
   templateId?: string;
   format?: 'png' | 'jpeg';
 };

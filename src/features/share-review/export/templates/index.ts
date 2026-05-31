@@ -1,20 +1,19 @@
-import type { ReviewExportTemplateDefinition } from '../types';
-import { DarkTemplate } from './DarkTemplate';
-import { MinimalTemplate } from './MinimalTemplate';
+import type { ReviewExportPresetDefinition, ReviewExportPresetRenderer } from '../types';
+import { BaseReviewTemplate } from './BaseReviewTemplate';
 
-const templateDefinitions: ReviewExportTemplateDefinition[] = [
+const presetDefinitions: ReviewExportPresetDefinition[] = [
   {
     id: 'minimal',
     label: 'Minimal',
     description: 'Чистый минималистичный шаблон для отзывов.',
     meta: {
       format: 'landscape',
-      category: 'clean',
+      styleId: 'clean',
+      layoutId: 'hero-top',
       tags: ['light', 'minimal', 'universal'],
       featured: true,
       order: 10,
     },
-    Component: MinimalTemplate,
   },
   {
     id: 'dark',
@@ -22,28 +21,60 @@ const templateDefinitions: ReviewExportTemplateDefinition[] = [
     description: 'Тёмный стильный шаблон с контрастной карточкой.',
     meta: {
       format: 'landscape',
-      category: 'contrast',
+      styleId: 'bold',
+      layoutId: 'split-header',
       tags: ['dark', 'bold', 'editorial'],
       featured: true,
       order: 20,
     },
-    Component: DarkTemplate,
+  },
+  {
+    id: 'minimal-square',
+    label: 'Minimal Square',
+    description: 'Квадратный минималистичный шаблон для соцсетей и карточек.',
+    meta: {
+      format: 'square',
+      styleId: 'clean',
+      layoutId: 'hero-top',
+      tags: ['light', 'minimal', 'square', 'social'],
+      featured: false,
+      order: 30,
+    },
+  },
+  {
+    id: 'dark-story',
+    label: 'Dark Story',
+    description: 'Вертикальный контрастный шаблон для stories и полноэкранных публикаций.',
+    meta: {
+      format: 'story',
+      styleId: 'bold',
+      layoutId: 'split-header',
+      tags: ['dark', 'bold', 'story', 'social'],
+      featured: false,
+      order: 40,
+    },
   },
 ];
 
+export const reviewExportPresetRenderer: ReviewExportPresetRenderer = BaseReviewTemplate;
+
 // Реестр уже хранит metadata для будущих фильтров, сортировки и группировки, даже если текущий экран пока не использует их явно.
-export const reviewExportTemplates = [...templateDefinitions].sort((firstTemplate, secondTemplate) => {
-  return firstTemplate.meta.order - secondTemplate.meta.order;
+export const reviewExportPresets = [...presetDefinitions].sort((firstPreset, secondPreset) => {
+  return firstPreset.meta.order - secondPreset.meta.order;
 });
 
-export const reviewExportTemplateFormats = Array.from(
-  new Set(reviewExportTemplates.map((template) => template.meta.format))
+export function getReviewExportPresetById(presetId?: string) {
+  return reviewExportPresets.find((preset) => preset.id === presetId) ?? reviewExportPresets[0];
+}
+
+export const reviewExportPresetFormats = Array.from(
+  new Set(reviewExportPresets.map((preset) => preset.meta.format))
 );
 
-export const reviewExportTemplateCategories = Array.from(
-  new Set(reviewExportTemplates.map((template) => template.meta.category))
+export const reviewExportPresetStyles = Array.from(
+  new Set(reviewExportPresets.map((preset) => preset.meta.styleId))
 );
 
-export const reviewExportTemplateTags = Array.from(
-  new Set(reviewExportTemplates.flatMap((template) => template.meta.tags))
+export const reviewExportPresetTags = Array.from(
+  new Set(reviewExportPresets.flatMap((preset) => preset.meta.tags))
 );

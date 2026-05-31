@@ -14,6 +14,7 @@ export async function POST(request: Request) {
 
   try {
     const format = body.format === 'jpeg' ? 'jpeg' : 'png';
+    const presetId = body.presetId ?? body.templateId ?? 'minimal';
     const png = await generateReviewImage(
       {
         author: body.author,
@@ -22,7 +23,7 @@ export async function POST(request: Request) {
         createdAt: body.createdAt,
         profileName: body.profileName,
       },
-      body.templateId ?? 'minimal'
+      presetId
     );
 
     const output =
