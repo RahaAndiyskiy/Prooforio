@@ -52,7 +52,7 @@ function PresetPreviewOption({ review, preset, isSelected, onSelect }: PresetPre
   }, [dimensions.width]);
 
   return (
-    <div className="mb-5 break-inside-avoid">
+    <div className="mb-4 break-inside-avoid sm:mb-5">
       <button
         type="button"
         onClick={() => onSelect(preset.id)}
@@ -279,7 +279,7 @@ export function ShareReviewExportClient({ review, presetId }: { review: ReviewEx
       </section>
 
       {filteredPresets.length ? (
-        <section className="columns-1 gap-5 lg:columns-3">
+        <section className="columns-1 gap-4 min-[380px]:columns-2 min-[380px]:gap-3 sm:gap-4 lg:columns-3 lg:gap-5">
           {filteredPresets.map((preset) => (
             <PresetPreviewOption
               key={preset.id}
