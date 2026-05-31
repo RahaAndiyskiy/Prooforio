@@ -35,10 +35,21 @@ export type ReviewExportTemplateContext = {
   content: ReviewExportTemplateContent;
 };
 
+export type ReviewExportTemplateFormat = 'landscape' | 'square' | 'story';
+
+export type ReviewExportTemplateMeta = {
+  format: ReviewExportTemplateFormat;
+  category: string;
+  tags: string[];
+  featured: boolean;
+  order: number;
+};
+
 export type ReviewExportTemplateDefinition = {
   id: string;
   label: string;
   description: string;
+  meta: ReviewExportTemplateMeta;
   Component: (context: ReviewExportTemplateContext) => ReactNode;
 };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import type { Profile } from '@/entities/profile/types';
 import { Card } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
@@ -16,17 +16,18 @@ export function DashboardOverview({
   averageRating: string;
   recentReviewsCount: number;
 }) {
-  const [shareSupported, setShareSupported] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-  const [reviewUrl, setReviewUrl] = useState(`https://prooforio.vercel.app/review/${profile.username}`);
   const reviewPath = `/review/${profile.username}`;
-
-  useEffect(() => {
-    setShareSupported(typeof navigator !== 'undefined' && typeof navigator.share === 'function');
-    if (typeof window !== 'undefined') {
-      setReviewUrl(`${window.location.origin}${reviewPath}`);
-    }
-  }, [reviewPath]);
+  const shareSupported = useSyncExternalStore(
+    () => () => {},
+    () => typeof navigator.share === 'function',
+    () => false
+  );
+  const reviewUrl = useSyncExternalStore(
+    () => () => {},
+    () => `${window.location.origin}${reviewPath}`,
+    () => `https://prooforio.vercel.app${reviewPath}`
+  );
 
   const showToast = (message: string) => {
     setToastMessage(message);

@@ -29,6 +29,7 @@ export default async function ShareReviewPage({ params, searchParams }: ShareRev
   const decodedReviewId = decodeURIComponent(reviewId);
   const review = await getReviewById(decodedReviewId);
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
+  // Fallback из query нужен, чтобы ссылка шаринга могла открыться даже если в момент открытия отзыв еще недоступен по id.
   const fallbackReview = {
     author: parseStringParam(resolvedSearchParams?.author) ?? '',
     text: parseStringParam(resolvedSearchParams?.text) ?? '',

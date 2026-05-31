@@ -1,7 +1,14 @@
 import { getSupabaseClient } from '@/shared/lib/supabase';
 import type { Profile } from '@/entities/profile/types';
 
-function mapProfile(row: any): Profile {
+type ProfileRow = {
+  id: string;
+  username: string;
+  full_name: string;
+  auth_user_id: string | null;
+};
+
+function mapProfile(row: ProfileRow): Profile {
   return {
     id: row.id,
     username: row.username,
@@ -91,18 +98,9 @@ export async function createProfile({
     .select()
     .single();
 
-  console.log('PROFILE INSERT DATA', data);
-  console.log('PROFILE INSERT ERROR', error);
-  console.log('PROFILE INSERT ERROR JSON', JSON.stringify(error, null, 2));
-
-  if (error) {
-    console.log('createProfile error', error);
-    console.log('createProfile error JSON', JSON.stringify(error, null, 2));
-  }
-
   if (error || !data) {
     return null;
   }
 
-  return mapProfile(data);
+  return mapProfile(data as ProfileRow);
 }

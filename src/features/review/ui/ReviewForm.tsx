@@ -43,7 +43,7 @@ export function ReviewForm({ profileId, reviewLink }: { profileId: string; revie
       await navigator.clipboard.writeText(reviewLink);
       setShareCopied(true);
       window.setTimeout(() => setShareCopied(false), 2000);
-    } catch (err) {
+    } catch {
       setError('Не удалось скопировать ссылку. Попробуйте ещё раз.');
     }
   };

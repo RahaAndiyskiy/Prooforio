@@ -15,7 +15,6 @@ type SignInData = {
 };
 
 export async function signUp({ email, password, username, fullName }: SignUpData): Promise<Profile> {
-  console.log('signUp request', { email, username, fullName });
   const supabase = getSupabaseClient();
   if (!supabase) {
     throw new Error('Supabase is not configured');
@@ -27,12 +26,6 @@ export async function signUp({ email, password, username, fullName }: SignUpData
   });
 
   if (error || !data.user) {
-    console.log('signUp error', error);
-    try {
-      console.log('signUp error JSON', JSON.stringify(error, null, 2));
-    } catch (jsonError) {
-      console.log('signUp error JSON stringify failed', jsonError);
-    }
     throw error ?? new Error('Не удалось создать учетную запись');
   }
 

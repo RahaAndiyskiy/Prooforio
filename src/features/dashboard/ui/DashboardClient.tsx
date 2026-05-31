@@ -33,27 +33,36 @@ export function DashboardClient() {
     let mounted = true;
 
     async function loadDashboard() {
-      const user = await getCurrentUser();
+      try {
+        const user = await getCurrentUser();
 
-      if (!user) {
-        router.replace('/login');
-        return;
+        if (!user) {
+          router.replace('/login');
+          return;
+        }
+
+        const currentProfile = await getProfileByAuthUserId(user.id);
+        if (!currentProfile) {
+          router.replace('/register');
+          return;
+        }
+
+        const profileReviews = await getReviewsByProfileId(currentProfile.id);
+        if (!mounted) {
+          return;
+        }
+
+        setProfile(currentProfile);
+        setReviews(profileReviews);
+        setLoading(false);
+      } catch {
+        if (!mounted) {
+          return;
+        }
+
+        setError('Не удалось загрузить панель. Попробуйте обновить страницу.');
+        setLoading(false);
       }
-
-      const currentProfile = await getProfileByAuthUserId(user.id);
-      if (!currentProfile) {
-        router.replace('/register');
-        return;
-      }
-
-      const profileReviews = await getReviewsByProfileId(currentProfile.id);
-      if (!mounted) {
-        return;
-      }
-
-      setProfile(currentProfile);
-      setReviews(profileReviews);
-      setLoading(false);
     }
 
     loadDashboard();

@@ -3,25 +3,38 @@
 import { useEffect, useRef, useState } from 'react';
 import { reviewExportTemplates } from '../export/templates';
 import type { ReviewExportTemplateProps } from '../export/types';
+import {
+  defaultTemplateFilters,
+  filterTemplates,
+  getTemplateCategoryOptions,
+  getTemplateDimensions,
+  getTemplateFormatLabel,
+  getTemplateFormatOptions,
+  type TemplateFilterOption,
+  type TemplateFilterValue,
+} from '../lib/templateCatalog';
 import { ShareCardTemplate } from './ShareCardTemplate';
 
-const EXPORT_WIDTH = 1200;
-const EXPORT_HEIGHT = 630;
+type TemplatePreviewOptionProps = {
+  review: ReviewExportTemplateProps;
+  template: (typeof reviewExportTemplates)[number];
+  isSelected: boolean;
+  onSelect: (templateId: string) => void;
+};
 
-export function ShareReviewExportClient({ review, templateId }: { review: ReviewExportTemplateProps; templateId?: string }) {
-  const [selectedTemplateId, setSelectedTemplateId] = useState(templateId ?? reviewExportTemplates[0]?.id ?? 'minimal');
+function TemplatePreviewOption({ review, template, isSelected, onSelect }: TemplatePreviewOptionProps) {
   const previewContainerRef = useRef<HTMLDivElement>(null);
-  const [loading, setLoading] = useState(false);
   const [previewScale, setPreviewScale] = useState(1);
-  const selectedTemplate = reviewExportTemplates.find((template) => template.id === selectedTemplateId) ?? reviewExportTemplates[0];
+  const dimensions = getTemplateDimensions(template.meta.format);
 
   useEffect(() => {
     const node = previewContainerRef.current;
     if (!node) return;
 
+    // Каждая карточка сама считает scale от своей ширины, поэтому сетка может позже жить с разными форматами без отдельного preview-экрана.
     const updateScale = () => {
       const width = node.clientWidth;
-      const scale = Math.min(1, width / EXPORT_WIDTH);
+      const scale = Math.min(1, width / dimensions.width);
       setPreviewScale(scale);
     };
 
@@ -31,7 +44,120 @@ export function ShareReviewExportClient({ review, templateId }: { review: Review
     observer.observe(node);
 
     return () => observer.disconnect();
-  }, []);
+  }, [dimensions.width]);
+
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(template.id)}
+      aria-pressed={isSelected}
+      className={
+        'group w-full rounded-[30px] border bg-white p-3 text-left transition sm:p-4 ' +
+        (isSelected
+          ? 'border-slate-950 shadow-[0_20px_60px_rgba(15,23,42,0.12)] ring-2 ring-slate-950/10'
+          : 'border-slate-200 shadow-sm hover:-translate-y-0.5 hover:border-slate-400 hover:shadow-[0_20px_60px_rgba(15,23,42,0.08)]')
+      }
+    >
+      <div
+        ref={previewContainerRef}
+        className="relative w-full overflow-hidden rounded-[24px] border border-slate-200 bg-slate-100/50"
+        style={{ aspectRatio: `${dimensions.width} / ${dimensions.height}` }}
+      >
+        <div
+          className="pointer-events-none absolute left-0 top-0"
+          style={{
+            width: dimensions.width,
+            height: dimensions.height,
+            transform: `scale(${previewScale})`,
+            transformOrigin: 'top left',
+          }}
+        >
+          <ShareCardTemplate review={review} templateId={template.id} />
+        </div>
+      </div>
+
+      <div className="mt-4 flex items-start justify-between gap-4">
+        <div>
+          <p className="text-base font-semibold text-slate-950">{template.label}</p>
+          <p className="mt-1 text-sm leading-6 text-slate-600">{template.description}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-600">
+              {getTemplateFormatLabel(template.meta.format)}
+            </span>
+          </div>
+        </div>
+        <span
+          className={
+            'shrink-0 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] ' +
+            (isSelected ? 'bg-slate-950 text-white' : 'bg-slate-100 text-slate-600')
+          }
+        >
+          {isSelected ? 'Выбран' : 'Выбрать'}
+        </span>
+      </div>
+    </button>
+  );
+}
+
+type TemplateFilterGroupProps<T extends string> = {
+  title: string;
+  options: Array<TemplateFilterOption<T>>;
+  value: TemplateFilterValue<T>;
+  onChange: (value: TemplateFilterValue<T>) => void;
+};
+
+function TemplateFilterGroup<T extends string>({ title, options, value, onChange }: TemplateFilterGroupProps<T>) {
+  if (options.length <= 1) {
+    return null;
+  }
+
+  return (
+    <div className="space-y-3">
+      <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">{title}</p>
+      <div className="flex flex-wrap gap-2">
+        {options.map((option) => {
+          const isActive = option.value === value;
+
+          return (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => onChange(option.value)}
+              className={
+                'rounded-full px-4 py-2 text-sm font-semibold transition ' +
+                (isActive
+                  ? 'bg-slate-950 text-white'
+                  : 'border border-slate-200 bg-white text-slate-700 hover:border-slate-400 hover:text-slate-950')
+              }
+            >
+              {option.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export function ShareReviewExportClient({ review, templateId }: { review: ReviewExportTemplateProps; templateId?: string }) {
+  const [selectedTemplateId, setSelectedTemplateId] = useState(templateId ?? reviewExportTemplates[0]?.id ?? 'minimal');
+  const [loading, setLoading] = useState(false);
+  const [filters, setFilters] = useState(defaultTemplateFilters);
+  const formatOptions = getTemplateFormatOptions(reviewExportTemplates);
+  const templatesForFormat = filterTemplates(reviewExportTemplates, {
+    format: filters.format,
+    category: 'all',
+  });
+  const categoryOptions = getTemplateCategoryOptions(templatesForFormat);
+  const effectiveCategory = categoryOptions.some((option) => option.value === filters.category) ? filters.category : 'all';
+  const filteredTemplates = filterTemplates(reviewExportTemplates, {
+    ...filters,
+    category: effectiveCategory,
+  });
+  const effectiveSelectedTemplateId = filteredTemplates.some((template) => template.id === selectedTemplateId)
+    ? selectedTemplateId
+    : filteredTemplates[0]?.id ?? reviewExportTemplates[0]?.id ?? 'minimal';
+  const selectedTemplate = filteredTemplates.find((template) => template.id === effectiveSelectedTemplateId) ?? filteredTemplates[0] ?? reviewExportTemplates[0];
 
   const saveWithDownload = (file: File) => {
     const link = document.createElement('a');
@@ -48,6 +174,7 @@ export function ShareReviewExportClient({ review, templateId }: { review: Review
       return false;
     }
 
+    // На desktop дефолтный UX — скачать файл, а нативный share оставляем только для мобильных устройств.
     const navigatorWithUserAgentData = navigator as Navigator & {
       userAgentData?: {
         mobile?: boolean;
@@ -98,7 +225,7 @@ export function ShareReviewExportClient({ review, templateId }: { review: Review
         },
         body: JSON.stringify({
           ...review,
-          templateId: selectedTemplateId,
+          templateId: effectiveSelectedTemplateId,
           format,
         }),
       });
@@ -125,99 +252,88 @@ export function ShareReviewExportClient({ review, templateId }: { review: Review
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex w-full items-center justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">Экспорт</p>
-          <h2 className="mt-2 text-2xl font-semibold text-slate-950">Генерация изображения отзыва</h2>
-          <p className="mt-2 text-sm text-slate-600">
-            Выберите шаблон и посмотрите предварительный просмотр прямо в новой системе.
-          </p>
+    <div className="space-y-8">
+      <section className="rounded-[32px] border border-slate-200 bg-white px-6 py-7 shadow-sm sm:px-8 sm:py-9">
+        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">Шаблоны</p>
+        <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+          Выберите, как будет выглядеть ваш отзыв
+        </h2>
+        <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
+          Нажмите на понравившуюся карточку. Ниже вы сможете сразу скачать выбранный вариант в PNG или JPEG.
+        </p>
+
+        <div className="mt-6 space-y-4 border-t border-slate-200 pt-5">
+          <TemplateFilterGroup
+            title="Формат"
+            options={formatOptions}
+            value={filters.format}
+            onChange={(format) => {
+              setFilters({
+                format,
+                category: 'all',
+              });
+            }}
+          />
+          <TemplateFilterGroup
+            title="Стиль"
+            options={categoryOptions}
+            value={filters.category}
+            onChange={(category) => {
+              setFilters((currentFilters) => ({
+                ...currentFilters,
+                category,
+              }));
+            }}
+          />
         </div>
-      </div>
+      </section>
 
-      <div className="space-y-6">
-        <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">Шаблоны</p>
-          <div className="mt-4 grid gap-3">
-            {reviewExportTemplates.map((template) => (
-              <button
-                key={template.id}
-                type="button"
-                onClick={() => setSelectedTemplateId(template.id)}
-                className={
-                  'w-full rounded-3xl px-4 py-4 text-left transition ' +
-                  (template.id === selectedTemplateId
-                    ? 'border border-slate-900 bg-slate-950 text-white'
-                    : 'border border-slate-200 bg-white text-slate-950 hover:border-slate-900')
-                }
-              >
-                <p className="font-semibold">{template.label}</p>
-                <p className="mt-2 text-sm text-slate-600">{template.description}</p>
-              </button>
-            ))}
+      <section className="grid gap-5 lg:grid-cols-2">
+        {filteredTemplates.length ? (
+          filteredTemplates.map((template) => (
+            <TemplatePreviewOption
+              key={template.id}
+              review={review}
+              template={template}
+              isSelected={template.id === effectiveSelectedTemplateId}
+              onSelect={setSelectedTemplateId}
+            />
+          ))
+        ) : (
+          <div className="rounded-[28px] border border-dashed border-slate-300 bg-white p-8 text-sm text-slate-600 lg:col-span-2">
+            По выбранным фильтрам шаблоны пока не найдены. Сбросьте стиль или формат и попробуйте снова.
           </div>
-        </section>
+        )}
+      </section>
 
-        <section className="space-y-6">
-          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-            <div className="mb-4 flex items-center justify-between gap-4">
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">Предпросмотр</p>
-                <p className="mt-2 text-sm text-slate-600">Текущий шаблон: {selectedTemplate.label}</p>
-              </div>
-              <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-700">
-                1200×630
-              </span>
-            </div>
-            <div ref={previewContainerRef} className="flex w-full justify-center overflow-hidden rounded-[28px] border border-slate-200 bg-slate-100/40">
-              <div className="w-full overflow-hidden">
-                <div
-                  className="mx-auto overflow-hidden"
-                  style={{
-                    width: Math.max(0, Math.floor(EXPORT_WIDTH * previewScale)),
-                    height: Math.max(0, Math.floor(EXPORT_HEIGHT * previewScale)),
-                  }}
-                >
-                  <div
-                    className="relative"
-                    style={{
-                      width: EXPORT_WIDTH,
-                      height: EXPORT_HEIGHT,
-                      transform: `scale(${previewScale})`,
-                      transformOrigin: 'top left',
-                    }}
-                  >
-                    <ShareCardTemplate review={review} templateId={selectedTemplateId} />
-                  </div>
-                </div>
-              </div>
-            </div>
+      <section className="sticky bottom-4 z-10 rounded-[28px] border border-slate-200 bg-white/95 p-4 shadow-[0_24px_80px_rgba(15,23,42,0.12)] backdrop-blur sm:p-5">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">Выбранный шаблон</p>
+            <p className="mt-2 text-xl font-semibold text-slate-950">{selectedTemplate.label}</p>
+            <p className="mt-1 text-sm text-slate-600">{loading ? 'Генерируем изображение...' : 'Формат экспорта: 1200×630'}</p>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2 lg:min-w-[320px]">
             <button
               type="button"
               onClick={() => downloadImage('png')}
               disabled={loading}
-              className="rounded-3xl border border-slate-200 bg-slate-950 px-3 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+              className="rounded-3xl border border-slate-200 bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              Скачать PNG
+              {loading ? 'Генерация PNG...' : 'Скачать PNG'}
             </button>
             <button
               type="button"
               onClick={() => downloadImage('jpeg')}
               disabled={loading}
-              className="rounded-3xl border border-slate-200 bg-slate-950 px-3 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+              className="rounded-3xl border border-slate-200 bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              Скачать JPEG
+              {loading ? 'Генерация JPEG...' : 'Скачать JPEG'}
             </button>
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
-              {loading ? 'Генерация...' : 'Размер: 1200×630'}
-            </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </div>
   );
 }

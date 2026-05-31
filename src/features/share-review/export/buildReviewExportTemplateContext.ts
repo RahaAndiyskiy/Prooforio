@@ -3,6 +3,7 @@ import type { ReviewExportTemplateContext, ReviewExportTemplateProps } from './t
 export function buildReviewExportTemplateContext(review: ReviewExportTemplateProps): ReviewExportTemplateContext {
   return {
     review,
+    // Нормализованный контекст отделяет данные от визуальной композиции и позволяет добавлять новые шаблоны без переписывания payload.
     content: {
       brand: {
         label: 'Prooforio',

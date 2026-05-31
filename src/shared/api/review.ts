@@ -1,7 +1,16 @@
 import { getSupabaseClient } from '@/shared/lib/supabase';
 import type { Review } from '@/entities/review/types';
 
-function mapReview(row: any): Review {
+type ReviewRow = {
+  id: string;
+  profile_id: string;
+  author: string;
+  text: string;
+  rating: number | string;
+  created_at: string;
+};
+
+function mapReview(row: ReviewRow): Review {
   return {
     id: row.id,
     profileId: row.profile_id,
@@ -28,7 +37,7 @@ export async function getReviewsByProfileId(profileId: string): Promise<Review[]
     return [];
   }
 
-  return data.map(mapReview);
+  return (data as ReviewRow[]).map(mapReview);
 }
 
 export async function getReviewById(reviewId: string): Promise<Review | null> {
@@ -47,7 +56,7 @@ export async function getReviewById(reviewId: string): Promise<Review | null> {
     return null;
   }
 
-  return mapReview(data);
+  return mapReview(data as ReviewRow);
 }
 
 export async function createReview({
@@ -76,5 +85,5 @@ export async function createReview({
     return null;
   }
 
-  return mapReview(data);
+  return mapReview(data as ReviewRow);
 }
