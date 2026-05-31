@@ -2,13 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { reviewExportTemplates } from '../export/templates';
+import type { ReviewExportTemplateProps } from '../export/types';
 import { ShareCardTemplate } from './ShareCardTemplate';
-import type { ReviewTemplateProps } from '../templates/types';
 
 const EXPORT_WIDTH = 1200;
 const EXPORT_HEIGHT = 630;
 
-export function ShareReviewExportClient({ review, templateId }: { review: ReviewTemplateProps; templateId?: string }) {
+export function ShareReviewExportClient({ review, templateId }: { review: ReviewExportTemplateProps; templateId?: string }) {
   const [selectedTemplateId, setSelectedTemplateId] = useState(templateId ?? reviewExportTemplates[0]?.id ?? 'minimal');
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
@@ -43,8 +43,26 @@ export function ShareReviewExportClient({ review, templateId }: { review: Review
     URL.revokeObjectURL(link.href);
   };
 
+  const shouldUseNativeShare = () => {
+    if (typeof navigator === 'undefined') {
+      return false;
+    }
+
+    const navigatorWithUserAgentData = navigator as Navigator & {
+      userAgentData?: {
+        mobile?: boolean;
+      };
+    };
+
+    if (typeof navigatorWithUserAgentData.userAgentData?.mobile === 'boolean') {
+      return navigatorWithUserAgentData.userAgentData.mobile;
+    }
+
+    return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  };
+
   const saveWithShare = async (file: File) => {
-    if (typeof navigator === 'undefined' || typeof navigator.share !== 'function') {
+    if (typeof navigator === 'undefined' || typeof navigator.share !== 'function' || !shouldUseNativeShare()) {
       return false;
     }
 
