@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { toJpeg, toPng } from 'html-to-image';
-import { reviewTemplates } from '../templates';
+import { reviewExportTemplates } from '../export/templates';
 import { ShareCardTemplate } from './ShareCardTemplate';
 import type { ReviewTemplateProps } from '../templates/types';
 
@@ -10,12 +9,11 @@ const EXPORT_WIDTH = 1200;
 const EXPORT_HEIGHT = 630;
 
 export function ShareReviewExportClient({ review, templateId }: { review: ReviewTemplateProps; templateId?: string }) {
-  const [selectedTemplateId, setSelectedTemplateId] = useState(templateId ?? reviewTemplates[0]?.id ?? 'minimal');
-  const exportRef = useRef<HTMLDivElement>(null);
+  const [selectedTemplateId, setSelectedTemplateId] = useState(templateId ?? reviewExportTemplates[0]?.id ?? 'minimal');
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
   const [previewScale, setPreviewScale] = useState(1);
-  const selectedTemplate = reviewTemplates.find((template) => template.id === selectedTemplateId) ?? reviewTemplates[0];
+  const selectedTemplate = reviewExportTemplates.find((template) => template.id === selectedTemplateId) ?? reviewExportTemplates[0];
 
   useEffect(() => {
     const node = previewContainerRef.current;
@@ -36,21 +34,33 @@ export function ShareReviewExportClient({ review, templateId }: { review: Review
   }, []);
 
   const downloadImage = async (format: 'png' | 'jpeg') => {
-    if (!exportRef.current) return;
     setLoading(true);
 
     try {
-      const dataUrl =
-        format === 'png'
-          ? await toPng(exportRef.current, { cacheBust: true, width: 1200, height: 630, backgroundColor: '#f8fafc' })
-          : await toJpeg(exportRef.current, { cacheBust: true, quality: 0.95, width: 1200, height: 630, backgroundColor: '#f8fafc' });
+      const response = await fetch('/api/share/review-image', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...review,
+          templateId: selectedTemplateId,
+          format,
+        }),
+      });
 
+      if (!response.ok) {
+        throw new Error('Export failed');
+      }
+
+      const blob = await response.blob();
       const link = document.createElement('a');
-      link.href = dataUrl;
+      link.href = URL.createObjectURL(blob);
       link.download = `prooforio-review.${format === 'png' ? 'png' : 'jpg'}`;
       document.body.appendChild(link);
       link.click();
       link.remove();
+      URL.revokeObjectURL(link.href);
     } catch (error) {
       console.error('Export error:', error);
       window.alert('Не удалось сохранить изображение. Попробуйте ещё раз.');
@@ -75,7 +85,7 @@ export function ShareReviewExportClient({ review, templateId }: { review: Review
         <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">Шаблоны</p>
           <div className="mt-4 grid gap-3">
-            {reviewTemplates.map((template) => (
+            {reviewExportTemplates.map((template) => (
               <button
                 key={template.id}
                 type="button"
@@ -123,7 +133,7 @@ export function ShareReviewExportClient({ review, templateId }: { review: Review
                       transformOrigin: 'top left',
                     }}
                   >
-                    <ShareCardTemplate ref={exportRef} review={review} templateId={selectedTemplateId} />
+                    <ShareCardTemplate review={review} templateId={selectedTemplateId} />
                   </div>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { reviewTemplates } from '../templates';
+import { reviewExportTemplates } from '../export/templates';
 import { ShareTemplateFrame } from './ShareTemplateFrame';
 import type { ReviewTemplateProps } from '../templates/types';
 
@@ -10,7 +10,7 @@ type ShareCardTemplateProps = {
 
 export const ShareCardTemplate = forwardRef<HTMLDivElement, ShareCardTemplateProps>(
   ({ review, templateId }, ref) => {
-    const selectedTemplate = reviewTemplates.find((template) => template.id === templateId) ?? reviewTemplates[0];
+    const selectedTemplate = reviewExportTemplates.find((template) => template.id === templateId) ?? reviewExportTemplates[0];
     const SelectedTemplate = selectedTemplate.Component;
 
     return (

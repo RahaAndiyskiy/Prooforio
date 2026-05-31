@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.2.8",
+    "@resvg/resvg-js": "^2.6.2",
     "@supabase/supabase-js": "^2.106.2",
-    "html-to-image": "^1.11.13",
     "next": "16.2.6",
     "react": "19.2.6",
-    "react-dom": "19.2.6"
+    "react-dom": "19.2.6",
+    "satori": "^0.26.0"
   },
   "devDependencies": {
     "@types/node": "20.14.2",
