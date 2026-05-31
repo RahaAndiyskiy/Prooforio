@@ -49,8 +49,6 @@ export function ShareReviewExportClient({ review, templateId }: { review: Review
     }
 
     const sharePayload = {
-      title: 'Экспорт отзыва',
-      text: 'Сохраните или отправьте изображение отзыва.',
       files: [file],
     };
 
