@@ -30,6 +30,7 @@ function PresetPreviewOption({ review, preset, isSelected, onSelect }: PresetPre
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const [previewScale, setPreviewScale] = useState(1);
   const dimensions = getPresetDimensions(preset.meta.format);
+  const ariaLabel = `${preset.label} · ${getPresetFormatLabel(preset.meta.format)}`;
 
   useEffect(() => {
     const node = previewContainerRef.current;
@@ -56,16 +57,17 @@ function PresetPreviewOption({ review, preset, isSelected, onSelect }: PresetPre
         type="button"
         onClick={() => onSelect(preset.id)}
         aria-pressed={isSelected}
+        aria-label={ariaLabel}
         className={
-          'group h-fit w-full self-start rounded-[30px] border bg-white p-3 text-left transition sm:p-4 ' +
+          'group block h-fit w-full self-start bg-transparent p-0 text-left transition-transform transition-shadow duration-300 ' +
           (isSelected
-            ? 'border-slate-950 shadow-[0_20px_60px_rgba(15,23,42,0.12)] ring-2 ring-slate-950/10'
-            : 'border-slate-200 shadow-sm hover:-translate-y-0.5 hover:border-slate-400 hover:shadow-[0_20px_60px_rgba(15,23,42,0.08)]')
+            ? 'scale-[1.028] shadow-[0_42px_120px_rgba(15,23,42,0.34)]'
+            : 'hover:-translate-y-0.5 hover:shadow-[0_18px_45px_rgba(15,23,42,0.12)]')
         }
       >
         <div
           ref={previewContainerRef}
-          className="relative w-full overflow-hidden rounded-[24px] border border-slate-200 bg-slate-100/50"
+          className="relative w-full overflow-hidden"
           style={{ aspectRatio: `${dimensions.width} / ${dimensions.height}` }}
         >
           <div
@@ -79,26 +81,6 @@ function PresetPreviewOption({ review, preset, isSelected, onSelect }: PresetPre
           >
             <ShareCardPreset review={review} presetId={preset.id} />
           </div>
-        </div>
-
-        <div className="mt-4 flex items-start justify-between gap-4">
-          <div>
-            <p className="text-base font-semibold text-slate-950">{preset.label}</p>
-            <p className="mt-1 text-sm leading-6 text-slate-600">{preset.description}</p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-600">
-                {getPresetFormatLabel(preset.meta.format)}
-              </span>
-            </div>
-          </div>
-          <span
-            className={
-              'shrink-0 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] ' +
-              (isSelected ? 'bg-slate-950 text-white' : 'bg-slate-100 text-slate-600')
-            }
-          >
-            {isSelected ? 'Выбран' : 'Выбрать'}
-          </span>
         </div>
       </button>
     </div>
@@ -314,8 +296,8 @@ export function ShareReviewExportClient({ review, presetId }: { review: ReviewEx
         </div>
       )}
 
-      <section className="sticky bottom-4 z-10 rounded-[28px] border border-slate-200 bg-white/95 p-4 shadow-[0_24px_80px_rgba(15,23,42,0.12)] backdrop-blur sm:p-5">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <section className="sticky bottom-4 z-10 rounded-[24px] border border-slate-200/80 bg-white/92 px-4 py-3 shadow-[0_22px_70px_rgba(15,23,42,0.1)] backdrop-blur-sm transition-all duration-300 sm:px-5 sm:py-4 lg:mx-auto lg:max-w-[680px] lg:bg-white/52 lg:shadow-[0_16px_44px_rgba(15,23,42,0.08)] lg:backdrop-blur-xl lg:hover:border-slate-300/90 lg:hover:bg-white/66 lg:hover:shadow-[0_24px_70px_rgba(15,23,42,0.14)]">
+        <div className="flex flex-col gap-3 lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">Выбранный шаблон</p>
             <p className="mt-2 text-xl font-semibold text-slate-950">{selectedPreset.label}</p>
@@ -326,7 +308,7 @@ export function ShareReviewExportClient({ review, presetId }: { review: ReviewEx
             </p>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 lg:min-w-[320px]">
+          <div className="grid gap-3 sm:grid-cols-2 lg:min-w-[260px]">
             <button
               type="button"
               onClick={() => downloadImage('png')}
