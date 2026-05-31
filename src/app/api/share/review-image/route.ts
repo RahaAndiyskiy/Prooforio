@@ -3,6 +3,8 @@ import sharp from 'sharp';
 import { generateReviewImage } from '@/features/share-review/export/generateReviewImage';
 import type { ReviewExportRequest } from '@/features/share-review/export/types';
 
+export const runtime = 'nodejs';
+
 export async function POST(request: Request) {
   const body = (await request.json()) as ReviewExportRequest;
 

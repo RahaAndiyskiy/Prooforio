@@ -1,11 +1,12 @@
 import fs from 'fs';
+import { createRequire } from 'module';
 import path from 'path';
 import satori from 'satori';
 import { reviewExportTemplates } from './templates';
 import type { ReviewExportTemplateProps } from './types';
 
-const dynamicRequire = eval('require');
-const { Resvg } = dynamicRequire('@resvg/resvg-js');
+const require = createRequire(import.meta.url);
+const { Resvg } = require('@resvg/resvg-js');
 
 const EXPORT_WIDTH = 1200;
 const EXPORT_HEIGHT = 630;
