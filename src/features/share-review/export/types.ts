@@ -8,11 +8,38 @@ export type ReviewExportTemplateProps = {
   profileName: string;
 };
 
+export type ReviewExportTemplateContent = {
+  brand: {
+    label: string;
+  };
+  header: {
+    title: string;
+    badge: string;
+  };
+  rating: {
+    value: string;
+    icon: string;
+  };
+  body: {
+    quote: string;
+  };
+  footer: {
+    author: string;
+    meta: string;
+    date: string;
+  };
+};
+
+export type ReviewExportTemplateContext = {
+  review: ReviewExportTemplateProps;
+  content: ReviewExportTemplateContent;
+};
+
 export type ReviewExportTemplateDefinition = {
   id: string;
   label: string;
   description: string;
-  Component: (props: ReviewExportTemplateProps) => ReactNode;
+  Component: (context: ReviewExportTemplateContext) => ReactNode;
 };
 
 export type ReviewExportRequest = ReviewExportTemplateProps & {

@@ -115,8 +115,8 @@ export function ShareReviewExportClient({ review, templateId }: { review: Review
                 1200×630
               </span>
             </div>
-            <div className="relative overflow-hidden bg-slate-50 shadow-[0_35px_80px_rgba(15,23,42,0.12)]">
-              <div ref={previewContainerRef} className="mx-auto w-full max-w-full overflow-hidden px-2 py-4">
+            <div ref={previewContainerRef} className="flex w-full justify-center overflow-hidden rounded-[28px] border border-slate-200 bg-slate-100/40">
+              <div className="w-full overflow-hidden">
                 <div
                   className="mx-auto overflow-hidden"
                   style={{
@@ -145,7 +145,7 @@ export function ShareReviewExportClient({ review, templateId }: { review: Review
               type="button"
               onClick={() => downloadImage('png')}
               disabled={loading}
-              className="rounded-3xl border border-slate-200 bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+              className="rounded-3xl border border-slate-200 bg-slate-950 px-3 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
             >
               Скачать PNG
             </button>
@@ -153,7 +153,7 @@ export function ShareReviewExportClient({ review, templateId }: { review: Review
               type="button"
               onClick={() => downloadImage('jpeg')}
               disabled={loading}
-              className="rounded-3xl border border-slate-200 bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+              className="rounded-3xl border border-slate-200 bg-slate-950 px-3 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
             >
               Скачать JPEG
             </button>

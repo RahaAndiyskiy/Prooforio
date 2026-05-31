@@ -1,10 +1,11 @@
 import { forwardRef } from 'react';
+import { buildReviewExportTemplateContext } from '../export/buildReviewExportTemplateContext';
 import { reviewExportTemplates } from '../export/templates';
 import { ShareTemplateFrame } from './ShareTemplateFrame';
-import type { ReviewTemplateProps } from '../templates/types';
+import type { ReviewExportTemplateProps } from '../export/types';
 
 type ShareCardTemplateProps = {
-  review: ReviewTemplateProps;
+  review: ReviewExportTemplateProps;
   templateId?: string;
 };
 
@@ -15,7 +16,7 @@ export const ShareCardTemplate = forwardRef<HTMLDivElement, ShareCardTemplatePro
 
     return (
       <ShareTemplateFrame ref={ref}>
-        <SelectedTemplate {...review} />
+        <SelectedTemplate {...buildReviewExportTemplateContext(review)} />
       </ShareTemplateFrame>
     );
   }

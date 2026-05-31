@@ -1,7 +1,1 @@
-export type ReviewTemplateProps = {
-  author: string;
-  text: string;
-  rating: number;
-  createdAt: string;
-  profileName: string;
-};
+export type { ReviewExportTemplateProps as ReviewTemplateProps } from '../export/types';

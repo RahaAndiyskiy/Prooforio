@@ -2,6 +2,7 @@ import fs from 'fs';
 import { createRequire } from 'module';
 import path from 'path';
 import satori from 'satori';
+import { buildReviewExportTemplateContext } from './buildReviewExportTemplateContext';
 import { reviewExportTemplates } from './templates';
 import type { ReviewExportTemplateProps } from './types';
 
@@ -17,7 +18,7 @@ const EXPORT_FONT_BOLD = fs.readFileSync(path.join(process.cwd(), 'public', 'fon
 
 export async function generateReviewImage(review: ReviewExportTemplateProps, templateId: string) {
   const selectedTemplate = reviewExportTemplates.find((template) => template.id === templateId) ?? reviewExportTemplates[0];
-  const element = selectedTemplate.Component(review);
+  const element = selectedTemplate.Component(buildReviewExportTemplateContext(review));
 
   const svg = await satori(element, {
     width: EXPORT_WIDTH,
