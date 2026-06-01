@@ -71,6 +71,7 @@ export async function generateReviewImage(review: ReviewExportTemplateProps, pre
   const selectedPreset = getReviewExportPresetById(presetId);
   const renderContext = buildReviewExportPresetRenderContext(review, selectedPreset);
   renderContext.content.footer.avatarSrc = getPublicAssetDataUri(renderContext.content.footer.avatarSrc);
+  console.log('generateReviewImage avatarSrc', renderContext.content.footer.avatarSrc.slice(0,100));
   const element = reviewExportPresetRenderer(renderContext);
   const exportFonts = getReviewExportFontFacesForPack(selectedPreset.meta.fontPackId);
 
