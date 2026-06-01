@@ -35,7 +35,7 @@ export function ReviewCard({ review }: { review: Review }) {
             <p className="mt-2 text-xs uppercase tracking-[0.2em] text-slate-500">{formatReviewDate(review.createdAt)}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <RatingDisplay rating={review.rating} />
           <Link
             href={`/share/review/${encodeURIComponent(review.id)}?author=${encodeURIComponent(review.author)}&text=${encodeURIComponent(review.text)}&rating=${encodeURIComponent(String(review.rating))}&createdAt=${encodeURIComponent(review.createdAt)}&profileName=${encodeURIComponent(review.author)}&reviewerGender=${encodeURIComponent(review.reviewerGender ?? 'male')}`}

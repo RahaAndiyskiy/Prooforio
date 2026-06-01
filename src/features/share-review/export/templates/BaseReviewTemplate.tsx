@@ -1,7 +1,7 @@
 import { getReviewExportFormatPreset } from '../formatPresets';
 import { getReviewExportLayoutPreset } from '../layoutPresets';
 import { getReviewExportFontPack } from '../fontPacks';
-import { AvatarSpotlightTemplate } from './AvatarSpotlightTemplate';
+import { CreamPlumTemplate } from './cream-plum';
 import {
   TemplateCanvas,
   TemplateFooter,
@@ -21,7 +21,7 @@ export function BaseReviewTemplate(context: ReviewExportPresetRenderContext) {
   const footerSecondary = layout.footerSecondaryField === 'date' ? content.footer.date : content.footer.meta;
 
   if (preset.meta.layoutId === 'avatar-spotlight') {
-    return <AvatarSpotlightTemplate {...context} />;
+    return <CreamPlumTemplate {...context} />;
   }
 
   return (
