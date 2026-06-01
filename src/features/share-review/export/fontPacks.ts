@@ -149,6 +149,25 @@ const reviewExportFontFamilies: Record<ReviewExportFontFamilyId, ReviewExportFon
       },
     ],
   },
+  'playfair-display': {
+    id: 'playfair-display',
+    family: 'Prooforio Playfair Display',
+    cssFaces: [
+      {
+        publicPath: '/fonts/playfair-display/PlayfairDisplay-Regular.ttf',
+        weight: '400',
+        style: 'normal',
+      },
+    ],
+    exportFaces: [
+      {
+        filePath: 'public/fonts/playfair-display/PlayfairDisplay-Regular.ttf',
+        publicPath: '/fonts/playfair-display/PlayfairDisplay-Regular.ttf',
+        weight: 400,
+        style: 'normal',
+      },
+    ],
+  },
 };
 
 const reviewExportFontPacks: Record<ReviewExportFontPackId, ReviewExportFontPackDefinition> = {
@@ -179,6 +198,13 @@ const reviewExportFontPacks: Record<ReviewExportFontPackId, ReviewExportFontPack
     description: 'Контрастный editorial pack: PT Serif для титула и Inter для текста.',
     displayFamilyId: 'pt-serif',
     bodyFamilyId: 'inter',
+  },
+  'playfair-display': {
+    id: 'playfair-display',
+    label: 'Playfair Display',
+    description: 'Классический serif pack на базе Playfair Display.',
+    displayFamilyId: 'playfair-display',
+    bodyFamilyId: 'playfair-display',
   },
 };
 

@@ -66,7 +66,7 @@ const presetDefinitions: ReviewExportPresetDefinition[] = [
       format: 'square',
       styleId: 'noise-greige',
       layoutId: 'avatar-spotlight',
-      fontPackId: 'editorial-serif',
+      fontPackId: 'playfair-display',
       tags: ['light', 'editorial', 'avatar', 'square', 'figma'],
       featured: true,
       order: 27,

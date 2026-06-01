@@ -40,9 +40,9 @@ export type ReviewExportStyleId = 'clean' | 'bold' | 'cream-plum' | 'noise-greig
 
 export type ReviewExportLayoutId = 'hero-top' | 'split-header' | 'avatar-spotlight';
 
-export type ReviewExportFontFamilyId = 'noto-sans' | 'inter' | 'ibm-plex-sans' | 'pt-serif';
+export type ReviewExportFontFamilyId = 'noto-sans' | 'inter' | 'ibm-plex-sans' | 'pt-serif' | 'playfair-display';
 
-export type ReviewExportFontPackId = 'neutral-sans' | 'clean-sans' | 'tech-sans' | 'editorial-serif';
+export type ReviewExportFontPackId = 'neutral-sans' | 'clean-sans' | 'tech-sans' | 'editorial-serif' | 'playfair-display';
 
 export type ReviewExportPresetMeta = {
   format: ReviewExportTemplateFormat;
