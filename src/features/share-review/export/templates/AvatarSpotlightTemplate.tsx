@@ -193,7 +193,6 @@ export function AvatarSpotlightTemplate({ content, dimensions, preset, review }:
         >
           <span
             style={{
-              display: 'inline-block',
               transform: `translateX(${watermarkOpticalOffset}px)`,
             }}
           >
