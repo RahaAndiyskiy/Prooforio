@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { ReviewerGender } from '@/entities/review/avatar';
 import { Button } from '@/shared/ui/button';
 import { Card } from '@/shared/ui/card';
 import { Input } from '@/shared/ui/input';
@@ -13,6 +14,7 @@ export function ReviewForm({ profileId, reviewLink }: { profileId: string; revie
   const [name, setName] = useState('');
   const [rating, setRating] = useState(5);
   const [text, setText] = useState('');
+  const [reviewerGender, setReviewerGender] = useState<ReviewerGender>('male');
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -25,7 +27,7 @@ export function ReviewForm({ profileId, reviewLink }: { profileId: string; revie
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ profileId, author: name, text, rating }),
+      body: JSON.stringify({ profileId, author: name, text, rating, reviewerGender }),
     });
 
     setIsSubmitting(false);
@@ -53,6 +55,7 @@ export function ReviewForm({ profileId, reviewLink }: { profileId: string; revie
     setName('');
     setRating(5);
     setText('');
+    setReviewerGender('male');
     setError(null);
   };
 
@@ -92,6 +95,40 @@ export function ReviewForm({ profileId, reviewLink }: { profileId: string; revie
             placeholder="Ваше имя"
             required
           />
+        </div>
+        <div>
+          <p className="mb-2 block text-sm font-medium text-slate-700">Фото-заглушка</p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {[
+              { label: 'Муж', value: 'male' as const },
+              { label: 'Жен', value: 'female' as const },
+            ].map((option) => {
+              const isActive = reviewerGender === option.value;
+
+              return (
+                <label
+                  key={option.value}
+                  className={
+                    'flex cursor-pointer items-center justify-between rounded-2xl border px-4 py-3 text-sm font-semibold transition ' +
+                    (isActive
+                      ? 'border-slate-950 bg-slate-950 text-white'
+                      : 'border-slate-200 bg-white text-slate-700 hover:border-slate-400 hover:text-slate-950')
+                  }
+                >
+                  <span>{option.label}</span>
+                  <span aria-hidden="true">{isActive ? '✓' : ''}</span>
+                  <input
+                    type="radio"
+                    name="reviewerGender"
+                    value={option.value}
+                    checked={isActive}
+                    onChange={() => setReviewerGender(option.value)}
+                    className="sr-only"
+                  />
+                </label>
+              );
+            })}
+          </div>
         </div>
         <div>
           <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="text">

@@ -1,3 +1,4 @@
+import { isReviewerGender, type ReviewerGender } from '@/entities/review/avatar';
 import { getSupabaseClient } from '@/shared/lib/supabase';
 import type { Review } from '@/entities/review/types';
 
@@ -8,6 +9,7 @@ type ReviewRow = {
   text: string;
   rating: number | string;
   created_at: string;
+  reviewer_gender?: string | null;
 };
 
 function mapReview(row: ReviewRow): Review {
@@ -18,6 +20,7 @@ function mapReview(row: ReviewRow): Review {
     text: row.text,
     rating: Number(row.rating),
     createdAt: row.created_at,
+    reviewerGender: isReviewerGender(row.reviewer_gender) ? row.reviewer_gender : undefined,
   };
 }
 
@@ -29,7 +32,7 @@ export async function getReviewsByProfileId(profileId: string): Promise<Review[]
 
   const { data, error } = await supabase
     .from('reviews')
-    .select('id, profile_id, author, text, rating, created_at')
+    .select('id, profile_id, author, text, rating, created_at, reviewer_gender')
     .eq('profile_id', profileId)
     .order('created_at', { ascending: false });
 
@@ -48,7 +51,7 @@ export async function getReviewById(reviewId: string): Promise<Review | null> {
 
   const { data, error } = await supabase
     .from('reviews')
-    .select('id, profile_id, author, text, rating, created_at')
+    .select('id, profile_id, author, text, rating, created_at, reviewer_gender')
     .eq('id', reviewId)
     .maybeSingle();
 
@@ -64,11 +67,13 @@ export async function createReview({
   author,
   text,
   rating,
+  reviewerGender,
 }: {
   profileId: string;
   author: string;
   text: string;
   rating: number;
+  reviewerGender: ReviewerGender;
 }): Promise<Review | null> {
   const supabase = getSupabaseClient();
   if (!supabase) {
@@ -77,8 +82,8 @@ export async function createReview({
 
   const { data, error } = await supabase
     .from('reviews')
-    .insert({ profile_id: profileId, author, text, rating })
-    .select('id, profile_id, author, text, rating, created_at')
+    .insert({ profile_id: profileId, author, text, rating, reviewer_gender: reviewerGender })
+    .select('id, profile_id, author, text, rating, created_at, reviewer_gender')
     .single();
 
   if (error || !data) {

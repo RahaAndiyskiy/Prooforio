@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { isReviewerGender } from '@/entities/review/avatar';
 import { createReview } from '@/shared/api/review';
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { profileId, author, text, rating } = body;
+  const { profileId, author, text, rating, reviewerGender } = body;
 
-  if (!profileId || !author || !text || !rating) {
+  if (!profileId || !author || !text || !rating || !isReviewerGender(reviewerGender)) {
     return NextResponse.json({ error: 'Недостаточно данных для отзыва' }, { status: 400 });
   }
 
@@ -14,6 +15,7 @@ export async function POST(request: NextRequest) {
     author,
     text,
     rating: Number(rating),
+    reviewerGender,
   });
 
   if (!review) {

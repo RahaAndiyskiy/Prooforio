@@ -4,8 +4,14 @@ import type { ReviewExportStyleId } from './types';
 export type ReviewExportStyleTokens = {
   canvasBackground: string;
   canvasForeground: string;
+  cardBackground?: string;
+  cardShadow?: string;
   brandColor: string;
   brandLetterSpacing: CSSProperties['letterSpacing'];
+  brandOpticalOffsetX?: number;
+  brandBlur?: number;
+  brandOpacity?: number;
+  brandFontSize?: number;
   titleColor: string;
   titleMarginTop: number;
   titleSize: number;
@@ -69,6 +75,33 @@ export const reviewExportStyleTokens: Record<ReviewExportStyleId, ReviewExportSt
     footerAccentColor: '#ffffff',
     footerBorderTop: '1px solid rgba(148,163,184,0.3)',
     footerMetaColor: '#94a3b8',
+  },
+  'cream-plum': {
+    canvasBackground: '#ffffff',
+    canvasForeground: '#381932',
+    cardBackground: '#FFF3E6',
+    cardShadow: '0 0 24px 16px rgba(0,0,0,0.16)',
+    brandColor: '#6f5763',
+    brandLetterSpacing: '0.72em',
+    brandOpticalOffsetX: 24,
+    brandBlur: 10,
+    brandOpacity: 0.42,
+    brandFontSize: 100,
+    titleColor: '#381932',
+    titleMarginTop: 0,
+    titleSize: 75,
+    titleLineHeight: 1,
+    badgeBackground: 'transparent',
+    badgeColor: '#381932',
+    badgeFontSize: 0,
+    badgeLetterSpacing: '0',
+    ratingBackground: 'transparent',
+    ratingColor: '#FF9494',
+    quoteColor: '#381932',
+    quoteMaxWidth: 760,
+    footerColor: '#381932',
+    footerAccentColor: '#381932',
+    footerMetaColor: '#381932',
   },
 };
 

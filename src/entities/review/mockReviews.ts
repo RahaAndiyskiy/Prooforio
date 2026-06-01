@@ -8,6 +8,7 @@ export const demoReviews: Review[] = [
     text: 'Prooforio made it simple to collect feedback from our early users.',
     rating: 5,
     createdAt: '2026-05-28',
+    reviewerGender: 'female',
   },
   {
     id: 'review_002',
@@ -16,5 +17,6 @@ export const demoReviews: Review[] = [
     text: 'The review link is a great way to gather honest responses quickly.',
     rating: 4,
     createdAt: '2026-05-27',
+    reviewerGender: 'male',
   },
 ];

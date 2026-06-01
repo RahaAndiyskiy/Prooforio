@@ -1,5 +1,7 @@
 import { getReviewExportFormatPreset } from '../formatPresets';
 import { getReviewExportLayoutPreset } from '../layoutPresets';
+import { getReviewExportFontPack } from '../fontPacks';
+import { AvatarSpotlightTemplate } from './AvatarSpotlightTemplate';
 import {
   TemplateCanvas,
   TemplateFooter,
@@ -10,20 +12,27 @@ import {
 import { getReviewExportStyleTokens } from '../styleTokens';
 import type { ReviewExportPresetRenderContext } from '../types';
 
-export function BaseReviewTemplate({ content, preset, dimensions }: ReviewExportPresetRenderContext) {
+export function BaseReviewTemplate(context: ReviewExportPresetRenderContext) {
+  const { content, preset, dimensions } = context;
   const formatPreset = getReviewExportFormatPreset(preset.meta.format);
   const tokens = getReviewExportStyleTokens(preset.meta.styleId);
+  const fontPack = getReviewExportFontPack(preset.meta.fontPackId);
   const layout = getReviewExportLayoutPreset(preset.meta.layoutId);
   const footerSecondary = layout.footerSecondaryField === 'date' ? content.footer.date : content.footer.meta;
 
+  if (preset.meta.layoutId === 'avatar-spotlight') {
+    return <AvatarSpotlightTemplate {...context} />;
+  }
+
   return (
-    <TemplateCanvas tokens={tokens} dimensions={dimensions} formatPreset={formatPreset}>
+    <TemplateCanvas tokens={tokens} dimensions={dimensions} formatPreset={formatPreset} fontPack={fontPack}>
       <TemplateHeader
         brandLabel={content.brand.label}
         title={content.header.title}
         badge={content.header.badge}
         tokens={tokens}
         formatPreset={formatPreset}
+        fontPack={fontPack}
       />
       <TemplateRatingPill
         value={content.rating.value}
@@ -42,6 +51,7 @@ export function BaseReviewTemplate({ content, preset, dimensions }: ReviewExport
       <TemplateFooter
         author={content.footer.author}
         secondary={footerSecondary}
+        avatarSrc={content.footer.avatarSrc}
         tokens={tokens}
         formatPreset={formatPreset}
         secondaryColor={layout.footerSecondaryColor}

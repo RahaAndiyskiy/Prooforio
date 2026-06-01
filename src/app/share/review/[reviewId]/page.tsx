@@ -1,3 +1,4 @@
+import { isReviewerGender } from '@/entities/review/avatar';
 import Link from 'next/link';
 import { Header } from '@/widgets/header/Header';
 import { ShareReviewExportClient } from '@/features/share-review/ui/ShareReviewExportClient';
@@ -20,6 +21,7 @@ type ShareReviewPageProps = {
     rating?: string | number | string[];
     createdAt?: string | string[];
     profileName?: string | string[];
+    reviewerGender?: string | string[];
     preset?: string | string[];
     template?: string | string[];
   }>;
@@ -30,6 +32,8 @@ export default async function ShareReviewPage({ params, searchParams }: ShareRev
   const decodedReviewId = decodeURIComponent(reviewId);
   const review = await getReviewById(decodedReviewId);
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
+  const fallbackReviewerGenderParam = parseStringParam(resolvedSearchParams?.reviewerGender);
+  const fallbackReviewerGender = isReviewerGender(fallbackReviewerGenderParam) ? fallbackReviewerGenderParam : 'male';
   // Fallback из query нужен, чтобы ссылка шаринга могла открыться даже если в момент открытия отзыв еще недоступен по id.
   const fallbackReview = {
     author: parseStringParam(resolvedSearchParams?.author) ?? '',
@@ -37,6 +41,7 @@ export default async function ShareReviewPage({ params, searchParams }: ShareRev
     rating: Number(parseStringParam(resolvedSearchParams?.rating) ?? 0),
     createdAt: parseStringParam(resolvedSearchParams?.createdAt) ?? new Date().toISOString(),
     profileName: parseStringParam(resolvedSearchParams?.profileName) ?? 'Prooforio',
+    reviewerGender: fallbackReviewerGender,
   };
   const presetId = parseStringParam(resolvedSearchParams?.preset) ?? parseStringParam(resolvedSearchParams?.template) ?? 'minimal';
 
@@ -71,6 +76,7 @@ export default async function ShareReviewPage({ params, searchParams }: ShareRev
         rating: review.rating,
         createdAt: review.createdAt,
         profileName: (await getProfileById(review.profileId))?.fullName ?? 'Prooforio',
+        reviewerGender: review.reviewerGender ?? 'male',
       }
     : fallbackReview;
 

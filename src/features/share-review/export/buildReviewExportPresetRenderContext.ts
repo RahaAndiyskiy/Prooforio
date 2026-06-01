@@ -1,3 +1,4 @@
+import { getReviewerAvatarPublicPath } from '@/entities/review/avatar';
 import { TEMPLATE_FORMAT_DIMENSIONS } from '../constants';
 import type {
   ReviewExportPresetDefinition,
@@ -33,6 +34,7 @@ export function buildReviewExportPresetRenderContext(
         author: review.author,
         meta: 'Клиент Prooforio',
         date: review.createdAt,
+        avatarSrc: review.reviewerAvatarSrc ?? getReviewerAvatarPublicPath(review.reviewerGender),
       },
     },
   };

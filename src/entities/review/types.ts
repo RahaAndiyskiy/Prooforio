@@ -1,3 +1,5 @@
+import type { ReviewerGender } from './avatar';
+
 export type Review = {
   id: string;
   profileId: string;
@@ -5,4 +7,5 @@ export type Review = {
   text: string;
   rating: number;
   createdAt: string;
+  reviewerGender?: ReviewerGender;
 };

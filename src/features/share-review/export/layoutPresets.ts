@@ -18,6 +18,10 @@ export const reviewExportLayoutPresets: Record<ReviewExportLayoutId, ReviewExpor
     footerSecondaryField: 'meta',
     footerSecondaryColor: '#94a3b8',
   },
+  'avatar-spotlight': {
+    ratingTrailing: 'none',
+    footerSecondaryField: 'meta',
+  },
 };
 
 export function getReviewExportLayoutPreset(layoutId: ReviewExportLayoutId) {

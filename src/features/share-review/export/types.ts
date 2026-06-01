@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { ReviewerGender } from '@/entities/review/avatar';
 
 export type ReviewExportTemplateProps = {
   author: string;
@@ -6,6 +7,8 @@ export type ReviewExportTemplateProps = {
   rating: number;
   createdAt: string;
   profileName: string;
+  reviewerGender?: ReviewerGender;
+  reviewerAvatarSrc?: string;
 };
 
 export type ReviewExportTemplateContent = {
@@ -27,19 +30,25 @@ export type ReviewExportTemplateContent = {
     author: string;
     meta: string;
     date: string;
+    avatarSrc: string;
   };
 };
 
 export type ReviewExportTemplateFormat = 'landscape' | 'square' | 'story';
 
-export type ReviewExportStyleId = 'clean' | 'bold';
+export type ReviewExportStyleId = 'clean' | 'bold' | 'cream-plum';
 
-export type ReviewExportLayoutId = 'hero-top' | 'split-header';
+export type ReviewExportLayoutId = 'hero-top' | 'split-header' | 'avatar-spotlight';
+
+export type ReviewExportFontFamilyId = 'noto-sans' | 'inter' | 'ibm-plex-sans' | 'pt-serif';
+
+export type ReviewExportFontPackId = 'neutral-sans' | 'clean-sans' | 'tech-sans' | 'editorial-serif';
 
 export type ReviewExportPresetMeta = {
   format: ReviewExportTemplateFormat;
   styleId: ReviewExportStyleId;
   layoutId: ReviewExportLayoutId;
+  fontPackId: ReviewExportFontPackId;
   tags: string[];
   featured: boolean;
   order: number;

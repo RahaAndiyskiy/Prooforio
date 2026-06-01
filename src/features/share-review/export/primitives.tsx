@@ -1,4 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
+
 import type { CSSProperties, PropsWithChildren, ReactNode } from 'react';
+import type { ReviewExportResolvedFontPack } from './fontPacks';
 import type { ReviewExportFormatPreset } from './formatPresets';
 import type { ReviewExportStyleTokens } from './styleTokens';
 import type { ReviewExportCanvasDimensions } from './types';
@@ -10,16 +13,16 @@ const canvasBaseStyles: Omit<CSSProperties, 'width' | 'height'> = {
   padding: 56,
   boxSizing: 'border-box',
   gap: 36,
-  fontFamily: 'Prooforio Export Sans',
 };
 
 type TemplateCanvasProps = PropsWithChildren<{
   tokens: ReviewExportStyleTokens;
   dimensions: ReviewExportCanvasDimensions;
   formatPreset: ReviewExportFormatPreset;
+  fontPack: ReviewExportResolvedFontPack;
 }>;
 
-export function TemplateCanvas({ tokens, dimensions, formatPreset, children }: TemplateCanvasProps) {
+export function TemplateCanvas({ tokens, dimensions, formatPreset, fontPack, children }: TemplateCanvasProps) {
   return (
     <div
       style={{
@@ -30,6 +33,7 @@ export function TemplateCanvas({ tokens, dimensions, formatPreset, children }: T
         gap: formatPreset.canvasGap,
         backgroundColor: tokens.canvasBackground,
         color: tokens.canvasForeground,
+        fontFamily: fontPack.bodyFamily.family,
       }}
     >
       {children}
@@ -43,9 +47,10 @@ type TemplateHeaderProps = {
   badge: string;
   tokens: ReviewExportStyleTokens;
   formatPreset: ReviewExportFormatPreset;
+  fontPack: ReviewExportResolvedFontPack;
 };
 
-export function TemplateHeader({ brandLabel, title, badge, tokens, formatPreset }: TemplateHeaderProps) {
+export function TemplateHeader({ brandLabel, title, badge, tokens, formatPreset, fontPack }: TemplateHeaderProps) {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', gap: formatPreset.sectionGap, alignItems: 'flex-start' }}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -64,6 +69,7 @@ export function TemplateHeader({ brandLabel, title, badge, tokens, formatPreset 
             marginTop: tokens.titleMarginTop,
             fontSize: Math.round(tokens.titleSize * formatPreset.titleScale),
             fontWeight: 700,
+            fontFamily: fontPack.displayFamily.family,
             color: tokens.titleColor,
             lineHeight: tokens.titleLineHeight,
           }}
@@ -149,12 +155,15 @@ export function TemplateQuote({ quote, tokens, formatPreset }: TemplateQuoteProp
 type TemplateFooterProps = {
   author: string;
   secondary: string;
+  avatarSrc: string;
   tokens: ReviewExportStyleTokens;
   formatPreset: ReviewExportFormatPreset;
   secondaryColor?: string;
 };
 
-export function TemplateFooter({ author, secondary, tokens, formatPreset, secondaryColor }: TemplateFooterProps) {
+export function TemplateFooter({ author, secondary, avatarSrc, tokens, formatPreset, secondaryColor }: TemplateFooterProps) {
+  const avatarSize = Math.max(64, Math.round(formatPreset.footerAuthorFontSize * 2.2));
+
   return (
     <div
       style={{
@@ -167,10 +176,27 @@ export function TemplateFooter({ author, secondary, tokens, formatPreset, second
         color: tokens.footerColor,
       }}
     >
-      <span style={{ fontWeight: 700, color: tokens.footerAccentColor, fontSize: formatPreset.footerAuthorFontSize }}>
-        {author}
-      </span>
-      <span style={{ color: secondaryColor ?? tokens.footerMetaColor }}>{secondary}</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: Math.max(18, formatPreset.footerGap * 3) }}>
+        <img
+          src={avatarSrc}
+          alt=""
+          width={avatarSize}
+          height={avatarSize}
+          style={{
+            width: avatarSize,
+            height: avatarSize,
+            borderRadius: Math.max(18, Math.round(avatarSize * 0.32)),
+            objectFit: 'cover',
+            flexShrink: 0,
+          }}
+        />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: formatPreset.footerGap }}>
+          <span style={{ fontWeight: 700, color: tokens.footerAccentColor, fontSize: formatPreset.footerAuthorFontSize }}>
+            {author}
+          </span>
+          <span style={{ color: secondaryColor ?? tokens.footerMetaColor }}>{secondary}</span>
+        </div>
+      </div>
     </div>
   );
 }

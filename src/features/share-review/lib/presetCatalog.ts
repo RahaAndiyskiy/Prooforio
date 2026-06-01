@@ -31,6 +31,7 @@ const presetFormatLabels: Record<ReviewExportTemplateFormat, string> = {
 const presetStyleLabels: Record<ReviewExportStyleId, string> = {
   clean: 'Минимализм',
   bold: 'Контраст',
+  'cream-plum': 'Кремовая слива',
 };
 
 function toHumanLabel(value: string) {
