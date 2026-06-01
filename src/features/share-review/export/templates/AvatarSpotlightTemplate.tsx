@@ -30,7 +30,7 @@ export function AvatarSpotlightTemplate({ content, dimensions, preset, review }:
   const watermarkFontSize = Math.round((tokens.brandFontSize ?? 100) * scale * (isSquareFormat ? 0.96 : 1));
   const watermarkInset = Math.round((isSquareFormat ? 10 : isTallFormat ? 28 : 80) * scale);
   const watermarkBottomOffset = Math.round((isSquareFormat ? 28 : 18) * scale);
-  const watermarkLetterSpacing = isSquareFormat ? '0.64em' : tokens.brandLetterSpacing;
+  const watermarkLetterSpacing = '0.5em';
   const watermarkOpticalOffset = Math.round((tokens.brandOpticalOffsetX ?? 0) * scale * (isSquareFormat ? 1.3 : 1));
   const cardPadding = isTallFormat
     ? `${Math.round(42 * scale)}px ${Math.round(36 * scale)}px ${Math.round(80 * scale)}px`
@@ -193,7 +193,8 @@ export function AvatarSpotlightTemplate({ content, dimensions, preset, review }:
         >
           <span
             style={{
-              transform: `translateX(${watermarkOpticalOffset}px)`,
+              display: 'block',
+              marginLeft: `${watermarkOpticalOffset}px`,
             }}
           >
             {content.brand.label.toUpperCase()}
