@@ -36,7 +36,7 @@ export type ReviewExportTemplateContent = {
 
 export type ReviewExportTemplateFormat = 'landscape' | 'square' | 'story';
 
-export type ReviewExportStyleId = 'clean' | 'bold' | 'cream-plum';
+export type ReviewExportStyleId = 'clean' | 'bold' | 'cream-plum' | 'noise-greige';
 
 export type ReviewExportLayoutId = 'hero-top' | 'split-header' | 'avatar-spotlight';
 

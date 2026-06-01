@@ -38,7 +38,6 @@ export function CreamPlumTemplate({ content, dimensions, preset, review }: Revie
   const nameSize = Math.round(tokens.titleSize * scale);
   const quoteSize = Math.round((isSquareFormat ? 46 : 40) * scale);
   const starFontSize = Math.round((isSquareFormat ? 82 : 58) * scale);
-  const starBlockMarginTop = Math.round((isSquareFormat ? 12 : 0) * scale);
   const watermarkFontSize = Math.round((tokens.brandFontSize ?? 100) * scale * (isSquareFormat ? 0.96 : 1));
   const watermarkInset = Math.round((isSquareFormat ? 10 : isTallFormat ? 28 : 80) * scale);
   const watermarkBottomOffset = Math.round((isSquareFormat ? 28 : 18) * scale);
@@ -134,6 +133,8 @@ export function CreamPlumTemplate({ content, dimensions, preset, review }: Revie
           <div
             style={{
               display: 'flex',
+              alignItems: 'center',
+              gap: `${Math.round(16 * scale)}px`,
               fontFamily: fontPack.displayFamily.family,
               fontWeight: 400,
               fontSize: nameSize,
@@ -141,7 +142,24 @@ export function CreamPlumTemplate({ content, dimensions, preset, review }: Revie
               lineHeight: 1,
             }}
           >
-            {review.author}
+            <span>{review.author}</span>
+            {!isSquareFormat && !isTallFormat ? (
+              <div
+                style={{
+                  display: 'flex',
+                  gap: `${Math.round(10 * scale)}px`,
+                  color: tokens.ratingColor,
+                  fontSize: starFontSize,
+                  lineHeight: 1,
+                }}
+              >
+                {renderStars(review.rating).map((isFilled, index) => (
+                  <span key={index} style={{ opacity: isFilled ? 1 : 0.24 }}>
+                    ★
+                  </span>
+                ))}
+              </div>
+            ) : null}
           </div>
 
           <div
@@ -157,13 +175,32 @@ export function CreamPlumTemplate({ content, dimensions, preset, review }: Revie
             {formatReviewDate(review.createdAt)}
           </div>
 
+          {(isSquareFormat || isTallFormat) && (
+            <div
+              style={{
+                display: 'flex',
+                marginTop: isSquareFormat ? Math.round(10 * scale) : 0,
+                gap: `${Math.round(10 * scale)}px`,
+                color: tokens.ratingColor,
+                fontSize: starFontSize,
+                lineHeight: 1,
+              }}
+            >
+              {renderStars(review.rating).map((isFilled, index) => (
+                <span key={index} style={{ opacity: isFilled ? 1 : 0.24 }}>
+                  ★
+                </span>
+              ))}
+            </div>
+          )}
+
           <div
             style={{
               display: 'flex',
               maxWidth: isTallFormat
                 ? '100%'
                 : isSquareFormat
-                  ? `${Math.min(tokens.quoteMaxWidth, 520) * scale}px`
+                  ? `${Math.min(tokens.quoteMaxWidth, 760) * scale}px`
                   : `${Math.min(tokens.quoteMaxWidth, 680) * scale}px`,
               fontFamily: fontPack.bodyFamily.family,
               fontWeight: 400,
@@ -173,25 +210,6 @@ export function CreamPlumTemplate({ content, dimensions, preset, review }: Revie
             }}
           >
             {content.body.quote}
-          </div>
-
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: isSquareFormat ? 'center' : 'flex-start',
-              gap: `${Math.round(10 * scale)}px`,
-              marginTop: `${starBlockMarginTop}px`,
-              color: tokens.ratingColor,
-              fontSize: starFontSize,
-              lineHeight: 1,
-            }}
-          >
-            {renderStars(review.rating).map((isFilled, index) => (
-              <span key={index} style={{ opacity: isFilled ? 1 : 0.24 }}>
-                ★
-              </span>
-            ))}
           </div>
         </div>
 

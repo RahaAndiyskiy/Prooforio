@@ -69,6 +69,7 @@ function getPublicAssetDataUri(publicAssetPath: string) {
 export async function generateReviewImage(review: ReviewExportTemplateProps, presetId: string) {
   // Preview и export используют один и тот же реестр пресетов, чтобы композиция не расходилась между экраном и файлом.
   const selectedPreset = getReviewExportPresetById(presetId);
+  console.log('generateReviewImage preset', { requested: presetId, resolved: selectedPreset.id, styleId: selectedPreset.meta.styleId });
   const renderContext = buildReviewExportPresetRenderContext(review, selectedPreset);
   renderContext.content.footer.avatarSrc = getPublicAssetDataUri(renderContext.content.footer.avatarSrc);
   console.log('generateReviewImage avatarSrc', renderContext.content.footer.avatarSrc.slice(0,100));
