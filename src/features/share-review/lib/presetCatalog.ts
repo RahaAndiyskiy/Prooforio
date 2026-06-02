@@ -33,6 +33,7 @@ const presetStyleLabels: Record<ReviewExportStyleId, string> = {
   bold: 'Контраст',
   'cream-plum': 'Кремовая слива',
   'noise-greige': 'Noise Greige',
+  'aqua-frame': 'Aqua Frame',
 };
 
 function toHumanLabel(value: string) {

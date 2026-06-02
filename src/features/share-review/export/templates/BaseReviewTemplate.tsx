@@ -1,6 +1,7 @@
 import { getReviewExportFormatPreset } from '../formatPresets';
 import { getReviewExportLayoutPreset } from '../layoutPresets';
 import { getReviewExportFontPack } from '../fontPacks';
+import { AquaFrameTemplate } from './aqua-frame';
 import { CreamPlumTemplate } from './cream-plum';
 import { NoiseGreigeTemplate } from './noise-greige';
 import {
@@ -15,6 +16,11 @@ import type { ReviewExportPresetRenderContext } from '../types';
 
 export function BaseReviewTemplate(context: ReviewExportPresetRenderContext) {
   const { content, preset, dimensions } = context;
+
+  if (preset.meta.styleId === 'aqua-frame') {
+    return <AquaFrameTemplate {...context} />;
+  }
+
   const formatPreset = getReviewExportFormatPreset(preset.meta.format);
   const tokens = getReviewExportStyleTokens(preset.meta.styleId);
   const fontPack = getReviewExportFontPack(preset.meta.fontPackId);

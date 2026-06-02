@@ -13,11 +13,6 @@ export async function POST(request: Request) {
   }
 
   try {
-    console.log('export body', {
-      reviewerGender: body.reviewerGender,
-      reviewerAvatarSrc: body.reviewerAvatarSrc,
-      profileName: body.profileName,
-    });
     const format = body.format === 'jpeg' ? 'jpeg' : 'png';
     const presetId = body.presetId ?? body.templateId ?? 'minimal';
     const png = await generateReviewImage(

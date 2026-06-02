@@ -36,7 +36,7 @@ export type ReviewExportTemplateContent = {
 
 export type ReviewExportTemplateFormat = 'landscape' | 'square' | 'story';
 
-export type ReviewExportStyleId = 'clean' | 'bold' | 'cream-plum' | 'noise-greige';
+export type ReviewExportStyleId = 'clean' | 'bold' | 'cream-plum' | 'noise-greige' | 'aqua-frame';
 
 export type ReviewExportLayoutId = 'hero-top' | 'split-header' | 'avatar-spotlight';
 
@@ -71,6 +71,7 @@ export type ReviewExportPresetRenderContext = {
   content: ReviewExportTemplateContent;
   preset: ReviewExportPresetDefinition;
   dimensions: ReviewExportCanvasDimensions;
+  resolvePublicAssetSrc?: (publicAssetPath: string) => string;
 };
 
 export type ReviewExportPresetRenderer = (context: ReviewExportPresetRenderContext) => ReactNode;

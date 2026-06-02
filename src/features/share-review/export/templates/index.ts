@@ -73,6 +73,20 @@ const presetDefinitions: ReviewExportPresetDefinition[] = [
     },
   },
   {
+    id: 'aqua-frame',
+    label: 'Aqua Frame',
+    description: 'Square PNG-background experiment with positioned review content.',
+    meta: {
+      format: 'square',
+      styleId: 'aqua-frame',
+      layoutId: 'avatar-spotlight',
+      fontPackId: 'clean-sans',
+      tags: ['light', 'png-background', 'square', 'experiment'],
+      featured: true,
+      order: 28,
+    },
+  },
+  {
     id: 'minimal-square',
     label: 'Minimal Square',
     description: 'Квадратный минималистичный шаблон для соцсетей и карточек.',

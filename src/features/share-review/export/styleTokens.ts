@@ -126,6 +126,27 @@ export const reviewExportStyleTokens: Record<ReviewExportStyleId, ReviewExportSt
     footerAccentColor: '#1c1c1b',
     footerMetaColor: '#1c1c1b',
   },
+  'aqua-frame': {
+    canvasBackground: '#ffffff',
+    canvasForeground: '#ffffff',
+    brandColor: '#ffffff',
+    brandLetterSpacing: '0',
+    titleColor: '#ffffff',
+    titleMarginTop: 0,
+    titleSize: 75,
+    titleLineHeight: 1,
+    badgeBackground: 'transparent',
+    badgeColor: '#ffffff',
+    badgeFontSize: 0,
+    badgeLetterSpacing: '0',
+    ratingBackground: 'transparent',
+    ratingColor: '#ffffff',
+    quoteColor: '#ffffff',
+    quoteMaxWidth: 753,
+    footerColor: '#ffffff',
+    footerAccentColor: '#ffffff',
+    footerMetaColor: '#ffffff',
+  },
 };
 
 export function getReviewExportStyleTokens(styleId: ReviewExportStyleId) {
