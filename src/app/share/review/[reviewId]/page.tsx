@@ -50,21 +50,19 @@ export default async function ShareReviewPage({ params, searchParams }: ShareRev
 
   if (!review && !hasFallbackReview) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4 py-10">
-        <div className="w-full max-w-3xl rounded-3xl border border-slate-200 bg-white p-10 shadow-xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">Отзыв не найден</p>
-          <h1 className="mt-4 text-3xl font-semibold text-slate-950">Шаблон шаринга не доступен</h1>
-          <p className="mt-4 text-sm leading-7 text-slate-600">
-            Мы не нашли отзыв для этой ссылки. Проверьте URL или откройте отзыв из панели.
-          </p>
-          <Link
-            href="/"
-            className="mt-6 inline-flex rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-200"
-          >
-            На главную
-          </Link>
-        </div>
-      </div>
+      <section className="rounded-[20px] border border-white/65 bg-surface p-5 text-center shadow-card">
+        <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-accent">Отзыв не найден</p>
+        <h1 className="mt-4 text-[26px] font-semibold leading-tight text-primary">Шаблон шаринга недоступен</h1>
+        <p className="mt-4 text-[14px] leading-6 text-muted">
+          Мы не нашли отзыв для этой ссылки. Проверьте URL или откройте отзыв из панели.
+        </p>
+        <Link
+          href="/"
+          className="pf-press mt-6 inline-flex rounded-full bg-surface-soft px-4 py-2 text-[14px] font-semibold text-primary shadow-control"
+        >
+          На главную
+        </Link>
+      </section>
     );
   }
 
@@ -80,17 +78,15 @@ export default async function ShareReviewPage({ params, searchParams }: ShareRev
     : fallbackReview;
 
   return (
-    <div className="min-h-screen bg-[#f7f7f7]">
-      <main>
-        {isUsingFallback && (
-          <div className="mx-auto max-w-[390px] rounded-b-[18px] border border-orange-200 bg-orange-50 p-4 text-sm text-orange-800">
-            <p className="font-semibold">Данные отзыва загружены из параметров ссылки.</p>
-            <p>Если тут отображается некорректный отзыв, значит проблема в формировании URL.</p>
-          </div>
-        )}
-        <ShareReviewExportClient review={shareReview} presetId={presetId} />
-      </main>
-    </div>
+    <>
+      {isUsingFallback && (
+        <div className="rounded-[18px] border border-orange-200 bg-orange-50 p-4 text-sm text-orange-800">
+          <p className="font-semibold">Данные отзыва загружены из параметров ссылки.</p>
+          <p>Если тут отображается некорректный отзыв, значит проблема в формировании URL.</p>
+        </div>
+      )}
+      <ShareReviewExportClient review={shareReview} presetId={presetId} />
+    </>
   );
 }
 

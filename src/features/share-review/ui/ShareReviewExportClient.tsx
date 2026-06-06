@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { MobileHeader } from '@/widgets/mobile-header/MobileHeader';
 import { reviewExportPresets } from '../export/templates';
 import type { ReviewExportTemplateProps } from '../export/types';
 import {
@@ -247,9 +246,7 @@ export function ShareReviewExportClient({ review, presetId }: { review: ReviewEx
   };
 
   return (
-    <div className="mx-auto min-h-screen max-w-[390px] bg-background px-3 pb-24 text-primary">
-      <MobileHeader />
-
+    <>
       <h1 className="mt-4 text-center text-[48px] font-bold leading-none tracking-[-0.04em] text-black [font-family:'Brush_Script_MT','Segoe_Script',cursive]">
         Шаблоны
       </h1>
@@ -308,6 +305,6 @@ export function ShareReviewExportClient({ review, presetId }: { review: ReviewEx
           По выбранным фильтрам шаблоны пока не найдены.
         </div>
       )}
-    </div>
+    </>
   );
 }

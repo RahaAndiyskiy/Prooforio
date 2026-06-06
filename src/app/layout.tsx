@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { AppShell } from '@/widgets/app-shell/AppShell';
 import { BottomNavigation } from '@/widgets/bottom-navigation/BottomNavigation';
 import { HapticFeedback } from '@/widgets/haptic-feedback/HapticFeedback';
 import './globals.css';
@@ -17,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru">
       <body>
-        {children}
+        <AppShell>{children}</AppShell>
         <BottomNavigation />
         <HapticFeedback />
       </body>

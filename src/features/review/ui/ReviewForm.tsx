@@ -61,11 +61,11 @@ export function ReviewForm({ profileId, reviewLink }: { profileId: string; revie
 
   if (isSubmitted) {
     return (
-      <Card className="max-w-2xl mx-auto text-center space-y-6">
+      <Card className="space-y-5 text-center">
         <div className="space-y-3">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">Спасибо</p>
-          <h2 className="text-3xl font-semibold text-slate-950">Ваш отзыв отправлен</h2>
-          <p className="mt-3 text-sm leading-7 text-slate-600">
+          <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-accent">Спасибо</p>
+          <h2 className="text-[26px] font-semibold leading-tight text-primary">Ваш отзыв отправлен</h2>
+          <p className="mt-3 text-[14px] leading-6 text-muted">
             Отзыв принят. Если хотите, отправьте ещё один или поделитесь ссылкой, чтобы получить больше отзывов.
           </p>
         </div>
@@ -82,10 +82,10 @@ export function ReviewForm({ profileId, reviewLink }: { profileId: string; revie
   }
 
   return (
-    <Card className="max-w-2xl mx-auto">
+    <Card>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="author">
+          <label className="mb-2 block text-[14px] font-medium text-muted" htmlFor="author">
             Имя
           </label>
           <Input
@@ -97,7 +97,7 @@ export function ReviewForm({ profileId, reviewLink }: { profileId: string; revie
           />
         </div>
         <div>
-          <p className="mb-2 block text-sm font-medium text-slate-700">Фото-заглушка</p>
+          <p className="mb-2 block text-[14px] font-medium text-muted">Фото-заглушка</p>
           <div className="grid gap-3 sm:grid-cols-2">
             {[
               { label: 'Муж', value: 'male' as const },
@@ -111,8 +111,8 @@ export function ReviewForm({ profileId, reviewLink }: { profileId: string; revie
                   className={
                     'flex cursor-pointer items-center justify-between rounded-2xl border px-4 py-3 text-sm font-semibold transition ' +
                     (isActive
-                      ? 'border-slate-950 bg-slate-950 text-white'
-                      : 'border-slate-200 bg-white text-slate-700 hover:border-slate-400 hover:text-slate-950')
+                      ? 'border-accent bg-accent text-white'
+                      : 'border-[var(--pf-border-soft)] bg-surface text-muted hover:border-accent/40 hover:text-primary')
                   }
                 >
                   <span>{option.label}</span>
@@ -131,7 +131,7 @@ export function ReviewForm({ profileId, reviewLink }: { profileId: string; revie
           </div>
         </div>
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="text">
+          <label className="mb-2 block text-[14px] font-medium text-muted" htmlFor="text">
             Отзыв
           </label>
           <Textarea
@@ -143,14 +143,14 @@ export function ReviewForm({ profileId, reviewLink }: { profileId: string; revie
           />
         </div>
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="rating">
+          <label className="mb-2 block text-[14px] font-medium text-muted" htmlFor="rating">
             Оценка
           </label>
           <select
             id="rating"
             value={rating}
             onChange={(event) => setRating(Number(event.target.value))}
-            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-950 outline-none transition focus:border-accent focus:ring-2 focus:ring-blue-100"
+            className="w-full rounded-2xl border border-[var(--pf-border-soft)] bg-surface px-4 py-3 text-[16px] text-primary outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
           >
             {[5, 4, 3, 2, 1].map((value) => (
               <option key={value} value={value}>

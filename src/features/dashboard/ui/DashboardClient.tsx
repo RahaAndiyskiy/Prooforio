@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { MobileHeader } from '@/widgets/mobile-header/MobileHeader';
 import { DashboardOverview } from './DashboardOverview';
 import { FilteredReviewSection } from '@/features/review/ui/FilteredReviewSection';
 import { getCurrentUser } from '@/features/auth/lib/auth';
@@ -74,22 +73,16 @@ export function DashboardClient() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background px-3">
-        <MobileHeader />
-        <main className="rounded-[16px] bg-surface p-8 text-center text-[13px] text-primary shadow-card">
-          Загрузка панели...
-        </main>
+      <div className="rounded-[16px] bg-surface p-8 text-center text-[13px] text-primary shadow-card">
+        Загрузка панели...
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-background px-3">
-        <MobileHeader />
-        <main className="rounded-[16px] bg-surface p-8 text-center text-[13px] text-red-700 shadow-card">
-          {error}
-        </main>
+      <div className="rounded-[16px] bg-surface p-8 text-center text-[13px] text-red-700 shadow-card">
+        {error}
       </div>
     );
   }
@@ -99,19 +92,14 @@ export function DashboardClient() {
   }
 
   return (
-    <div className="min-h-screen bg-background px-3 pb-16">
-      <div className="mx-auto max-w-[390px]">
-        <MobileHeader />
-        <main className="space-y-3.5">
-          <DashboardOverview
-            profile={profile}
-            reviewCount={reviewCount}
-            averageRating={averageRating}
-            recentReviewsCount={recentReviewsCount}
-          />
-          <FilteredReviewSection reviews={reviews} />
-        </main>
-      </div>
-    </div>
+    <>
+      <DashboardOverview
+        profile={profile}
+        reviewCount={reviewCount}
+        averageRating={averageRating}
+        recentReviewsCount={recentReviewsCount}
+      />
+      <FilteredReviewSection reviews={reviews} />
+    </>
   );
 }

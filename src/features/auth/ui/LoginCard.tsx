@@ -52,42 +52,38 @@ export function LoginCard() {
 
   if (checkingAuth) {
     return (
-      <div className="min-h-screen bg-background">
-        <div className="mx-auto flex max-w-5xl items-center justify-center px-4 py-24 sm:px-6">
-          <Card className="w-full max-w-xl p-10 text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">Проверка</p>
-            <p className="mt-4 text-slate-600">Проверяем вашу сессию...</p>
-          </Card>
-        </div>
-      </div>
+      <Card className="text-center">
+        <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-accent">Проверка</p>
+        <p className="mt-4 text-[14px] text-muted">Проверяем вашу сессию...</p>
+      </Card>
     );
   }
 
   return (
-    <Card className="max-w-xl mx-auto mt-10 space-y-6">
+    <Card className="space-y-5">
       <div>
-        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">Вход</p>
-        <h1 className="mt-4 text-3xl font-semibold text-slate-950 sm:text-4xl">Войдите в Prooforio</h1>
+        <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-accent">Вход</p>
+        <h1 className="mt-3 text-[28px] font-semibold leading-tight text-primary">Войдите в Prooforio</h1>
       </div>
-      <form onSubmit={handleSubmit} className="space-y-6 rounded-3xl border border-slate-200 bg-slate-50 p-6">
+      <form onSubmit={handleSubmit} className="space-y-5 rounded-[18px] border border-[var(--pf-border-soft)] bg-surface-soft p-4">
         {error ? <div className="rounded-2xl bg-red-100 px-4 py-3 text-sm text-red-700">{error}</div> : null}
         <label className="block">
-          <span className="text-sm font-medium text-slate-700">Почта</span>
+          <span className="text-[14px] font-medium text-muted">Почта</span>
           <input
             type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            className="mt-2 w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-accent/20"
+            className="mt-2"
             required
           />
         </label>
         <label className="block">
-          <span className="text-sm font-medium text-slate-700">Пароль</span>
+          <span className="text-[14px] font-medium text-muted">Пароль</span>
           <input
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            className="mt-2 w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none focus:border-slate-400 focus:ring-2 focus:ring-accent/20"
+            className="mt-2"
             required
           />
         </label>
@@ -95,9 +91,9 @@ export function LoginCard() {
           {loading ? 'Входим…' : 'Войти'}
         </Button>
       </form>
-      <div className="rounded-3xl border border-slate-200 bg-white p-6 text-sm text-slate-600">
+      <div className="rounded-[18px] border border-[var(--pf-border-soft)] bg-surface p-4 text-[14px] text-muted">
         Нет аккаунта?{' '}
-        <Link href="/register" className="font-semibold text-slate-950 hover:text-accent">
+        <Link href="/register" className="font-semibold text-primary hover:text-accent">
           Регистрация
         </Link>
       </div>
