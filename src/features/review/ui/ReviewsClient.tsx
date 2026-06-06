@@ -203,7 +203,8 @@ export function ReviewsClient() {
             value={searchValue}
             onChange={(event) => setSearchValue(event.target.value)}
             placeholder="Поиск"
-            className="w-full rounded-[9px] border border-slate-200 bg-white px-4 py-3 text-[14px] text-primary shadow-[0_10px_24px_rgba(15,23,42,0.08)] outline-none transition duration-150 focus:border-accent focus:ring-1 focus:ring-accent/20"
+            inputMode="search"
+            className="w-full rounded-[9px] border border-slate-200 bg-white px-4 py-3 text-[16px] text-primary shadow-[0_10px_24px_rgba(15,23,42,0.08)] outline-none transition duration-150 focus:border-accent focus:ring-1 focus:ring-accent/20"
           />
         </div>
 
