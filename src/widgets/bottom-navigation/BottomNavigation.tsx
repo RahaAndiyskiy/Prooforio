@@ -85,18 +85,18 @@ export function BottomNavigation() {
   return (
     <nav
       aria-label="Основная навигация"
-      className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-[390px] overflow-hidden rounded-full border px-4 py-2.5 shadow-[0_11px_28px_rgba(0,0,0,0.13),0_3px_10px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.50),inset_0_0_14px_rgba(255,255,255,0.04)] backdrop-blur-[5px] [backdrop-filter:blur(5px)_saturate(155%)_brightness(1.04)] [-webkit-backdrop-filter:blur(5px)_saturate(155%)_brightness(1.04)]"
+      className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-[390px] overflow-hidden rounded-full border px-4 py-2.5 shadow-[0_14px_34px_rgba(0,0,0,0.14),0_4px_12px_rgba(0,0,0,0.07),inset_0_1px_0_rgba(255,255,255,0.72),inset_0_0_18px_rgba(255,255,255,0.16)] backdrop-blur-[16px] [backdrop-filter:blur(16px)_saturate(180%)_brightness(1.08)] [-webkit-backdrop-filter:blur(16px)_saturate(180%)_brightness(1.08)]"
       style={{
         background:
-          'linear-gradient(180deg, rgba(118, 118, 118, 0.15) 0%, rgba(68, 68, 68, 0.105) 100%)',
-        borderColor: 'rgba(255, 255, 255, 0.20)',
+          'linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(246, 246, 246, 0.64) 58%, rgba(232, 232, 232, 0.52) 100%)',
+        borderColor: 'rgba(255, 255, 255, 0.70)',
         borderWidth: 0.5,
       }}
     >
-      <span className="pointer-events-none absolute inset-0 opacity-[0.022] [background-image:radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.95)_1px,transparent_0)] [background-size:3px_3px]" />
-      <span className="pointer-events-none absolute inset-x-5 top-0 h-px bg-white/55" />
-      <span className="pointer-events-none absolute left-7 top-0 h-8 w-[44%] -rotate-3 rounded-full bg-white/16 blur-lg" />
-      <span className="pointer-events-none absolute inset-x-8 bottom-1 h-7 translate-y-1 rounded-full bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.075)_44%,rgba(63,167,255,0.055)_72%,transparent)] blur-[10px]" />
+      <span className="pointer-events-none absolute inset-0 opacity-[0.018] [background-image:radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.75)_1px,transparent_0)] [background-size:3px_3px]" />
+      <span className="pointer-events-none absolute inset-x-5 top-0 h-px bg-white/90" />
+      <span className="pointer-events-none absolute left-7 top-0 h-8 w-[44%] -rotate-3 rounded-full bg-white/38 blur-lg" />
+      <span className="pointer-events-none absolute inset-x-8 bottom-1 h-7 translate-y-1 rounded-full bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.22)_44%,rgba(63,167,255,0.10)_72%,transparent)] blur-[10px]" />
       <div className="relative z-10 grid grid-cols-4 gap-1">
         {items.map((item) => {
           const active = item.match(pathname);

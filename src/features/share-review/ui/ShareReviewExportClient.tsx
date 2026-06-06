@@ -104,13 +104,19 @@ function PresetFilterGroup<T extends string>({ title, options, value, onChange }
     return null;
   }
 
+  const selectedOption = options.find((option) => option.value === value);
+  const label = selectedOption?.value === 'all' || !selectedOption ? title : selectedOption.label;
+
   return (
-    <label className="relative block">
+    <label className="relative block h-12 overflow-hidden rounded-full bg-white shadow-[0_6px_16px_rgba(15,23,42,0.14)]">
       <span className="sr-only">{title}</span>
+      <span className="pointer-events-none absolute inset-x-4 top-2 text-center text-[11px] font-medium text-black">
+        {label}
+      </span>
       <select
         value={value}
         onChange={(event) => onChange(event.target.value as PresetFilterValue<T>)}
-        className="h-12 w-full appearance-none rounded-full border-0 bg-white px-6 pb-3 pt-2 text-center text-[11px] font-medium text-black shadow-[0_6px_16px_rgba(15,23,42,0.14)] outline-none"
+        className="absolute inset-0 h-full w-full cursor-pointer appearance-none border-0 bg-transparent opacity-0 outline-none"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
