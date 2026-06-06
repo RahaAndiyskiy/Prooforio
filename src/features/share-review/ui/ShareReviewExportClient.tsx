@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { MobileHeader } from '@/widgets/mobile-header/MobileHeader';
 import { reviewExportPresets } from '../export/templates';
 import type { ReviewExportTemplateProps } from '../export/types';
 import {
@@ -55,7 +56,7 @@ function PresetPreviewOption({ review, preset, isSelected, onSelect, onShare, lo
         aria-pressed={isSelected}
         aria-label={ariaLabel}
         className={
-          'block h-fit w-full overflow-hidden rounded-[3px] bg-transparent p-0 text-left shadow-[0_2px_6px_rgba(15,23,42,0.14)] transition-transform duration-300 ' +
+          'pf-press block h-fit w-full overflow-hidden rounded-[3px] bg-transparent p-0 text-left shadow-[0_2px_6px_rgba(15,23,42,0.14)] transition-transform duration-300 ' +
           (isSelected ? 'scale-[1.018] ring-2 ring-accent/45' : 'hover:-translate-y-0.5')
         }
       >
@@ -83,7 +84,12 @@ function PresetPreviewOption({ review, preset, isSelected, onSelect, onShare, lo
           type="button"
           onClick={onShare}
           disabled={loading}
-          className="absolute left-1/2 top-1/2 inline-flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-accent px-3 py-1.5 text-[9px] font-medium text-white shadow-[0_8px_18px_rgba(63,167,255,0.34)] disabled:opacity-70"
+          className="pf-press-centered inline-flex items-center justify-center rounded-full bg-accent px-3 py-1.5 text-[9px] font-medium text-white shadow-[0_8px_18px_rgba(63,167,255,0.34)] disabled:opacity-70"
+          style={{
+            left: '50%',
+            position: 'absolute',
+            top: '50%',
+          }}
         >
           {loading ? '...' : 'Поделиться'}
         </button>
@@ -241,18 +247,8 @@ export function ShareReviewExportClient({ review, presetId }: { review: ReviewEx
   };
 
   return (
-    <div className="mx-auto min-h-screen max-w-[390px] bg-[#f7f7f7] px-3 pb-24 pt-10 text-black">
-      <header className="flex items-center justify-between">
-        <p className="text-[21px] font-normal tracking-[-0.02em] text-black">proofio</p>
-        <button
-          type="button"
-          aria-label="Переключатель"
-          className="flex h-7 w-12 items-center justify-start rounded-full bg-white pl-1 shadow-[0_4px_12px_rgba(15,23,42,0.18)]"
-        >
-          <span className="h-6 w-6 rounded-full bg-[#d0d0d0]" />
-          <span className="ml-0.5 text-[10px] text-[#9b9b9b]">⌄</span>
-        </button>
-      </header>
+    <div className="mx-auto min-h-screen max-w-[390px] bg-background px-3 pb-24 text-primary">
+      <MobileHeader />
 
       <h1 className="mt-4 text-center text-[48px] font-bold leading-none tracking-[-0.04em] text-black [font-family:'Brush_Script_MT','Segoe_Script',cursive]">
         Шаблоны
@@ -261,7 +257,7 @@ export function ShareReviewExportClient({ review, presetId }: { review: ReviewEx
       <section className="mt-3 space-y-4">
         <button
           type="button"
-          className="flex h-[46px] w-full items-center justify-between rounded-[9px] bg-white px-4 text-[22px] font-medium text-black shadow-[0_5px_14px_rgba(15,23,42,0.12)]"
+          className="pf-press flex h-[46px] w-full items-center justify-between rounded-[9px] bg-white px-4 text-[22px] font-medium text-black shadow-[0_5px_14px_rgba(15,23,42,0.12)]"
         >
           <span>Отзывы</span>
           <span className="text-[22px] leading-none">⌄</span>

@@ -107,7 +107,7 @@ export function BottomNavigation() {
               key={item.label}
               href={item.href}
               aria-current={active ? 'page' : undefined}
-              className="flex min-h-[44px] flex-col items-center justify-center gap-1 rounded-full text-[9px] font-medium transition"
+              className="pf-press flex min-h-[44px] flex-col items-center justify-center gap-1 rounded-full text-[9px] font-medium"
               style={{
                 color: active ? ACCENT : 'var(--pf-text)',
                 textShadow: active

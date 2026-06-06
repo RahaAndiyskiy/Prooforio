@@ -47,7 +47,7 @@ export function ReviewCard({ review }: { review: Review }) {
         <Link
           href={shareHref}
           aria-label="Открыть шаблоны для отзыва"
-          className="mt-0.5 flex h-[30px] w-[30px] items-center justify-center rounded-full bg-surface-soft text-muted shadow-[inset_0_1px_0_rgba(255,255,255,0.82),0_2px_6px_rgba(15,23,42,0.06)] transition active:scale-95"
+          className="pf-press mt-0.5 flex h-[30px] w-[30px] items-center justify-center rounded-full bg-surface-soft text-muted shadow-[inset_0_1px_0_rgba(255,255,255,0.82),0_2px_6px_rgba(15,23,42,0.06)]"
         >
           <ShareIcon />
         </Link>

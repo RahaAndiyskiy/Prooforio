@@ -127,7 +127,7 @@ export function DashboardOverview({
             type="button"
             onClick={handleCopy}
             aria-label="Скопировать ссылку"
-            className="mr-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-surface/58 text-muted shadow-[inset_0_1px_0_rgba(255,255,255,0.70),0_2px_8px_rgba(15,23,42,0.08)] transition active:scale-[0.96]"
+            className="pf-press mr-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-surface/58 text-muted shadow-[inset_0_1px_0_rgba(255,255,255,0.70),0_2px_8px_rgba(15,23,42,0.08)]"
           >
             <CopyIcon />
           </button>
@@ -137,7 +137,7 @@ export function DashboardOverview({
           <button
             type="button"
             onClick={handleShareButtonClick}
-            className="flex h-[36px] items-center justify-center gap-1.5 rounded-full bg-accent text-[10px] font-semibold uppercase tracking-[0.08em] text-white shadow-[0_8px_18px_rgba(63,167,255,0.28)] transition active:scale-[0.98]"
+            className="pf-press flex h-[36px] items-center justify-center gap-1.5 rounded-full bg-accent text-[10px] font-semibold uppercase tracking-[0.08em] text-white shadow-[0_8px_18px_rgba(63,167,255,0.28)]"
           >
             <ShareIcon />
             Дать ссылку
@@ -145,7 +145,7 @@ export function DashboardOverview({
 
           <button
             type="button"
-            className="flex h-[36px] items-center justify-center gap-2 rounded-full bg-surface/72 text-[12px] font-semibold text-primary/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.78),0_2px_8px_rgba(15,23,42,0.07)] ring-1 ring-black/5 transition active:scale-[0.98]"
+            className="pf-press flex h-[36px] items-center justify-center gap-2 rounded-full bg-surface/72 text-[12px] font-semibold text-primary/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.78),0_2px_8px_rgba(15,23,42,0.07)] ring-1 ring-black/5"
           >
             <QrIcon />
             QR

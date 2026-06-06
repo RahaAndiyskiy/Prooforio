@@ -6,7 +6,7 @@ export function ReviewList({ reviews }: { reviews: Review[] }) {
     <section className="space-y-2.5">
       <div className="flex items-center justify-between px-0.5">
         <h2 className="text-[14px] font-semibold leading-none text-primary">Последние отзывы</h2>
-        <button type="button" className="flex items-center gap-1 text-[12px] font-medium text-primary/80">
+        <button type="button" className="pf-press flex items-center gap-1 text-[12px] font-medium text-primary/80">
           Все
           <span className="text-[17px] leading-none">›</span>
         </button>

@@ -108,6 +108,37 @@ textarea {
   font: inherit;
 }
 
+.pf-press {
+  transform-origin: center;
+  transition-duration: 220ms;
+  transition-property: transform, opacity, background-color, color, box-shadow;
+  transition-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.pf-press:active {
+  transform: scale(1.045);
+}
+
+.pf-press:disabled {
+  transform: none;
+}
+
+.pf-press-centered {
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+  transition-duration: 220ms;
+  transition-property: transform, opacity, background-color, color, box-shadow;
+  transition-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.pf-press-centered:active {
+  transform: translate(-50%, -50%) scale(1.045);
+}
+
+.pf-press-centered:disabled {
+  transform: translate(-50%, -50%);
+}
+
 ::selection {
   background-color: var(--pf-accent);
   color: white;
