@@ -85,18 +85,17 @@ export function BottomNavigation() {
   return (
     <nav
       aria-label="Основная навигация"
-      className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-[390px] overflow-hidden rounded-full border px-4 py-2.5 shadow-[0_14px_34px_rgba(0,0,0,0.14),0_4px_12px_rgba(0,0,0,0.07),inset_0_1px_0_rgba(255,255,255,0.72),inset_0_0_18px_rgba(255,255,255,0.16)] backdrop-blur-[16px] [backdrop-filter:blur(16px)_saturate(180%)_brightness(1.08)] [-webkit-backdrop-filter:blur(16px)_saturate(180%)_brightness(1.08)]"
+      className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-[390px] overflow-hidden rounded-full border px-4 py-2.5 shadow-[0_14px_34px_rgba(0,0,0,0.13),0_4px_12px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.82),inset_0_0_14px_rgba(255,255,255,0.12)] backdrop-blur-[18px] [backdrop-filter:blur(18px)_saturate(170%)_brightness(1.06)] [-webkit-backdrop-filter:blur(18px)_saturate(170%)_brightness(1.06)]"
       style={{
         background:
-          'linear-gradient(180deg, rgba(255, 255, 255, 0.68) 0%, rgba(246, 246, 246, 0.56) 58%, rgba(232, 232, 232, 0.44) 100%)',
-        borderColor: 'rgba(255, 255, 255, 0.62)',
+          'linear-gradient(90deg, rgba(255, 252, 244, 0.78) 0%, rgba(245, 247, 250, 0.66) 48%, rgba(203, 212, 226, 0.56) 100%)',
+        borderColor: 'rgba(255, 255, 255, 0.58)',
         borderWidth: 0.5,
       }}
     >
-      <span className="pointer-events-none absolute inset-0 opacity-[0.018] [background-image:radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.75)_1px,transparent_0)] [background-size:3px_3px]" />
-      <span className="pointer-events-none absolute inset-x-5 top-0 h-px bg-white/90" />
-      <span className="pointer-events-none absolute left-7 top-0 h-8 w-[44%] -rotate-3 rounded-full bg-white/38 blur-lg" />
-      <span className="pointer-events-none absolute inset-x-8 bottom-1 h-7 translate-y-1 rounded-full bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.22)_44%,rgba(63,167,255,0.10)_72%,transparent)] blur-[10px]" />
+      <span className="pointer-events-none absolute inset-0 opacity-[0.008] [background-image:radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.6)_1px,transparent_0)] [background-size:3px_3px]" />
+      <span className="pointer-events-none absolute inset-x-6 top-0 h-px bg-white/95" />
+      <span className="pointer-events-none absolute left-6 top-0 h-8 w-[48%] -rotate-3 rounded-full bg-white/28 blur-lg" />
       <div className="relative z-10 grid grid-cols-4 gap-1">
         {items.map((item) => {
           const active = item.match(pathname);
@@ -110,7 +109,7 @@ export function BottomNavigation() {
               style={{
                 color: active ? ACCENT : '#1C1C1B',
                 textShadow: active
-                  ? `0 0 12px ${ACCENT}`
+                  ? `0 0 7px rgba(63,167,255,0.30)`
                   : '0 1px 1px rgba(255,255,255,0.45), 0 0 6px rgba(255,255,255,0.28)',
               }}
             >
