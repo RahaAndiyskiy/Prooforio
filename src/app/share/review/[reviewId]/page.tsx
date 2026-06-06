@@ -1,6 +1,5 @@
 import { isReviewerGender } from '@/entities/review/avatar';
 import Link from 'next/link';
-import { Header } from '@/widgets/header/Header';
 import { ShareReviewExportClient } from '@/features/share-review/ui/ShareReviewExportClient';
 import { getProfileById } from '@/shared/api/profile';
 import { getReviewById } from '@/shared/api/review';
@@ -81,11 +80,10 @@ export default async function ShareReviewPage({ params, searchParams }: ShareRev
     : fallbackReview;
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="mx-auto w-full max-w-5xl px-4 py-10">
+    <div className="min-h-screen bg-[#f7f7f7]">
+      <main>
         {isUsingFallback && (
-          <div className="mb-6 rounded-3xl border border-orange-200 bg-orange-50 p-4 text-sm text-orange-800">
+          <div className="mx-auto max-w-[390px] rounded-b-[18px] border border-orange-200 bg-orange-50 p-4 text-sm text-orange-800">
             <p className="font-semibold">Данные отзыва загружены из параметров ссылки.</p>
             <p>Если тут отображается некорректный отзыв, значит проблема в формировании URL.</p>
           </div>

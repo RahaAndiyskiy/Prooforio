@@ -96,8 +96,7 @@ export function BottomNavigation() {
       <span className="pointer-events-none absolute inset-0 opacity-[0.022] [background-image:radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.95)_1px,transparent_0)] [background-size:3px_3px]" />
       <span className="pointer-events-none absolute inset-x-5 top-0 h-px bg-white/55" />
       <span className="pointer-events-none absolute left-7 top-0 h-8 w-[44%] -rotate-3 rounded-full bg-white/16 blur-lg" />
-      <span className="pointer-events-none absolute inset-x-8 bottom-1 h-8 translate-y-1 rounded-full bg-[linear-gradient(90deg,rgba(0,0,0,0.04),rgba(255,255,255,0.10)_42%,rgba(63,167,255,0.08)_72%,rgba(0,0,0,0.035))] blur-[10px]" />
-      <span className="pointer-events-none absolute inset-x-10 bottom-0 h-5 rounded-full bg-black/[0.045] blur-md" />
+      <span className="pointer-events-none absolute inset-x-8 bottom-1 h-7 translate-y-1 rounded-full bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.075)_44%,rgba(63,167,255,0.055)_72%,transparent)] blur-[10px]" />
       <div className="relative z-10 grid grid-cols-4 gap-1">
         {items.map((item) => {
           const active = item.match(pathname);
@@ -110,7 +109,9 @@ export function BottomNavigation() {
               className="flex min-h-[44px] flex-col items-center justify-center gap-1 rounded-full text-[9px] font-medium transition"
               style={{
                 color: active ? ACCENT : '#1C1C1B',
-                textShadow: active ? `0 0 12px ${ACCENT}` : '0 1px 8px rgba(255,255,255,0.32)',
+                textShadow: active
+                  ? `0 0 12px ${ACCENT}`
+                  : '0 1px 1px rgba(255,255,255,0.45), 0 0 6px rgba(255,255,255,0.28)',
               }}
             >
               <NavIcon icon={item.icon} active={active} />

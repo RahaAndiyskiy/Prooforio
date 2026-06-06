@@ -17,10 +17,10 @@ function DashboardTopBar() {
       <button
         type="button"
         aria-label="Переключатель"
-        className="flex h-7 w-12 items-center justify-end rounded-full bg-white pr-1 shadow-[0_4px_12px_rgba(15,23,42,0.18)]"
+        className="flex h-7 w-12 items-center justify-start rounded-full bg-white pl-1 shadow-[0_4px_12px_rgba(15,23,42,0.18)]"
       >
         <span className="h-6 w-6 rounded-full bg-[#d0d0d0]" />
-        <span className="-ml-1 text-[10px] text-[#9b9b9b]">⌄</span>
+        <span className="ml-0.5 text-[10px] text-[#9b9b9b]">⌄</span>
       </button>
     </header>
   );
