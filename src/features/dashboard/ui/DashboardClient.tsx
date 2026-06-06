@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Header } from '@/widgets/header/Header';
 import { DashboardOverview } from './DashboardOverview';
 import { FilteredReviewSection } from '@/features/review/ui/FilteredReviewSection';
 import { getCurrentUser } from '@/features/auth/lib/auth';
@@ -10,6 +9,22 @@ import { getProfileByAuthUserId } from '@/shared/api/profile';
 import { getReviewsByProfileId } from '@/shared/api/review';
 import type { Profile } from '@/entities/profile/types';
 import type { Review } from '@/entities/review/types';
+
+function DashboardTopBar() {
+  return (
+    <header className="flex items-center justify-between px-0.5 pb-3 pt-10">
+      <p className="text-[21px] font-normal tracking-[-0.02em] text-black">proofio</p>
+      <button
+        type="button"
+        aria-label="Переключатель"
+        className="flex h-7 w-12 items-center justify-end rounded-full bg-white pr-1 shadow-[0_4px_12px_rgba(15,23,42,0.18)]"
+      >
+        <span className="h-6 w-6 rounded-full bg-[#d0d0d0]" />
+        <span className="-ml-1 text-[10px] text-[#9b9b9b]">⌄</span>
+      </button>
+    </header>
+  );
+}
 
 export function DashboardClient() {
   const router = useRouter();
@@ -74,12 +89,10 @@ export function DashboardClient() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-          <div className="rounded-3xl border border-slate-200 bg-white p-10 text-center text-slate-600 shadow-card">
-            Загрузка панели…
-          </div>
+      <div className="min-h-screen bg-[#f5f5f5] px-3">
+        <DashboardTopBar />
+        <main className="rounded-[13px] bg-white p-8 text-center text-[13px] text-black shadow-[0_7px_18px_rgba(15,23,42,0.14)]">
+          Загрузка панели...
         </main>
       </div>
     );
@@ -87,12 +100,10 @@ export function DashboardClient() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-          <div className="rounded-3xl border border-slate-200 bg-white p-10 text-center text-red-700 shadow-card">
-            {error}
-          </div>
+      <div className="min-h-screen bg-[#f5f5f5] px-3">
+        <DashboardTopBar />
+        <main className="rounded-[13px] bg-white p-8 text-center text-[13px] text-red-700 shadow-[0_7px_18px_rgba(15,23,42,0.14)]">
+          {error}
         </main>
       </div>
     );
@@ -103,10 +114,10 @@ export function DashboardClient() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-        <div className="space-y-8">
+    <div className="min-h-screen bg-[#f5f5f5] px-3 pb-16">
+      <div className="mx-auto max-w-[390px]">
+        <DashboardTopBar />
+        <main className="space-y-3">
           <DashboardOverview
             profile={profile}
             reviewCount={reviewCount}
@@ -114,8 +125,8 @@ export function DashboardClient() {
             recentReviewsCount={recentReviewsCount}
           />
           <FilteredReviewSection reviews={reviews} />
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }

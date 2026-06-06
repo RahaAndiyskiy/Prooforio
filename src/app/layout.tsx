@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { BottomNavigation } from '@/widgets/bottom-navigation/BottomNavigation';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -14,7 +15,10 @@ export const viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru">
-      <body>{children}</body>
+      <body>
+        {children}
+        <BottomNavigation />
+      </body>
     </html>
   );
 }
