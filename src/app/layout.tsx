@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { BottomNavigation } from '@/widgets/bottom-navigation/BottomNavigation';
+import { HapticFeedback } from '@/widgets/haptic-feedback/HapticFeedback';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
         <BottomNavigation />
+        <HapticFeedback />
       </body>
     </html>
   );

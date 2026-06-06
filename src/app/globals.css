@@ -116,7 +116,7 @@ textarea {
 }
 
 .pf-press:active {
-  transform: scale(1.045);
+  transform: scale(1.12);
 }
 
 .pf-press:disabled {
@@ -132,7 +132,7 @@ textarea {
 }
 
 .pf-press-centered:active {
-  transform: translate(-50%, -50%) scale(1.045);
+  transform: translate(-50%, -50%) scale(1.12);
 }
 
 .pf-press-centered:disabled {

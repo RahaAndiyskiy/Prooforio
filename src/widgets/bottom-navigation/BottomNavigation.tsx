@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { type PointerEvent, useState } from 'react';
 
 const ACCENT = 'var(--pf-accent)';
 
@@ -81,11 +82,41 @@ function NavIcon({ icon, active }: { icon: NavItem['icon']; active: boolean }) {
 
 export function BottomNavigation() {
   const pathname = usePathname() || '/';
+  const [pressX, setPressX] = useState(0);
+  const [pressed, setPressed] = useState(false);
+
+  const handlePointerDown = (event: PointerEvent<HTMLElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const normalizedX = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setPressX(Math.max(-1, Math.min(1, normalizedX)));
+    setPressed(true);
+  };
+
+  const handlePointerMove = (event: PointerEvent<HTMLElement>) => {
+    if (!pressed) {
+      return;
+    }
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    const normalizedX = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+    setPressX(Math.max(-1, Math.min(1, normalizedX)));
+  };
+
+  const releasePress = () => {
+    setPressed(false);
+    setPressX(0);
+  };
 
   return (
     <nav
       aria-label="Основная навигация"
       className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-[390px] overflow-hidden rounded-full border px-4 py-2.5"
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerCancel={releasePress}
+      onPointerUp={releasePress}
       style={{
         background:
           'linear-gradient(90deg, rgba(255, 253, 248, 0.58) 0%, rgba(247, 248, 250, 0.48) 50%, rgba(211, 219, 231, 0.36) 100%)',
@@ -95,8 +126,21 @@ export function BottomNavigation() {
           '0 14px 34px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.82)',
         backdropFilter: 'blur(4px) saturate(145%) brightness(1.03)',
         WebkitBackdropFilter: 'blur(4px) saturate(145%) brightness(1.03)',
+        transform: pressed ? `perspective(760px) rotateY(${pressX * 6}deg)` : 'perspective(760px) rotateY(0deg)',
+        transformOrigin: '50% 50%',
+        transition: 'transform 260ms cubic-bezier(0.18, 0.89, 0.32, 1.28)',
       }}
     >
+      <span
+        className="pointer-events-none absolute inset-0 z-0 rounded-full transition-opacity duration-200"
+        style={{
+          background:
+            pressX < 0
+              ? `linear-gradient(90deg, rgba(255,255,255,${pressed ? 0.18 * Math.abs(pressX) : 0}) 0%, transparent 44%, rgba(0,0,0,${pressed ? 0.08 * Math.abs(pressX) : 0}) 100%)`
+              : `linear-gradient(90deg, rgba(0,0,0,${pressed ? 0.08 * Math.abs(pressX) : 0}) 0%, transparent 56%, rgba(255,255,255,${pressed ? 0.18 * Math.abs(pressX) : 0}) 100%)`,
+          opacity: pressed ? 1 : 0,
+        }}
+      />
       <span className="pointer-events-none absolute inset-x-6 top-0 h-px bg-white/95" />
       <div className="relative z-10 grid grid-cols-4 gap-1">
         {items.map((item) => {
