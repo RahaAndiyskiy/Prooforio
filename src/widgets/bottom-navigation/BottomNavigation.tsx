@@ -21,7 +21,7 @@ const items: NavItem[] = [
   },
   {
     label: 'Отзывы',
-    href: '/dashboard#reviews',
+    href: '/dashboard/reviews',
     icon: 'reviews',
     match: (pathname) => pathname.startsWith('/dashboard/reviews'),
   },

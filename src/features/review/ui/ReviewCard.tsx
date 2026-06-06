@@ -30,6 +30,10 @@ function RatingStars({ rating }: { rating: number }) {
 
 export function ReviewCard({ review }: { review: Review }) {
   const shareHref = `/share/review/${encodeURIComponent(review.id)}?author=${encodeURIComponent(review.author)}&text=${encodeURIComponent(review.text)}&rating=${encodeURIComponent(String(review.rating))}&createdAt=${encodeURIComponent(review.createdAt)}&profileName=${encodeURIComponent(review.author)}&reviewerGender=${encodeURIComponent(review.reviewerGender ?? 'male')}`;
+  const formattedDate = new Intl.DateTimeFormat('ru-RU', {
+    day: 'numeric',
+    month: 'short',
+  }).format(new Date(review.createdAt));
 
   return (
     <article className="rounded-[14px] bg-surface px-3 py-2.5 shadow-soft">
@@ -37,7 +41,10 @@ export function ReviewCard({ review }: { review: Review }) {
         <div className="h-[38px] w-[38px] rounded-full bg-gradient-to-br from-[#dedede] to-[#cfcfcf]" aria-hidden="true" />
 
         <div className="min-w-0 pt-0.5">
-          <p className="truncate text-[13.5px] font-semibold leading-tight text-primary">{review.author}</p>
+          <div className="flex items-center gap-2">
+            <p className="truncate text-[13.5px] font-semibold leading-tight text-primary">{review.author}</p>
+            <span className="text-[11px] leading-none text-primary/60">{formattedDate}</span>
+          </div>
           <RatingStars rating={review.rating} />
           <p className="mt-1 line-clamp-2 text-[11px] font-normal leading-[1.25] text-primary/80">
             {review.text}

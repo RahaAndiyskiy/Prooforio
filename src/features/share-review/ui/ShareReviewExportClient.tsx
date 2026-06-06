@@ -111,11 +111,20 @@ function PresetFilterGroup<T extends string>({ title, options, value, onChange }
 
   const selectedOption = options.find((option) => option.value === value);
   const label = selectedOption?.value === 'all' || !selectedOption ? title : selectedOption.label;
+  const isActive = selectedOption?.value !== 'all' && Boolean(selectedOption);
 
   return (
-    <label className="relative block h-12 overflow-hidden rounded-full bg-white shadow-[0_6px_16px_rgba(15,23,42,0.14)]">
+    <label
+      className={`relative block h-12 overflow-hidden rounded-full border bg-white shadow-[0_6px_16px_rgba(15,23,42,0.14)] transition ${
+        isActive ? 'border-accent' : 'border-slate-200'
+      }`}
+    >
       <span className="sr-only">{title}</span>
-      <span className="pointer-events-none absolute inset-x-4 top-2 text-center text-[12.5px] font-medium text-black">
+      <span
+        className={`pointer-events-none absolute inset-x-4 top-2 text-center text-[12.5px] font-medium ${
+          isActive ? 'text-primary' : 'text-black'
+        }`}
+      >
         {label}
       </span>
       <select

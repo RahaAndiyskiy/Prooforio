@@ -121,13 +121,13 @@ export function DashboardOverview({
       >
         <p className="text-[11.5px] font-medium text-primary/75">Твоя ссылка для отзыва</p>
 
-        <div className="mt-3 flex h-[40px] items-center rounded-full bg-surface/58 pl-5 pr-1 text-[12.5px] font-medium tracking-[0.04em] text-muted shadow-[inset_0_1px_2px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.72)]">
+        <div className="mt-3 flex h-[40px] items-center rounded-full bg-surface/58 pl-5 pr-1 text-[12.5px] font-medium tracking-[0.04em] text-muted shadow-[inset_0_1px_2px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.72)] ring-1 ring-accent/18">
           <span className="min-w-0 flex-1 truncate">{compactReviewUrl}</span>
           <button
             type="button"
             onClick={handleCopy}
             aria-label="Скопировать ссылку"
-            className="pf-press mr-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-surface/58 text-muted shadow-[inset_0_1px_0_rgba(255,255,255,0.70),0_2px_8px_rgba(15,23,42,0.08)]"
+            className="pf-press -mr-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-surface/72 text-muted shadow-[inset_0_1px_0_rgba(255,255,255,0.70),0_2px_8px_rgba(15,23,42,0.08)] ring-1 ring-black/5"
           >
             <CopyIcon />
           </button>
