@@ -18,7 +18,7 @@ function ShareIcon() {
 
 function RatingStars({ rating }: { rating: number }) {
   return (
-    <div className="flex items-center gap-[2px] text-[12px] leading-none text-[#ffbe2e]">
+    <div className="flex items-center gap-[2px] text-[13.5px] leading-none text-[#ffbe2e]">
       {Array.from({ length: 5 }, (_, index) => (
         <span key={index} className={index < rating ? 'opacity-100' : 'opacity-25'}>
           ★
@@ -37,9 +37,9 @@ export function ReviewCard({ review }: { review: Review }) {
         <div className="h-[38px] w-[38px] rounded-full bg-gradient-to-br from-[#dedede] to-[#cfcfcf]" aria-hidden="true" />
 
         <div className="min-w-0 pt-0.5">
-          <p className="truncate text-[13px] font-semibold leading-tight text-primary">{review.author}</p>
+          <p className="truncate text-[13.5px] font-semibold leading-tight text-primary">{review.author}</p>
           <RatingStars rating={review.rating} />
-          <p className="mt-1 line-clamp-2 text-[9.5px] font-normal leading-[1.25] text-primary/80">
+          <p className="mt-1 line-clamp-2 text-[11px] font-normal leading-[1.25] text-primary/80">
             {review.text}
           </p>
         </div>

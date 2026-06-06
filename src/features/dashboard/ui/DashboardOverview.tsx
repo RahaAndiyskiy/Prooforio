@@ -119,9 +119,9 @@ export function DashboardOverview({
           WebkitBackdropFilter: 'blur(10px) saturate(150%)',
         }}
       >
-        <p className="text-[11px] font-medium text-primary/75">Твоя ссылка для отзыва</p>
+        <p className="text-[11.5px] font-medium text-primary/75">Твоя ссылка для отзыва</p>
 
-        <div className="mt-3 flex h-[40px] items-center rounded-full bg-surface/58 pl-5 pr-1 text-[11px] font-medium tracking-[0.05em] text-muted shadow-[inset_0_1px_2px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.72)]">
+        <div className="mt-3 flex h-[40px] items-center rounded-full bg-surface/58 pl-5 pr-1 text-[12.5px] font-medium tracking-[0.04em] text-muted shadow-[inset_0_1px_2px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.72)]">
           <span className="min-w-0 flex-1 truncate">{compactReviewUrl}</span>
           <button
             type="button"
@@ -137,7 +137,7 @@ export function DashboardOverview({
           <button
             type="button"
             onClick={handleShareButtonClick}
-            className="pf-press flex h-[36px] items-center justify-center gap-1.5 rounded-full bg-accent text-[10px] font-semibold uppercase tracking-[0.08em] text-white shadow-[0_8px_18px_rgba(63,167,255,0.28)]"
+            className="pf-press flex h-[36px] items-center justify-center gap-1.5 rounded-full bg-accent text-[11px] font-semibold uppercase tracking-[0.06em] text-white shadow-[0_8px_18px_rgba(63,167,255,0.28)]"
           >
             <ShareIcon />
             Дать ссылку
@@ -145,7 +145,7 @@ export function DashboardOverview({
 
           <button
             type="button"
-            className="pf-press flex h-[36px] items-center justify-center gap-2 rounded-full bg-surface/72 text-[12px] font-semibold text-primary/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.78),0_2px_8px_rgba(15,23,42,0.07)] ring-1 ring-black/5"
+            className="pf-press flex h-[36px] items-center justify-center gap-2 rounded-full bg-surface/72 text-[12.5px] font-semibold text-primary/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.78),0_2px_8px_rgba(15,23,42,0.07)] ring-1 ring-black/5"
           >
             <QrIcon />
             QR
@@ -153,7 +153,7 @@ export function DashboardOverview({
         </div>
 
         {toastMessage ? (
-          <div className="mt-3 origin-center rounded-full bg-black/80 px-3 py-2 text-center text-[11px] text-white shadow-[0_8px_18px_rgba(0,0,0,0.18)] animate-[prooforioToastPop_260ms_cubic-bezier(0.18,0.89,0.32,1.28)]">
+          <div className="mt-3 origin-center rounded-full bg-black/80 px-3 py-2 text-center text-[11.5px] text-white shadow-[0_8px_18px_rgba(0,0,0,0.18)] animate-[prooforioToastPop_260ms_cubic-bezier(0.18,0.89,0.32,1.28)]">
             {toastMessage}
           </div>
         ) : null}
@@ -162,15 +162,15 @@ export function DashboardOverview({
       <div className="grid grid-cols-3 gap-2">
         <div className="rounded-[16px] bg-surface px-3 py-3.5 text-center shadow-soft">
             <p className="text-[22px] font-semibold leading-none text-primary">{reviewCount}</p>
-            <p className="mt-1.5 text-[9px] uppercase tracking-[0.12em] text-primary/45">Отзывы</p>
+            <p className="mt-1.5 text-[10.5px] uppercase tracking-[0.08em] text-primary/45">Отзывы</p>
         </div>
         <div className="rounded-[16px] bg-surface px-3 py-3.5 text-center shadow-soft">
             <p className="text-[22px] font-semibold leading-none text-primary">{averageRating}</p>
-            <p className="mt-1.5 text-[9px] uppercase tracking-[0.12em] text-primary/45">Рейтинг</p>
+            <p className="mt-1.5 text-[10.5px] uppercase tracking-[0.08em] text-primary/45">Рейтинг</p>
         </div>
         <div className="rounded-[16px] bg-surface px-3 py-3.5 text-center shadow-soft">
             <p className="text-[22px] font-semibold leading-none text-primary">{recentReviewsCount}</p>
-            <p className="mt-1.5 text-[9px] uppercase tracking-[0.12em] text-primary/45">Новые</p>
+            <p className="mt-1.5 text-[10.5px] uppercase tracking-[0.08em] text-primary/45">Новые</p>
         </div>
       </div>
     </section>

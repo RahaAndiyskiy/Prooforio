@@ -84,7 +84,7 @@ function PresetPreviewOption({ review, preset, isSelected, onSelect, onShare, lo
           type="button"
           onClick={onShare}
           disabled={loading}
-          className="pf-press-centered inline-flex items-center justify-center rounded-full bg-accent px-3 py-1.5 text-[9px] font-medium text-white shadow-[0_8px_18px_rgba(63,167,255,0.34)] disabled:opacity-70"
+          className="pf-press-centered inline-flex items-center justify-center rounded-full bg-accent px-3 py-1.5 text-[10.5px] font-medium text-white shadow-[0_8px_18px_rgba(63,167,255,0.34)] disabled:opacity-70"
           style={{
             left: '50%',
             position: 'absolute',
@@ -116,7 +116,7 @@ function PresetFilterGroup<T extends string>({ title, options, value, onChange }
   return (
     <label className="relative block h-12 overflow-hidden rounded-full bg-white shadow-[0_6px_16px_rgba(15,23,42,0.14)]">
       <span className="sr-only">{title}</span>
-      <span className="pointer-events-none absolute inset-x-4 top-2 text-center text-[11px] font-medium text-black">
+      <span className="pointer-events-none absolute inset-x-4 top-2 text-center text-[12.5px] font-medium text-black">
         {label}
       </span>
       <select
