@@ -85,17 +85,15 @@ export function BottomNavigation() {
   return (
     <nav
       aria-label="Основная навигация"
-      className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-[390px] overflow-hidden rounded-full border px-4 py-2.5 shadow-[0_14px_34px_rgba(0,0,0,0.13),0_4px_12px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.82),inset_0_0_14px_rgba(255,255,255,0.12)] backdrop-blur-[18px] [backdrop-filter:blur(18px)_saturate(170%)_brightness(1.06)] [-webkit-backdrop-filter:blur(18px)_saturate(170%)_brightness(1.06)]"
+      className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-[390px] overflow-hidden rounded-full border px-4 py-2.5 shadow-[0_14px_34px_rgba(0,0,0,0.12),0_4px_12px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.82)] backdrop-blur-[10px] [backdrop-filter:blur(10px)_saturate(145%)_brightness(1.03)] [-webkit-backdrop-filter:blur(10px)_saturate(145%)_brightness(1.03)]"
       style={{
         background:
-          'linear-gradient(90deg, rgba(255, 252, 244, 0.78) 0%, rgba(245, 247, 250, 0.66) 48%, rgba(203, 212, 226, 0.56) 100%)',
-        borderColor: 'rgba(255, 255, 255, 0.58)',
+          'linear-gradient(90deg, rgba(255, 253, 248, 0.58) 0%, rgba(247, 248, 250, 0.48) 50%, rgba(211, 219, 231, 0.36) 100%)',
+        borderColor: 'rgba(255, 255, 255, 0.42)',
         borderWidth: 0.5,
       }}
     >
-      <span className="pointer-events-none absolute inset-0 opacity-[0.008] [background-image:radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.6)_1px,transparent_0)] [background-size:3px_3px]" />
       <span className="pointer-events-none absolute inset-x-6 top-0 h-px bg-white/95" />
-      <span className="pointer-events-none absolute left-6 top-0 h-8 w-[48%] -rotate-3 rounded-full bg-white/28 blur-lg" />
       <div className="relative z-10 grid grid-cols-4 gap-1">
         {items.map((item) => {
           const active = item.match(pathname);
