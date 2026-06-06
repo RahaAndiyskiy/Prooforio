@@ -25,6 +25,17 @@ function ShareIcon() {
   );
 }
 
+function QrIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-[17px] w-[17px]">
+      <path
+        fill="currentColor"
+        d="M4 4h7v7H4V4Zm2 2v3h3V6H6Zm7-2h7v7h-7V4Zm2 2v3h3V6h-3ZM4 13h7v7H4v-7Zm2 2v3h3v-3H6Zm8-2h2v2h-2v-2Zm4 0h2v2h-2v-2Zm-4 4h2v3h-2v-3Zm3-1h3v4h-2v-2h-1v-2Z"
+      />
+    </svg>
+  );
+}
+
 export function DashboardOverview({
   profile,
   reviewCount,
@@ -98,27 +109,35 @@ export function DashboardOverview({
   };
 
   return (
-    <section className="space-y-3">
-      <div className="rounded-[13px] bg-white px-4 pb-4 pt-3 shadow-[0_7px_18px_rgba(15,23,42,0.14)]">
-        <p className="text-[11px] font-medium text-black">Твоя ссылка для отзыва</p>
+    <section className="space-y-3.5">
+      <div
+        className="rounded-[20px] border border-white/65 px-4 pb-4 pt-3.5 shadow-[0_10px_26px_rgba(15,23,42,0.12),inset_0_1px_0_rgba(255,255,255,0.82)]"
+        style={{
+          background:
+            'linear-gradient(135deg, rgba(255,255,255,0.84) 0%, rgba(247,248,250,0.70) 58%, rgba(231,236,244,0.58) 100%)',
+          backdropFilter: 'blur(10px) saturate(150%)',
+          WebkitBackdropFilter: 'blur(10px) saturate(150%)',
+        }}
+      >
+        <p className="text-[11px] font-medium text-primary/75">Твоя ссылка для отзыва</p>
 
-        <div className="mt-3 flex h-[38px] items-center rounded-full bg-[#e5e5e5] pl-5 pr-1 text-[11px] font-medium tracking-[0.08em] text-[#4b4b4b]">
+        <div className="mt-3 flex h-[40px] items-center rounded-full bg-surface/58 pl-5 pr-1 text-[11px] font-medium tracking-[0.05em] text-muted shadow-[inset_0_1px_2px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.72)]">
           <span className="min-w-0 flex-1 truncate">{compactReviewUrl}</span>
           <button
             type="button"
             onClick={handleCopy}
             aria-label="Скопировать ссылку"
-            className="-mr-1 flex h-[38px] w-12 items-center justify-center rounded-l-[19px] rounded-r-full bg-[#c9c9c9] text-white shadow-[inset_1px_0_0_rgba(255,255,255,0.24)]"
+            className="mr-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-surface/58 text-muted shadow-[inset_0_1px_0_rgba(255,255,255,0.70),0_2px_8px_rgba(15,23,42,0.08)] transition active:scale-[0.96]"
           >
             <CopyIcon />
           </button>
         </div>
 
-        <div className="mt-4 grid grid-cols-[1fr_1fr] gap-3">
+        <div className="mt-4 grid grid-cols-[1.05fr_0.95fr] gap-3">
           <button
             type="button"
             onClick={handleShareButtonClick}
-            className="flex h-[35px] items-center justify-center gap-1.5 rounded-full bg-[#3caaff] text-[10px] font-semibold uppercase tracking-[0.08em] text-white shadow-[0_4px_10px_rgba(60,170,255,0.28)]"
+            className="flex h-[36px] items-center justify-center gap-1.5 rounded-full bg-accent text-[10px] font-semibold uppercase tracking-[0.08em] text-white shadow-[0_8px_18px_rgba(63,167,255,0.28)] transition active:scale-[0.98]"
           >
             <ShareIcon />
             Дать ссылку
@@ -126,34 +145,32 @@ export function DashboardOverview({
 
           <button
             type="button"
-            className="flex h-[35px] items-center justify-center gap-2 rounded-full bg-[#dedede] text-[12px] font-semibold text-black"
+            className="flex h-[36px] items-center justify-center gap-2 rounded-full bg-surface/72 text-[12px] font-semibold text-primary/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.78),0_2px_8px_rgba(15,23,42,0.07)] ring-1 ring-black/5 transition active:scale-[0.98]"
           >
-            <span className="h-4 w-4 bg-[#5a5a5a]" />
+            <QrIcon />
             QR
           </button>
         </div>
 
         {toastMessage ? (
-          <div className="mt-3 rounded-full bg-black/80 px-3 py-2 text-center text-[11px] text-white">
+          <div className="mt-3 origin-center rounded-full bg-black/80 px-3 py-2 text-center text-[11px] text-white shadow-[0_8px_18px_rgba(0,0,0,0.18)] animate-[prooforioToastPop_260ms_cubic-bezier(0.18,0.89,0.32,1.28)]">
             {toastMessage}
           </div>
         ) : null}
       </div>
 
-      <div className="rounded-[999px] bg-white px-6 py-6 shadow-[0_8px_21px_rgba(15,23,42,0.14)]">
-        <div className="grid grid-cols-3 items-center divide-x divide-black/10 text-center">
-          <div className="px-2">
-            <p className="text-[21px] font-medium leading-none text-black">{reviewCount}</p>
-            <p className="mt-1 text-[9px] uppercase tracking-[0.13em] text-black/45">Отзывы</p>
-          </div>
-          <div className="px-2">
-            <p className="text-[21px] font-medium leading-none text-black">{averageRating}</p>
-            <p className="mt-1 text-[9px] uppercase tracking-[0.13em] text-black/45">Рейтинг</p>
-          </div>
-          <div className="px-2">
-            <p className="text-[21px] font-medium leading-none text-black">{recentReviewsCount}</p>
-            <p className="mt-1 text-[9px] uppercase tracking-[0.13em] text-black/45">7 дней</p>
-          </div>
+      <div className="grid grid-cols-3 gap-2">
+        <div className="rounded-[16px] bg-surface px-3 py-3.5 text-center shadow-soft">
+            <p className="text-[22px] font-semibold leading-none text-primary">{reviewCount}</p>
+            <p className="mt-1.5 text-[9px] uppercase tracking-[0.12em] text-primary/45">Отзывы</p>
+        </div>
+        <div className="rounded-[16px] bg-surface px-3 py-3.5 text-center shadow-soft">
+            <p className="text-[22px] font-semibold leading-none text-primary">{averageRating}</p>
+            <p className="mt-1.5 text-[9px] uppercase tracking-[0.12em] text-primary/45">Рейтинг</p>
+        </div>
+        <div className="rounded-[16px] bg-surface px-3 py-3.5 text-center shadow-soft">
+            <p className="text-[22px] font-semibold leading-none text-primary">{recentReviewsCount}</p>
+            <p className="mt-1.5 text-[9px] uppercase tracking-[0.12em] text-primary/45">Новые</p>
         </div>
       </div>
     </section>

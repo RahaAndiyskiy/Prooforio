@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-const ACCENT = '#3FA7FF';
+const ACCENT = 'var(--pf-accent)';
 
 type NavItem = {
   label: string;
@@ -109,7 +109,7 @@ export function BottomNavigation() {
               aria-current={active ? 'page' : undefined}
               className="flex min-h-[44px] flex-col items-center justify-center gap-1 rounded-full text-[9px] font-medium transition"
               style={{
-                color: active ? ACCENT : '#1C1C1B',
+                color: active ? ACCENT : 'var(--pf-text)',
                 textShadow: active
                   ? `0 0 7px rgba(63,167,255,0.30)`
                   : '0 1px 1px rgba(255,255,255,0.45), 0 0 6px rgba(255,255,255,0.28)',

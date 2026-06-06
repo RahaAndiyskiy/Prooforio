@@ -7,14 +7,18 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#F8FAFC',
-        surface: '#FFFFFF',
-        primary: '#0F172A',
-        accent: '#2563EB',
-        muted: '#64748B',
+        background: 'var(--pf-bg)',
+        surface: 'var(--pf-surface)',
+        primary: 'var(--pf-text)',
+        accent: 'var(--pf-accent)',
+        muted: 'var(--pf-text-muted)',
+        'surface-soft': 'var(--pf-surface-soft)',
+        'surface-strong': 'var(--pf-surface-strong)',
       },
       boxShadow: {
-        card: '0 24px 80px rgba(15, 23, 42, 0.08)',
+        card: 'var(--pf-shadow-card)',
+        soft: 'var(--pf-shadow-soft)',
+        control: 'var(--pf-shadow-control)',
       },
     },
   },

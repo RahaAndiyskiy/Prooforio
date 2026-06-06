@@ -56,7 +56,7 @@ function PresetPreviewOption({ review, preset, isSelected, onSelect, onShare, lo
         aria-label={ariaLabel}
         className={
           'block h-fit w-full overflow-hidden rounded-[3px] bg-transparent p-0 text-left shadow-[0_2px_6px_rgba(15,23,42,0.14)] transition-transform duration-300 ' +
-          (isSelected ? 'scale-[1.018] ring-2 ring-[#3FA7FF]/45' : 'hover:-translate-y-0.5')
+          (isSelected ? 'scale-[1.018] ring-2 ring-accent/45' : 'hover:-translate-y-0.5')
         }
       >
         <div
@@ -83,7 +83,7 @@ function PresetPreviewOption({ review, preset, isSelected, onSelect, onShare, lo
           type="button"
           onClick={onShare}
           disabled={loading}
-          className="absolute left-1/2 top-1/2 inline-flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#3FA7FF] px-3 py-1.5 text-[9px] font-medium text-white shadow-[0_8px_18px_rgba(63,167,255,0.34)] disabled:opacity-70"
+          className="absolute left-1/2 top-1/2 inline-flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-accent px-3 py-1.5 text-[9px] font-medium text-white shadow-[0_8px_18px_rgba(63,167,255,0.34)] disabled:opacity-70"
         >
           {loading ? '...' : 'Поделиться'}
         </button>
