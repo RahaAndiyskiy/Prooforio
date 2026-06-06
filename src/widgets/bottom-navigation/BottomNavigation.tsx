@@ -1,8 +1,7 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { type PointerEvent, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { type PointerEvent, useRef } from 'react';
 
 const ACCENT = 'var(--pf-accent)';
 
@@ -81,38 +80,59 @@ function NavIcon({ icon, active }: { icon: NavItem['icon']; active: boolean }) {
 }
 
 export function BottomNavigation() {
+  const router = useRouter();
   const pathname = usePathname() || '/';
-  const [pressX, setPressX] = useState(0);
-  const [pressed, setPressed] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
+  const pressedRef = useRef(false);
 
-  const handlePointerDown = (event: PointerEvent<HTMLElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const normalizedX = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
-
-    event.currentTarget.setPointerCapture(event.pointerId);
-    setPressX(Math.max(-1, Math.min(1, normalizedX)));
-    setPressed(true);
-  };
-
-  const handlePointerMove = (event: PointerEvent<HTMLElement>) => {
-    if (!pressed) {
+  const setPressVariables = (x: number, amount: number) => {
+    const nav = navRef.current;
+    if (!nav) {
       return;
     }
 
+    nav.style.setProperty('--nav-press-x', x.toFixed(4));
+    nav.style.setProperty('--nav-press-amount', amount.toFixed(4));
+    nav.style.setProperty('--nav-left-light', x < 0 ? (0.18 * Math.abs(x) * amount).toFixed(4) : '0');
+    nav.style.setProperty('--nav-left-dark', x > 0 ? (0.08 * Math.abs(x) * amount).toFixed(4) : '0');
+    nav.style.setProperty('--nav-right-light', x > 0 ? (0.18 * Math.abs(x) * amount).toFixed(4) : '0');
+    nav.style.setProperty('--nav-right-dark', x < 0 ? (0.08 * Math.abs(x) * amount).toFixed(4) : '0');
+  };
+
+  const getNormalizedPressX = (event: PointerEvent<HTMLElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
-    const normalizedX = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
-    setPressX(Math.max(-1, Math.min(1, normalizedX)));
+    return Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width - 0.5) * 2));
+  };
+
+  const handlePointerDown = (event: PointerEvent<HTMLElement>) => {
+    event.currentTarget.setPointerCapture(event.pointerId);
+    pressedRef.current = true;
+    setPressVariables(getNormalizedPressX(event), 1);
+  };
+
+  const handlePointerMove = (event: PointerEvent<HTMLElement>) => {
+    if (!pressedRef.current) {
+      return;
+    }
+
+    setPressVariables(getNormalizedPressX(event), 1);
   };
 
   const releasePress = () => {
-    setPressed(false);
-    setPressX(0);
+    pressedRef.current = false;
+    setPressVariables(0, 0);
+  };
+
+  const handleNavigate = (href: string) => {
+    router.push(href);
   };
 
   return (
     <nav
+      ref={navRef}
       aria-label="Основная навигация"
-      className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-[390px] overflow-hidden rounded-full border px-4 py-2.5"
+      className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-[390px] select-none overflow-hidden rounded-full border px-4 py-2.5 [--nav-left-dark:0] [--nav-left-light:0] [--nav-press-amount:0] [--nav-press-x:0] [--nav-right-dark:0] [--nav-right-light:0] [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [touch-action:none]"
+      onContextMenu={(event) => event.preventDefault()}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerCancel={releasePress}
@@ -126,7 +146,7 @@ export function BottomNavigation() {
           '0 14px 34px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.82)',
         backdropFilter: 'blur(4px) saturate(145%) brightness(1.03)',
         WebkitBackdropFilter: 'blur(4px) saturate(145%) brightness(1.03)',
-        transform: pressed ? `perspective(760px) rotateY(${pressX * 6}deg)` : 'perspective(760px) rotateY(0deg)',
+        transform: 'perspective(760px) rotateY(calc(var(--nav-press-x) * var(--nav-press-amount) * 6deg))',
         transformOrigin: '50% 50%',
         transition: 'transform 260ms cubic-bezier(0.18, 0.89, 0.32, 1.28)',
       }}
@@ -135,10 +155,8 @@ export function BottomNavigation() {
         className="pointer-events-none absolute inset-0 z-0 rounded-full transition-opacity duration-200"
         style={{
           background:
-            pressX < 0
-              ? `linear-gradient(90deg, rgba(255,255,255,${pressed ? 0.18 * Math.abs(pressX) : 0}) 0%, transparent 44%, rgba(0,0,0,${pressed ? 0.08 * Math.abs(pressX) : 0}) 100%)`
-              : `linear-gradient(90deg, rgba(0,0,0,${pressed ? 0.08 * Math.abs(pressX) : 0}) 0%, transparent 56%, rgba(255,255,255,${pressed ? 0.18 * Math.abs(pressX) : 0}) 100%)`,
-          opacity: pressed ? 1 : 0,
+            'linear-gradient(90deg, rgba(255,255,255,var(--nav-left-light)) 0%, rgba(0,0,0,var(--nav-left-dark)) 12%, transparent 50%, rgba(0,0,0,var(--nav-right-dark)) 88%, rgba(255,255,255,var(--nav-right-light)) 100%)',
+          opacity: 'var(--nav-press-amount)',
         }}
       />
       <span className="pointer-events-none absolute inset-x-6 top-0 h-px bg-white/95" />
@@ -147,10 +165,11 @@ export function BottomNavigation() {
           const active = item.match(pathname);
 
           return (
-            <Link
+            <button
               key={item.label}
-              href={item.href}
+              type="button"
               aria-current={active ? 'page' : undefined}
+              onClick={() => handleNavigate(item.href)}
               className="pf-press flex min-h-[44px] flex-col items-center justify-center gap-1 rounded-full text-[9px] font-medium"
               style={{
                 color: active ? ACCENT : 'var(--pf-text)',
@@ -161,7 +180,7 @@ export function BottomNavigation() {
             >
               <NavIcon icon={item.icon} active={active} />
               <span>{item.label}</span>
-            </Link>
+            </button>
           );
         })}
       </div>
