@@ -88,8 +88,8 @@ export function BottomNavigation() {
       className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-[390px] overflow-hidden rounded-full border px-4 py-2.5 shadow-[0_14px_34px_rgba(0,0,0,0.14),0_4px_12px_rgba(0,0,0,0.07),inset_0_1px_0_rgba(255,255,255,0.72),inset_0_0_18px_rgba(255,255,255,0.16)] backdrop-blur-[16px] [backdrop-filter:blur(16px)_saturate(180%)_brightness(1.08)] [-webkit-backdrop-filter:blur(16px)_saturate(180%)_brightness(1.08)]"
       style={{
         background:
-          'linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(246, 246, 246, 0.64) 58%, rgba(232, 232, 232, 0.52) 100%)',
-        borderColor: 'rgba(255, 255, 255, 0.70)',
+          'linear-gradient(180deg, rgba(255, 255, 255, 0.68) 0%, rgba(246, 246, 246, 0.56) 58%, rgba(232, 232, 232, 0.44) 100%)',
+        borderColor: 'rgba(255, 255, 255, 0.62)',
         borderWidth: 0.5,
       }}
     >
