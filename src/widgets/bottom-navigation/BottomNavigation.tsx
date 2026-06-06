@@ -35,7 +35,7 @@ const items: NavItem[] = [
     label: 'Панель',
     href: '/dashboard',
     icon: 'dashboard',
-    match: (pathname) => pathname.startsWith('/dashboard'),
+    match: (pathname) => pathname === '/dashboard',
   },
 ];
 

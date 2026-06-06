@@ -9,7 +9,7 @@ import { getReviewsByProfileId } from '@/shared/api/review';
 import type { Profile } from '@/entities/profile/types';
 import type { Review } from '@/entities/review/types';
 
-type DateOrder = 'newest' | 'oldest' | 'today' | 'month' | 'sixMonths';
+type DateOrder = 'all' | 'newest' | 'oldest' | 'today' | 'month' | 'sixMonths';
 type RatingFilter = 'all' | '5' | '4' | '3' | '2' | '1';
 
 type FilterOption<T extends string> = {
@@ -71,6 +71,7 @@ export function ReviewsClient() {
   }, [router]);
 
   const dateOptions: FilterOption<DateOrder>[] = [
+    { value: 'all', label: 'Все даты' },
     { value: 'newest', label: 'Сначала новые' },
     { value: 'oldest', label: 'Сначала старые' },
     { value: 'today', label: 'Сегодня' },
@@ -79,7 +80,7 @@ export function ReviewsClient() {
   ];
 
   const ratingOptions: FilterOption<RatingFilter>[] = [
-    { value: 'all', label: 'Все' },
+    { value: 'all', label: 'Все оценки' },
     { value: '1', label: '1 звезда' },
     { value: '2', label: '2 звезды' },
     { value: '3', label: '3 звезды' },
@@ -204,7 +205,7 @@ export function ReviewsClient() {
             onChange={(event) => setSearchValue(event.target.value)}
             placeholder="Поиск"
             inputMode="search"
-            className="w-full rounded-[9px] border border-slate-200 bg-white px-4 py-3 text-[16px] text-primary shadow-[0_10px_24px_rgba(15,23,42,0.08)] outline-none transition duration-150 focus:border-accent focus:ring-1 focus:ring-accent/20"
+            className="w-full rounded-[12px] border border-slate-200 bg-white px-4 py-2.5 text-[16px] text-primary shadow-[0_10px_24px_rgba(15,23,42,0.08)] outline-none transition duration-150 focus:border-accent focus:ring-1 focus:ring-accent/20"
           />
         </div>
 
