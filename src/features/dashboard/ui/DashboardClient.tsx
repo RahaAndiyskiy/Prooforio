@@ -7,6 +7,7 @@ import { FilteredReviewSection } from '@/features/review/ui/FilteredReviewSectio
 import { getCurrentUser } from '@/features/auth/lib/auth';
 import { getProfileByAuthUserId } from '@/shared/api/profile';
 import { getReviewsByProfileId } from '@/shared/api/review';
+import { proofioUi } from '@/shared/design/proofio-design';
 import type { Profile } from '@/entities/profile/types';
 import type { Review } from '@/entities/review/types';
 
@@ -93,6 +94,7 @@ export function DashboardClient() {
 
   return (
     <>
+      <h1 className={proofioUi.typography.pageTitle}>Профиль</h1>
       <DashboardOverview
         profile={profile}
         reviewCount={reviewCount}

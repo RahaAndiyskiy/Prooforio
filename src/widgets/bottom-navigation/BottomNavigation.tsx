@@ -26,7 +26,7 @@ const items: NavItem[] = [
     match: (pathname) => pathname.startsWith('/dashboard/templates') || pathname.startsWith('/share/'),
   },
   {
-    label: 'Панель',
+    label: 'Профиль',
     href: '/dashboard',
     icon: 'dashboard',
     match: (pathname) => pathname === '/dashboard',

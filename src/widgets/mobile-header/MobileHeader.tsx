@@ -77,17 +77,17 @@ export function MobileHeader() {
             <button
               type="button"
               onClick={toggleTheme}
-              className={`${proofioUi.button.menuItem} justify-between`}
+              className={`${proofioUi.button.menuItem} grid grid-cols-[minmax(0,1fr)_52px] gap-3`}
             >
-              <span>{theme === 'dark' ? 'Темная тема' : 'Светлая тема'}</span>
+              <span className="min-w-0 truncate">{theme === 'dark' ? 'Темная тема' : 'Светлая тема'}</span>
               <span
-                className={`relative h-6 w-10 rounded-full border border-[var(--pf-border-soft)] transition ${
+                className={`flex h-7 w-[52px] shrink-0 items-center rounded-full border border-[var(--pf-border-soft)] p-0.5 transition ${
                   theme === 'dark' ? 'bg-accent' : 'bg-surface-soft'
                 }`}
               >
                 <span
-                  className={`absolute inset-y-0.5 h-5 w-5 rounded-full bg-white shadow-soft transition ${
-                    theme === 'dark' ? 'left-[22px]' : 'left-0.5'
+                  className={`h-6 w-6 rounded-full bg-white shadow-soft transition-[margin] duration-200 ${
+                    theme === 'dark' ? 'ml-auto' : 'ml-0'
                   }`}
                 />
               </span>

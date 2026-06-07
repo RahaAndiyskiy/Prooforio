@@ -44,6 +44,8 @@ export const proofioUi = {
   },
   typography: {
     brand: 'text-[21px] font-normal tracking-[-0.02em] text-primary',
+    pageTitle:
+      "mt-4 text-center text-[48px] font-bold leading-none tracking-[-0.04em] text-primary [font-family:'Brush_Script_MT','Segoe_Script',cursive]",
     sectionTitle: 'text-[15px] font-semibold leading-none text-primary',
     helper: 'text-[12px] font-medium text-muted',
   },

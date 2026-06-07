@@ -16,6 +16,7 @@ import {
   type PresetFilterValue,
 } from '../lib/presetCatalog';
 import { ShareCardPreset } from './ShareCardPreset';
+import { proofioUi } from '@/shared/design/proofio-design';
 
 const templateFilterStorageKey = 'prooforio:share-review:filters';
 const demoReview: ReviewExportTemplateProps = {
@@ -321,9 +322,7 @@ export function ShareReviewExportClient({ review, presetId }: { review?: ReviewE
 
   return (
     <>
-      <h1 className="mt-4 text-center text-[48px] font-bold leading-none tracking-[-0.04em] text-primary [font-family:'Brush_Script_MT','Segoe_Script',cursive]">
-        Шаблоны
-      </h1>
+      <h1 className={proofioUi.typography.pageTitle}>Шаблоны</h1>
 
       <section className="mt-3 space-y-4">
         <button

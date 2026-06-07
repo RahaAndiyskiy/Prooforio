@@ -6,6 +6,7 @@ import { ReviewList } from './ReviewList';
 import { getCurrentUser } from '@/features/auth/lib/auth';
 import { getProfileByAuthUserId } from '@/shared/api/profile';
 import { getReviewsByProfileId } from '@/shared/api/review';
+import { proofioUi } from '@/shared/design/proofio-design';
 import type { Review } from '@/entities/review/types';
 
 type DateOrder = 'all' | 'newest' | 'oldest' | 'today' | 'month' | 'sixMonths';
@@ -276,9 +277,7 @@ export function ReviewsClient({ selectionPresetId }: { selectionPresetId?: strin
   return (
     <section className="space-y-4">
       <div className="space-y-3.5">
-        <h1 className="mt-4 text-center text-[48px] font-bold leading-none tracking-[-0.04em] text-primary [font-family:'Brush_Script_MT','Segoe_Script',cursive]">
-          Отзывы
-        </h1>
+        <h1 className={proofioUi.typography.pageTitle}>Отзывы</h1>
 
         <label className="flex h-12 items-center rounded-full border border-border-soft bg-surface pl-4 pr-1 text-[16px] text-primary shadow-control transition duration-150 focus-within:border-accent/45 focus-within:ring-2 focus-within:ring-accent/12">
           <span className="sr-only">Поиск</span>
