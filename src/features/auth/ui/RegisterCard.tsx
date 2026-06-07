@@ -65,7 +65,7 @@ export function RegisterCard() {
     <Card className="space-y-5">
       <div>
         <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-accent">Регистрация</p>
-        <h1 className="mt-3 text-[28px] font-semibold leading-tight text-primary">Создайте аккаунт Prooforio</h1>
+        <h1 className="mt-3 text-[28px] font-semibold leading-tight text-primary">Создайте аккаунт Proofio</h1>
       </div>
       <form onSubmit={handleSubmit} className="space-y-5 rounded-[18px] border border-[var(--pf-border-soft)] bg-surface-soft p-4">
         {error ? <div className="rounded-2xl bg-red-100 px-4 py-3 text-sm text-red-700">{error}</div> : null}

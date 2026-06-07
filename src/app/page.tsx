@@ -3,7 +3,7 @@ import Link from 'next/link';
 export default function HomePage() {
   return (
     <section className="rounded-[20px] border border-[var(--pf-border-strong)] bg-surface/85 px-4 py-5 shadow-card backdrop-blur-xl">
-      <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-accent">Prooforio</p>
+      <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-accent">Proofio</p>
       <h1 className="mt-4 text-[30px] font-semibold leading-[1.05] tracking-[-0.03em] text-primary">
         Собирайте отзывы через персональную ссылку.
       </h1>

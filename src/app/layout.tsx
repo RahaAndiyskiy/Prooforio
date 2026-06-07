@@ -5,13 +5,13 @@ import { HapticFeedback } from '@/widgets/haptic-feedback/HapticFeedback';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Prooforio',
+  title: 'Proofio',
   description: 'Собирайте отзывы с помощью персональной ссылки на обзор.',
-  applicationName: 'Prooforio',
+  applicationName: 'Proofio',
   manifest: '/manifest.webmanifest',
   appleWebApp: {
     capable: true,
-    title: 'Prooforio',
+    title: 'Proofio',
     statusBarStyle: 'default',
   },
   icons: {

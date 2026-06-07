@@ -5,7 +5,7 @@ export const demoReviews: Review[] = [
     id: 'review_001',
     profileId: 'profile_001',
     author: 'Lina',
-    text: 'Prooforio made it simple to collect feedback from our early users.',
+    text: 'Proofio made it simple to collect feedback from our early users.',
     rating: 5,
     createdAt: '2026-05-28',
     reviewerGender: 'female',

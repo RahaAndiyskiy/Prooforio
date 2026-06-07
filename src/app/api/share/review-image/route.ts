@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     return new NextResponse(output, {
       headers: {
         'Content-Type': format === 'jpeg' ? 'image/jpeg' : 'image/png',
-        'Content-Disposition': `attachment; filename=prooforio-review.${format === 'jpeg' ? 'jpg' : 'png'}`,
+        'Content-Disposition': `attachment; filename=proofio-review.${format === 'jpeg' ? 'jpg' : 'png'}`,
       },
     });
   } catch (error) {

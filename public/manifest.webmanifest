@@ -1,6 +1,6 @@
 {
-  "name": "Prooforio",
-  "short_name": "Prooforio",
+  "name": "Proofio",
+  "short_name": "Proofio",
   "description": "Собирайте отзывы и создавайте красивые шаблоны для шаринга.",
   "start_url": "/dashboard",
   "scope": "/",

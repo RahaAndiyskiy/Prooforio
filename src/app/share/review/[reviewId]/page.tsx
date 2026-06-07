@@ -39,7 +39,7 @@ export default async function ShareReviewPage({ params, searchParams }: ShareRev
     text: parseStringParam(resolvedSearchParams?.text) ?? '',
     rating: Number(parseStringParam(resolvedSearchParams?.rating) ?? 0),
     createdAt: parseStringParam(resolvedSearchParams?.createdAt) ?? new Date().toISOString(),
-    profileName: parseStringParam(resolvedSearchParams?.profileName) ?? 'Prooforio',
+    profileName: parseStringParam(resolvedSearchParams?.profileName) ?? 'Proofio',
     reviewerGender: fallbackReviewerGender,
   };
   const presetId = parseStringParam(resolvedSearchParams?.preset) ?? parseStringParam(resolvedSearchParams?.template) ?? 'minimal';
@@ -72,7 +72,7 @@ export default async function ShareReviewPage({ params, searchParams }: ShareRev
         text: review.text,
         rating: review.rating,
         createdAt: review.createdAt,
-        profileName: (await getProfileById(review.profileId))?.fullName ?? 'Prooforio',
+        profileName: (await getProfileById(review.profileId))?.fullName ?? 'Proofio',
         reviewerGender: review.reviewerGender ?? 'male',
       }
     : fallbackReview;

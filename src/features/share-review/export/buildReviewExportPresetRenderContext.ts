@@ -17,7 +17,7 @@ export function buildReviewExportPresetRenderContext(
     // Нормализованный контекст отделяет данные от визуальной композиции и позволяет добавлять новые шаблоны без переписывания payload.
     content: {
       brand: {
-        label: 'Prooforio',
+        label: 'Proofio',
       },
       header: {
         title: review.profileName,
@@ -32,7 +32,7 @@ export function buildReviewExportPresetRenderContext(
       },
       footer: {
         author: review.author,
-        meta: 'Клиент Prooforio',
+        meta: 'Клиент Proofio',
         date: review.createdAt,
         avatarSrc: review.reviewerAvatarSrc ?? getReviewerAvatarPublicPath(review.reviewerGender),
       },

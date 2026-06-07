@@ -23,7 +23,7 @@ const demoReview: ReviewExportTemplateProps = {
   text: 'Тут будет текст отзыва после выбора',
   rating: 5,
   createdAt: '2026-06-01T00:00:00.000Z',
-  profileName: 'Prooforio',
+  profileName: 'Proofio',
   reviewerGender: 'male',
 };
 
@@ -305,7 +305,7 @@ export function ShareReviewExportClient({ review, presetId }: { review?: ReviewE
       const blob = await response.blob();
       const extension = format === 'png' ? 'png' : 'jpg';
       const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
-      const file = new File([blob], `prooforio-review.${extension}`, { type: blob.type || mimeType });
+      const file = new File([blob], `proofio-review.${extension}`, { type: blob.type || mimeType });
 
       const shared = await saveWithShare(file);
       if (!shared) {
