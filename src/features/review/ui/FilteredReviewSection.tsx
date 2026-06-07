@@ -1,5 +1,3 @@
-'use client';
-
 import type { Review } from '@/entities/review/types';
 import { ReviewList } from './ReviewList';
 

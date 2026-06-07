@@ -12,16 +12,29 @@ const { Resvg } = require('@resvg/resvg-js');
 
 const exportFontBufferCache = new Map<string, Buffer>();
 const publicAssetDataUriCache = new Map<string, string>();
+const publicDirectoryPath = path.join(process.cwd(), 'public');
 
-function getExportFontBuffer(fontFilePath: string) {
-  const cachedBuffer = exportFontBufferCache.get(fontFilePath);
+function getPublicFilePath(publicAssetPath: string) {
+  const normalizedPublicPath = publicAssetPath.replace(/^\/+/, '');
+  const absoluteFilePath = path.join(publicDirectoryPath, normalizedPublicPath);
+  const relativePath = path.relative(publicDirectoryPath, absoluteFilePath);
+
+  if (relativePath.startsWith('..') || path.isAbsolute(relativePath)) {
+    throw new Error(`Public asset path is outside public directory: ${publicAssetPath}`);
+  }
+
+  return absoluteFilePath;
+}
+
+function getExportFontBuffer(publicFontPath: string) {
+  const cachedBuffer = exportFontBufferCache.get(publicFontPath);
 
   if (cachedBuffer) {
     return cachedBuffer;
   }
 
-  const nextBuffer = fs.readFileSync(path.join(process.cwd(), fontFilePath));
-  exportFontBufferCache.set(fontFilePath, nextBuffer);
+  const nextBuffer = fs.readFileSync(getPublicFilePath(publicFontPath));
+  exportFontBufferCache.set(publicFontPath, nextBuffer);
   return nextBuffer;
 }
 
@@ -57,8 +70,7 @@ function getPublicAssetDataUri(publicAssetPath: string) {
     return cachedDataUri;
   }
 
-  const normalizedPublicPath = publicAssetPath.replace(/^\//, '');
-  const absoluteFilePath = path.join(process.cwd(), 'public', normalizedPublicPath);
+  const absoluteFilePath = getPublicFilePath(publicAssetPath);
   const fileBuffer = fs.readFileSync(absoluteFilePath);
   const dataUri = `data:${getMimeTypeByFilePath(absoluteFilePath)};base64,${fileBuffer.toString('base64')}`;
 
@@ -81,7 +93,7 @@ export async function generateReviewImage(review: ReviewExportTemplateProps, pre
     height: renderContext.dimensions.height,
     fonts: exportFonts.map((fontFace) => ({
       name: fontFace.family,
-      data: getExportFontBuffer(fontFace.filePath),
+      data: getExportFontBuffer(fontFace.publicPath),
       weight: fontFace.weight,
       style: fontFace.style,
     })),

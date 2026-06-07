@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signOut } from '@/features/auth/lib/auth';
+import { proofioUi } from '@/shared/design/proofio-design';
 
 export function MobileHeader() {
   const router = useRouter();
@@ -50,8 +51,8 @@ export function MobileHeader() {
   };
 
   return (
-    <header className="relative flex items-center justify-between px-0.5 pb-3.5 pt-10">
-      <p className="text-[21px] font-normal tracking-[-0.02em] text-primary">proofio</p>
+    <header className={proofioUi.layout.stickyHeader}>
+      <p className={proofioUi.typography.brand}>proofio</p>
 
       <div ref={menuRef}>
         <button
@@ -66,17 +67,17 @@ export function MobileHeader() {
         </button>
 
         {menuOpen ? (
-          <div className="absolute right-0 top-[78px] z-40 w-52 overflow-hidden rounded-[18px] border border-[var(--pf-border-strong)] bg-surface/88 p-1.5 text-[13px] text-primary shadow-card backdrop-blur-xl">
-            <button type="button" className="flex h-10 w-full items-center rounded-[13px] px-3 text-left hover:bg-[var(--pf-hover-soft)]">
+          <div className={`absolute right-0 top-[78px] z-40 w-52 ${proofioUi.surface.glassMenu}`}>
+            <button type="button" className={proofioUi.button.menuItem}>
               Аккаунт
             </button>
-            <button type="button" className="flex h-10 w-full items-center rounded-[13px] px-3 text-left hover:bg-[var(--pf-hover-soft)]">
+            <button type="button" className={proofioUi.button.menuItem}>
               Настройки
             </button>
             <button
               type="button"
               onClick={toggleTheme}
-              className="flex h-10 w-full items-center justify-between rounded-[13px] px-3 text-left hover:bg-[var(--pf-hover-soft)]"
+              className={`${proofioUi.button.menuItem} justify-between`}
             >
               <span>{theme === 'dark' ? 'Темная тема' : 'Светлая тема'}</span>
               <span

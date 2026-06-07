@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState, type FormEvent } from 'react';
 import { Button } from '@/shared/ui/button';
 import { Card } from '@/shared/ui/card';
+import { Input } from '@/shared/ui/input';
 import { getCurrentUser, signIn } from '@/features/auth/lib/auth';
 
 export function LoginCard() {
@@ -62,36 +63,45 @@ export function LoginCard() {
   return (
     <Card className="space-y-5">
       <div>
-        <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-accent">Вход</p>
-        <h1 className="mt-3 text-[28px] font-semibold leading-tight text-primary">Войдите в Proofio</h1>
+        <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-accent">Вход</p>
+        <h1 className="mt-2 text-[32px] font-semibold leading-[1.04] tracking-[-0.03em] text-primary">
+          Войдите в Proofio
+        </h1>
+        <p className="mt-3 text-[14px] leading-6 text-muted">
+          Продолжите работу с отзывами, шаблонами и ссылками.
+        </p>
       </div>
-      <form onSubmit={handleSubmit} className="space-y-5 rounded-[18px] border border-[var(--pf-border-soft)] bg-surface-soft p-4">
-        {error ? <div className="rounded-2xl bg-red-100 px-4 py-3 text-sm text-red-700">{error}</div> : null}
-        <label className="block">
-          <span className="text-[14px] font-medium text-muted">Почта</span>
-          <input
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {error ? (
+          <div className="rounded-[14px] bg-[var(--pf-danger-soft)] px-3 py-2 text-[13px] font-medium text-red-500">
+            {error}
+          </div>
+        ) : null}
+        <label className="block space-y-2">
+          <span className="text-[13px] font-medium text-muted">Почта</span>
+          <Input
             type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            className="mt-2"
+            placeholder="you@example.com"
             required
           />
         </label>
-        <label className="block">
-          <span className="text-[14px] font-medium text-muted">Пароль</span>
-          <input
+        <label className="block space-y-2">
+          <span className="text-[13px] font-medium text-muted">Пароль</span>
+          <Input
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            className="mt-2"
+            placeholder="Ваш пароль"
             required
           />
         </label>
-        <Button type="submit" disabled={loading} className="w-full">
+        <Button type="submit" disabled={loading} className="h-12 w-full">
           {loading ? 'Входим…' : 'Войти'}
         </Button>
       </form>
-      <div className="rounded-[18px] border border-[var(--pf-border-soft)] bg-surface p-4 text-[14px] text-muted">
+      <div className="rounded-[18px] border border-[var(--pf-border-soft)] bg-[var(--pf-control-soft)] p-4 text-center text-[14px] text-muted shadow-soft">
         Нет аккаунта?{' '}
         <Link href="/register" className="font-semibold text-primary hover:text-accent">
           Регистрация

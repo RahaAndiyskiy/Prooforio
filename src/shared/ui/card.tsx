@@ -1,5 +1,6 @@
 import type { HTMLAttributes } from 'react';
+import { proofioUi } from '@/shared/design/proofio-design';
 
 export function Card({ className = '', ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={'rounded-[20px] bg-surface p-5 shadow-card ' + className} {...props} />;
+  return <div className={`${proofioUi.surface.card} ${className}`} {...props} />;
 }

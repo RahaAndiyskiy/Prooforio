@@ -149,6 +149,52 @@ textarea {
   font: inherit;
 }
 
+.pf-sticky-header {
+  isolation: isolate;
+}
+
+.pf-sticky-header > * {
+  position: relative;
+  z-index: 2;
+}
+
+.pf-sticky-header::before,
+.pf-sticky-header::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.pf-sticky-header::before {
+  inset-block: 0;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--pf-bg) 66%, transparent) 0%,
+    color-mix(in srgb, var(--pf-bg) 36%, transparent) 42%,
+    color-mix(in srgb, var(--pf-bg) 4%, transparent) 100%
+  );
+  -webkit-backdrop-filter: blur(6px) saturate(124%);
+  backdrop-filter: blur(6px) saturate(124%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.62) 42%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.62) 42%, transparent 100%);
+}
+
+.pf-sticky-header::after {
+  inset-block: 26% 0;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--pf-bg) 14%, transparent) 0%,
+    color-mix(in srgb, var(--pf-bg) 8%, transparent) 46%,
+    transparent 100%
+  );
+  -webkit-backdrop-filter: blur(1.5px) saturate(108%);
+  backdrop-filter: blur(1.5px) saturate(108%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0.18) 52%, transparent 100%);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0.18) 52%, transparent 100%);
+}
+
 .pf-press {
   transform-origin: center;
   transition-duration: 220ms;

@@ -95,6 +95,21 @@ function ChevronDownIcon() {
   );
 }
 
+function SearchIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-[17px] w-[17px]">
+      <path
+        d="m20 20-4.2-4.2m2.2-5.3a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
 function FilterGroup<T extends string>({
   title,
   options,
@@ -265,15 +280,24 @@ export function ReviewsClient({ selectionPresetId }: { selectionPresetId?: strin
           Отзывы
         </h1>
 
-        <input
-          id="review-search"
-          type="search"
-          value={searchValue}
-          onChange={(event) => setSearchValue(event.target.value)}
-          placeholder="Поиск"
-          inputMode="search"
-          className="h-12 w-full rounded-[18px] border border-border-soft bg-surface px-4 text-[16px] text-primary shadow-control outline-none transition duration-150 placeholder:text-muted focus:border-accent/45 focus:ring-2 focus:ring-accent/12"
-        />
+        <label className="flex h-12 items-center rounded-full border border-border-soft bg-surface pl-4 pr-1 text-[16px] text-primary shadow-control transition duration-150 focus-within:border-accent/45 focus-within:ring-2 focus-within:ring-accent/12">
+          <span className="sr-only">Поиск</span>
+          <input
+            id="review-search"
+            type="search"
+            value={searchValue}
+            onChange={(event) => setSearchValue(event.target.value)}
+            placeholder="Поиск"
+            inputMode="search"
+            className="min-w-0 flex-1 bg-transparent pr-3 text-[16px] text-primary outline-none placeholder:text-muted"
+          />
+          <span
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-control text-muted shadow-control ring-1 ring-[var(--pf-border-soft)]"
+            aria-hidden="true"
+          >
+            <SearchIcon />
+          </span>
+        </label>
 
         <div className="grid grid-cols-2 gap-2.5">
           <FilterGroup

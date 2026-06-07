@@ -328,7 +328,7 @@ export function ShareReviewExportClient({ review, presetId }: { review?: ReviewE
       <section className="mt-3 space-y-4">
         <button
           type="button"
-          className="flex h-[46px] w-full items-center justify-between rounded-[12px] bg-control px-4 text-[22px] font-medium text-primary shadow-control"
+          className="flex h-[48px] w-full items-center justify-between rounded-full bg-control px-5 text-[22px] font-medium text-primary shadow-control ring-1 ring-[var(--pf-border-soft)]"
         >
           <span>Отзывы</span>
           <span className="text-[22px] leading-none">⌄</span>

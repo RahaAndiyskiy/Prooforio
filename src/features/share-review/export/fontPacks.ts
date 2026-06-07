@@ -3,7 +3,6 @@ import type { ReviewExportFontFamilyId, ReviewExportFontPackId } from './types';
 type ReviewExportFontStyle = 'normal';
 
 type ReviewExportFontAsset = {
-  filePath: string;
   publicPath: string;
   weight: 400 | 700;
   style: ReviewExportFontStyle;
@@ -51,13 +50,11 @@ const reviewExportFontFamilies: Record<ReviewExportFontFamilyId, ReviewExportFon
     ],
     exportFaces: [
       {
-        filePath: 'public/fonts/NotoSans-Regular.ttf',
         publicPath: '/fonts/NotoSans-Regular.ttf',
         weight: 400,
         style: 'normal',
       },
       {
-        filePath: 'public/fonts/NotoSans-Bold.ttf',
         publicPath: '/fonts/NotoSans-Bold.ttf',
         weight: 700,
         style: 'normal',
@@ -81,13 +78,11 @@ const reviewExportFontFamilies: Record<ReviewExportFontFamilyId, ReviewExportFon
     ],
     exportFaces: [
       {
-        filePath: 'public/fonts/inter/Inter-Regular.ttf',
         publicPath: '/fonts/inter/Inter-Regular.ttf',
         weight: 400,
         style: 'normal',
       },
       {
-        filePath: 'public/fonts/inter/Inter-Bold.ttf',
         publicPath: '/fonts/inter/Inter-Bold.ttf',
         weight: 700,
         style: 'normal',
@@ -106,13 +101,11 @@ const reviewExportFontFamilies: Record<ReviewExportFontFamilyId, ReviewExportFon
     ],
     exportFaces: [
       {
-        filePath: 'public/fonts/ibm-plex-sans/IBMPlexSans-Variable.ttf',
         publicPath: '/fonts/ibm-plex-sans/IBMPlexSans-Variable.ttf',
         weight: 400,
         style: 'normal',
       },
       {
-        filePath: 'public/fonts/ibm-plex-sans/IBMPlexSans-Variable.ttf',
         publicPath: '/fonts/ibm-plex-sans/IBMPlexSans-Variable.ttf',
         weight: 700,
         style: 'normal',
@@ -136,13 +129,11 @@ const reviewExportFontFamilies: Record<ReviewExportFontFamilyId, ReviewExportFon
     ],
     exportFaces: [
       {
-        filePath: 'public/fonts/pt-serif/PTSerif-Regular.ttf',
         publicPath: '/fonts/pt-serif/PTSerif-Regular.ttf',
         weight: 400,
         style: 'normal',
       },
       {
-        filePath: 'public/fonts/pt-serif/PTSerif-Bold.ttf',
         publicPath: '/fonts/pt-serif/PTSerif-Bold.ttf',
         weight: 700,
         style: 'normal',
@@ -161,7 +152,6 @@ const reviewExportFontFamilies: Record<ReviewExportFontFamilyId, ReviewExportFon
     ],
     exportFaces: [
       {
-        filePath: 'public/fonts/playfair-display/PlayfairDisplay-Regular.ttf',
         publicPath: '/fonts/playfair-display/PlayfairDisplay-Regular.ttf',
         weight: 400,
         style: 'normal',
@@ -231,7 +221,7 @@ export function getReviewExportFontFacesForPack(fontPackId: ReviewExportFontPack
 
   for (const family of [pack.displayFamily, pack.bodyFamily]) {
     for (const face of family.exportFaces) {
-      const key = `${family.family}:${face.filePath}:${face.weight}:${face.style}`;
+      const key = `${family.family}:${face.publicPath}:${face.weight}:${face.style}`;
 
       if (!uniqueFaces.has(key)) {
         uniqueFaces.set(key, {

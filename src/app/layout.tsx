@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
-import { AppShell } from '@/widgets/app-shell/AppShell';
-import { BottomNavigation } from '@/widgets/bottom-navigation/BottomNavigation';
+import { AppChrome } from '@/widgets/app-chrome/AppChrome';
 import { HapticFeedback } from '@/widgets/haptic-feedback/HapticFeedback';
 import './globals.css';
 
@@ -49,8 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
-        <AppShell>{children}</AppShell>
-        <BottomNavigation />
+        <AppChrome>{children}</AppChrome>
         <HapticFeedback />
       </body>
     </html>

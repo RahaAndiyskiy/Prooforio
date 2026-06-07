@@ -1,11 +1,34 @@
 'use client';
 
 import { useState } from 'react';
-import type { ReviewerGender } from '@/entities/review/avatar';
+import Image from 'next/image';
+import { getReviewerAvatarPublicPath, type ReviewerGender } from '@/entities/review/avatar';
 import { Button } from '@/shared/ui/button';
 import { Card } from '@/shared/ui/card';
 import { Input } from '@/shared/ui/input';
 import { Textarea } from '@/shared/ui/textarea';
+
+const ratingValues = [1, 2, 3, 4, 5] as const;
+
+const avatarOptions: Array<{ label: string; value: ReviewerGender }> = [
+  { label: 'Мужской', value: 'male' },
+  { label: 'Женский', value: 'female' },
+];
+
+function CheckIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6">
+      <path
+        d="m5 12.5 4.2 4.2L19.5 6.5"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2.2"
+      />
+    </svg>
+  );
+}
 
 export function ReviewForm({ profileId, reviewLink }: { profileId: string; reviewLink: string }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -42,7 +65,11 @@ export function ReviewForm({ profileId, reviewLink }: { profileId: string; revie
 
   const handleShareLink = async () => {
     try {
-      await navigator.clipboard.writeText(reviewLink);
+      const absoluteReviewLink = reviewLink.startsWith('http')
+        ? reviewLink
+        : `${window.location.origin}${reviewLink}`;
+
+      await navigator.clipboard.writeText(absoluteReviewLink);
       setShareCopied(true);
       window.setTimeout(() => setShareCopied(false), 2000);
     } catch {
@@ -62,19 +89,30 @@ export function ReviewForm({ profileId, reviewLink }: { profileId: string; revie
   if (isSubmitted) {
     return (
       <Card className="space-y-5 text-center">
-        <div className="space-y-3">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-accent">Спасибо</p>
-          <h2 className="text-[26px] font-semibold leading-tight text-primary">Ваш отзыв отправлен</h2>
+        <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-accent/12 text-accent shadow-soft ring-1 ring-accent/20">
+          <CheckIcon />
+        </div>
+
+        <div>
+          <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-accent">Спасибо</p>
+          <h2 className="mt-2 text-[27px] font-semibold leading-tight tracking-[-0.03em] text-primary">
+            Отзыв отправлен
+          </h2>
           <p className="mt-3 text-[14px] leading-6 text-muted">
-            Отзыв принят. Если хотите, отправьте ещё один или поделитесь ссылкой, чтобы получить больше отзывов.
+            Все готово. Можете отправить еще один отзыв или скопировать ссылку для другого человека.
           </p>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <Button type="button" onClick={handleShareLink}>
+
+        <div className="grid gap-2.5">
+          <button
+            type="button"
+            onClick={handleShareLink}
+            className="pf-press flex h-12 items-center justify-center rounded-full bg-control text-[14px] font-semibold text-primary shadow-control ring-1 ring-[var(--pf-border-soft)]"
+          >
             {shareCopied ? 'Скопировано!' : 'Скопировать ссылку'}
-          </Button>
-          <Button type="button" onClick={handleReset}>
-            Оставить ещё отзыв
+          </button>
+          <Button type="button" onClick={handleReset} className="h-12">
+            Оставить еще отзыв
           </Button>
         </div>
       </Card>
@@ -83,9 +121,9 @@ export function ReviewForm({ profileId, reviewLink }: { profileId: string; revie
 
   return (
     <Card>
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
-          <label className="mb-2 block text-[14px] font-medium text-muted" htmlFor="author">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-2">
+          <label className="block text-[13px] font-medium text-muted" htmlFor="author">
             Имя
           </label>
           <Input
@@ -96,27 +134,30 @@ export function ReviewForm({ profileId, reviewLink }: { profileId: string; revie
             required
           />
         </div>
-        <div>
-          <p className="mb-2 block text-[14px] font-medium text-muted">Фото-заглушка</p>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {[
-              { label: 'Муж', value: 'male' as const },
-              { label: 'Жен', value: 'female' as const },
-            ].map((option) => {
+
+        <div className="space-y-2">
+          <p className="block text-[13px] font-medium text-muted">Аватар</p>
+          <div className="grid grid-cols-2 gap-2.5">
+            {avatarOptions.map((option) => {
               const isActive = reviewerGender === option.value;
 
               return (
                 <label
                   key={option.value}
-                  className={
-                    'flex cursor-pointer items-center justify-between rounded-2xl border px-4 py-3 text-sm font-semibold transition ' +
-                    (isActive
-                      ? 'border-accent bg-accent text-white'
-                      : 'border-[var(--pf-border-soft)] bg-surface text-muted hover:border-accent/40 hover:text-primary')
-                  }
+                  className={`pf-press flex cursor-pointer items-center gap-3 rounded-[18px] border p-2.5 text-[13px] font-semibold transition ${
+                    isActive
+                      ? 'border-accent bg-accent/12 text-primary ring-1 ring-accent/20'
+                      : 'border-[var(--pf-border-soft)] bg-[var(--pf-control-soft)] text-muted'
+                  }`}
                 >
+                  <Image
+                    src={getReviewerAvatarPublicPath(option.value)}
+                    alt=""
+                    width={36}
+                    height={36}
+                    className="h-9 w-9 rounded-full object-cover shadow-soft"
+                  />
                   <span>{option.label}</span>
-                  <span aria-hidden="true">{isActive ? '✓' : ''}</span>
                   <input
                     type="radio"
                     name="reviewerGender"
@@ -130,37 +171,49 @@ export function ReviewForm({ profileId, reviewLink }: { profileId: string; revie
             })}
           </div>
         </div>
-        <div>
-          <label className="mb-2 block text-[14px] font-medium text-muted" htmlFor="text">
+
+        <div className="space-y-2">
+          <label className="block text-[13px] font-medium text-muted" htmlFor="text">
             Отзыв
           </label>
           <Textarea
             id="text"
             value={text}
             onChange={(event) => setText(event.target.value)}
-            placeholder="Поделитесь опытом"
+            placeholder="Что понравилось? Что было полезно?"
             required
           />
         </div>
-        <div>
-          <label className="mb-2 block text-[14px] font-medium text-muted" htmlFor="rating">
+
+        <fieldset className="space-y-2">
+          <legend className="block text-[13px] font-medium text-muted">
             Оценка
-          </label>
-          <select
-            id="rating"
-            value={rating}
-            onChange={(event) => setRating(Number(event.target.value))}
-            className="w-full rounded-2xl border border-[var(--pf-border-soft)] bg-surface px-4 py-3 text-[16px] text-primary outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
-          >
-            {[5, 4, 3, 2, 1].map((value) => (
-              <option key={value} value={value}>
-                {value} звезда{value > 1 ? 'ы' : ''}
-              </option>
+          </legend>
+          <div className="flex h-14 items-center justify-center gap-1.5 rounded-[18px] border border-[var(--pf-border-soft)] bg-[var(--pf-control-soft)] shadow-[inset_0_1px_0_var(--pf-inset-highlight)]">
+            {ratingValues.map((value) => (
+              <button
+                key={value}
+                type="button"
+                aria-label={`${value} из 5`}
+                aria-pressed={rating === value}
+                onClick={() => setRating(value)}
+                className={`pf-press h-10 w-10 text-[28px] leading-none transition ${
+                  value <= rating ? 'text-[#ffbe2e]' : 'text-primary/18'
+                }`}
+              >
+                ★
+              </button>
             ))}
-          </select>
-        </div>
-        {error ? <p className="text-sm text-red-600">{error}</p> : null}
-        <Button type="submit" disabled={isSubmitting}>
+          </div>
+        </fieldset>
+
+        {error ? (
+          <p className="rounded-[14px] bg-[var(--pf-danger-soft)] px-3 py-2 text-[13px] font-medium text-red-500">
+            {error}
+          </p>
+        ) : null}
+
+        <Button type="submit" disabled={isSubmitting} className="h-12 w-full">
           {isSubmitting ? 'Отправка...' : 'Отправить отзыв'}
         </Button>
       </form>
