@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { reviewExportPresets } from '../export/templates';
 import type { ReviewExportTemplateProps } from '../export/types';
 import {
@@ -11,9 +12,20 @@ import {
   getPresetFormatOptions,
   getPresetStyleOptions,
   type PresetFilterOption,
+  type PresetFilterState,
   type PresetFilterValue,
 } from '../lib/presetCatalog';
 import { ShareCardPreset } from './ShareCardPreset';
+
+const templateFilterStorageKey = 'prooforio:share-review:filters';
+const demoReview: ReviewExportTemplateProps = {
+  author: 'Ваш клиент',
+  text: 'Тут будет текст отзыва после выбора',
+  rating: 5,
+  createdAt: '2026-06-01T00:00:00.000Z',
+  profileName: 'Prooforio',
+  reviewerGender: 'male',
+};
 
 type PresetPreviewOptionProps = {
   review: ReviewExportTemplateProps;
@@ -22,9 +34,10 @@ type PresetPreviewOptionProps = {
   onSelect: (presetId: string) => void;
   onShare: () => void;
   loading: boolean;
+  actionLabel: string;
 };
 
-function PresetPreviewOption({ review, preset, isSelected, onSelect, onShare, loading }: PresetPreviewOptionProps) {
+function PresetPreviewOption({ review, preset, isSelected, onSelect, onShare, loading, actionLabel }: PresetPreviewOptionProps) {
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const [previewScale, setPreviewScale] = useState(1);
   const dimensions = getPresetDimensions(preset.meta.format);
@@ -55,7 +68,7 @@ function PresetPreviewOption({ review, preset, isSelected, onSelect, onShare, lo
         aria-pressed={isSelected}
         aria-label={ariaLabel}
         className={
-          'pf-press block h-fit w-full overflow-hidden rounded-[3px] bg-transparent p-0 text-left shadow-[0_2px_6px_rgba(15,23,42,0.14)] transition-transform duration-300 ' +
+          'pf-press block h-fit w-full overflow-hidden rounded-[3px] bg-transparent p-0 text-left shadow-soft transition-transform duration-300 ' +
           (isSelected ? 'scale-[1.018] ring-2 ring-accent/45' : 'hover:-translate-y-0.5')
         }
       >
@@ -90,7 +103,7 @@ function PresetPreviewOption({ review, preset, isSelected, onSelect, onShare, lo
             top: '50%',
           }}
         >
-          {loading ? '...' : 'Поделиться'}
+          {loading ? '...' : actionLabel}
         </button>
       ) : null}
     </div>
@@ -115,14 +128,14 @@ function PresetFilterGroup<T extends string>({ title, options, value, onChange }
 
   return (
     <label
-      className={`relative block h-12 overflow-hidden rounded-full border bg-white shadow-[0_6px_16px_rgba(15,23,42,0.14)] transition ${
-        isActive ? 'border-accent' : 'border-slate-200'
+      className={`relative block h-12 overflow-hidden rounded-full border bg-control shadow-control transition ${
+        isActive ? 'border-accent' : 'border-[var(--pf-border-soft)]'
       }`}
     >
       <span className="sr-only">{title}</span>
       <span
         className={`pointer-events-none absolute inset-x-4 top-2 text-center text-[12.5px] font-medium ${
-          isActive ? 'text-primary' : 'text-black'
+          isActive ? 'text-primary' : 'text-primary'
         }`}
       >
         {label}
@@ -138,15 +151,52 @@ function PresetFilterGroup<T extends string>({ title, options, value, onChange }
           </option>
         ))}
       </select>
-      <span className="pointer-events-none absolute bottom-1.5 left-1/2 -translate-x-1/2 text-[15px] leading-none text-black">⌄</span>
+      <span className="pointer-events-none absolute bottom-1.5 left-1/2 -translate-x-1/2 text-[15px] leading-none text-primary">⌄</span>
     </label>
   );
 }
 
-export function ShareReviewExportClient({ review, presetId }: { review: ReviewExportTemplateProps; presetId?: string }) {
+function getStoredPresetFilters(): PresetFilterState {
+  if (typeof window === 'undefined') {
+    return defaultPresetFilters;
+  }
+
+  try {
+    const storedFilters = window.localStorage.getItem(templateFilterStorageKey);
+    if (!storedFilters) {
+      return defaultPresetFilters;
+    }
+
+    const parsedFilters = JSON.parse(storedFilters) as Partial<PresetFilterState>;
+    const formatOptions = getPresetFormatOptions(reviewExportPresets);
+    const format = formatOptions.some((option) => option.value === parsedFilters.format)
+      ? parsedFilters.format
+      : defaultPresetFilters.format;
+    const presetsForFormat = filterPresets(reviewExportPresets, {
+      format: format ?? defaultPresetFilters.format,
+      style: 'all',
+    });
+    const styleOptions = getPresetStyleOptions(presetsForFormat);
+    const style = styleOptions.some((option) => option.value === parsedFilters.style)
+      ? parsedFilters.style
+      : defaultPresetFilters.style;
+
+    return {
+      format: format ?? defaultPresetFilters.format,
+      style: style ?? defaultPresetFilters.style,
+    };
+  } catch {
+    return defaultPresetFilters;
+  }
+}
+
+export function ShareReviewExportClient({ review, presetId }: { review?: ReviewExportTemplateProps; presetId?: string }) {
+  const router = useRouter();
+  const displayReview = review ?? demoReview;
+  const hasSelectedReview = Boolean(review);
   const [selectedPresetId, setSelectedPresetId] = useState(presetId ?? reviewExportPresets[0]?.id ?? 'minimal');
   const [loading, setLoading] = useState(false);
-  const [filters, setFilters] = useState(defaultPresetFilters);
+  const [filters, setFilters] = useState<PresetFilterState>(() => getStoredPresetFilters());
   const formatOptions = getPresetFormatOptions(reviewExportPresets);
   const presetsForFormat = filterPresets(reviewExportPresets, {
     format: filters.format,
@@ -161,6 +211,16 @@ export function ShareReviewExportClient({ review, presetId }: { review: ReviewEx
   const effectiveSelectedPresetId = filteredPresets.some((preset) => preset.id === selectedPresetId)
     ? selectedPresetId
     : filteredPresets[0]?.id ?? reviewExportPresets[0]?.id ?? 'minimal';
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      templateFilterStorageKey,
+      JSON.stringify({
+        format: filters.format,
+        style: effectiveStyle,
+      }),
+    );
+  }, [filters.format, effectiveStyle]);
 
   const saveWithDownload = (file: File) => {
     const link = document.createElement('a');
@@ -217,6 +277,11 @@ export function ShareReviewExportClient({ review, presetId }: { review: ReviewEx
   };
 
   const downloadImage = async (format: 'png' | 'jpeg') => {
+    if (!hasSelectedReview) {
+      router.push(`/dashboard/reviews?mode=select-template-review&presetId=${encodeURIComponent(effectiveSelectedPresetId)}`);
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -256,14 +321,14 @@ export function ShareReviewExportClient({ review, presetId }: { review: ReviewEx
 
   return (
     <>
-      <h1 className="mt-4 text-center text-[48px] font-bold leading-none tracking-[-0.04em] text-black [font-family:'Brush_Script_MT','Segoe_Script',cursive]">
+      <h1 className="mt-4 text-center text-[48px] font-bold leading-none tracking-[-0.04em] text-primary [font-family:'Brush_Script_MT','Segoe_Script',cursive]">
         Шаблоны
       </h1>
 
       <section className="mt-3 space-y-4">
         <button
           type="button"
-          className="pf-press flex h-[46px] w-full items-center justify-between rounded-[12px] bg-white px-4 text-[22px] font-medium text-black shadow-[0_5px_14px_rgba(15,23,42,0.12)]"
+          className="pf-press flex h-[46px] w-full items-center justify-between rounded-[12px] bg-control px-4 text-[22px] font-medium text-primary shadow-control"
         >
           <span>Отзывы</span>
           <span className="text-[22px] leading-none">⌄</span>
@@ -284,7 +349,7 @@ export function ShareReviewExportClient({ review, presetId }: { review: ReviewEx
           <PresetFilterGroup
             title="Стиль"
             options={styleOptions}
-            value={filters.style}
+            value={effectiveStyle}
             onChange={(style) => {
               setFilters((currentFilters) => ({
                 ...currentFilters,
@@ -299,18 +364,19 @@ export function ShareReviewExportClient({ review, presetId }: { review: ReviewEx
         <section className="mt-5 columns-2 gap-3">
           {filteredPresets.map((preset) => (
             <PresetPreviewOption
-              key={preset.id}
-              review={review}
+          key={preset.id}
+              review={displayReview}
               preset={preset}
               isSelected={preset.id === effectiveSelectedPresetId}
               onSelect={setSelectedPresetId}
               onShare={() => downloadImage('png')}
               loading={loading && preset.id === effectiveSelectedPresetId}
+              actionLabel={hasSelectedReview ? 'Поделиться' : 'Выбрать отзыв'}
             />
           ))}
         </section>
       ) : (
-        <div className="mt-5 rounded-[16px] border border-dashed border-black/15 bg-white p-6 text-center text-sm text-black/60">
+        <div className="mt-5 rounded-[16px] border border-dashed border-[var(--pf-border-strong)] bg-surface p-6 text-center text-sm text-muted">
           По выбранным фильтрам шаблоны пока не найдены.
         </div>
       )}

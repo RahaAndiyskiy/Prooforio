@@ -14,6 +14,8 @@ const config: Config = {
         muted: 'var(--pf-text-muted)',
         'surface-soft': 'var(--pf-surface-soft)',
         'surface-strong': 'var(--pf-surface-strong)',
+        control: 'var(--pf-control)',
+        'border-soft': 'var(--pf-border-soft)',
       },
       boxShadow: {
         card: 'var(--pf-shadow-card)',

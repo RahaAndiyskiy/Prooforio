@@ -16,7 +16,7 @@ export default async function ReviewPage({ params }: { params: Promise<{ usernam
   }
 
   return (
-    <section className="rounded-[20px] border border-white/65 bg-surface/90 p-4 shadow-card">
+    <section className="rounded-[20px] border border-[var(--pf-border-strong)] bg-surface/90 p-4 shadow-card">
       <div className="space-y-3">
         <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-accent">Оставить отзыв</p>
         <h1 className="text-[28px] font-semibold leading-tight text-primary">Отзыв @{profile.username}</h1>

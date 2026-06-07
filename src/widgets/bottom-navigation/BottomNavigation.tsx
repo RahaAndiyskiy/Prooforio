@@ -27,9 +27,9 @@ const items: NavItem[] = [
   },
   {
     label: 'Шаблоны',
-    href: '/dashboard',
+    href: '/dashboard/templates',
     icon: 'templates',
-    match: (pathname) => pathname.startsWith('/share/'),
+    match: (pathname) => pathname.startsWith('/dashboard/templates') || pathname.startsWith('/share/'),
   },
   {
     label: 'Панель',
@@ -40,11 +40,11 @@ const items: NavItem[] = [
 ];
 
 function NavIcon({ icon, active }: { icon: NavItem['icon']; active: boolean }) {
-  const color = active ? ACCENT : '#F3F3F3';
+  const color = active ? ACCENT : 'var(--pf-text-muted)';
 
   if (icon === 'reviews') {
     return (
-      <span className="relative h-6 w-6 rounded-full bg-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_1px_4px_rgba(0,0,0,0.08)]">
+      <span className="relative h-6 w-6 rounded-full bg-[var(--pf-control-soft)] shadow-[inset_0_1px_0_var(--pf-inset-highlight),0_1px_4px_rgba(0,0,0,0.08)]">
         <span className="absolute left-1.5 top-1.5 h-1.5 w-3 rounded-full bg-current/55" />
         <span className="absolute left-1.5 top-3.5 h-1.5 w-2 rounded-full bg-current/40" />
       </span>
@@ -53,7 +53,7 @@ function NavIcon({ icon, active }: { icon: NavItem['icon']; active: boolean }) {
 
   if (icon === 'templates') {
     return (
-      <span className="grid h-6 w-6 grid-cols-2 gap-0.5 rounded-[7px] bg-white/70 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_1px_4px_rgba(0,0,0,0.08)]">
+      <span className="grid h-6 w-6 grid-cols-2 gap-0.5 rounded-[7px] bg-[var(--pf-control-soft)] p-1 shadow-[inset_0_1px_0_var(--pf-inset-highlight),0_1px_4px_rgba(0,0,0,0.08)]">
         <span className="rounded-[3px] bg-current/70" />
         <span className="rounded-[3px] bg-current/45" />
         <span className="rounded-[3px] bg-current/45" />
@@ -64,7 +64,7 @@ function NavIcon({ icon, active }: { icon: NavItem['icon']; active: boolean }) {
 
   if (icon === 'dashboard') {
     return (
-      <span className="flex h-6 w-6 items-end justify-center gap-0.5 rounded-full bg-white/70 pb-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_1px_4px_rgba(0,0,0,0.08)]">
+      <span className="flex h-6 w-6 items-end justify-center gap-0.5 rounded-full bg-[var(--pf-control-soft)] pb-1 shadow-[inset_0_1px_0_var(--pf-inset-highlight),0_1px_4px_rgba(0,0,0,0.08)]">
         <span className="h-2 w-1 rounded-full bg-current/45" />
         <span className="h-3.5 w-1 rounded-full bg-current/75" />
         <span className="h-2.5 w-1 rounded-full bg-current/55" />
@@ -73,7 +73,7 @@ function NavIcon({ icon, active }: { icon: NavItem['icon']; active: boolean }) {
   }
 
   return (
-    <span className="grid h-6 w-6 place-items-center rounded-full bg-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_1px_4px_rgba(0,0,0,0.08)]">
+    <span className="grid h-6 w-6 place-items-center rounded-full bg-[var(--pf-control-soft)] shadow-[inset_0_1px_0_var(--pf-inset-highlight),0_1px_4px_rgba(0,0,0,0.08)]">
       <span className="h-3.5 w-3.5 rounded-full border-[3px]" style={{ borderColor: color }} />
     </span>
   );
@@ -138,14 +138,12 @@ export function BottomNavigation() {
       onPointerCancel={releasePress}
       onPointerUp={releasePress}
       style={{
-        background:
-          'linear-gradient(90deg, rgba(255, 253, 248, 0.58) 0%, rgba(247, 248, 250, 0.48) 50%, rgba(211, 219, 231, 0.36) 100%)',
-        borderColor: 'rgba(255, 255, 255, 0.42)',
+        background: 'var(--pf-glass-nav-bg)',
+        borderColor: 'var(--pf-glass-nav-border)',
         borderWidth: 0.5,
-        boxShadow:
-          '0 14px 34px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.82)',
-        backdropFilter: 'blur(4px) saturate(145%) brightness(1.03)',
-        WebkitBackdropFilter: 'blur(4px) saturate(145%) brightness(1.03)',
+        boxShadow: 'var(--pf-glass-nav-shadow)',
+        backdropFilter: 'var(--pf-glass-nav-filter)',
+        WebkitBackdropFilter: 'var(--pf-glass-nav-filter)',
         transform: 'perspective(760px) rotateY(calc(var(--nav-press-x) * var(--nav-press-amount) * 6deg))',
         transformOrigin: '50% 50%',
         transition: 'transform 260ms cubic-bezier(0.18, 0.89, 0.32, 1.28)',
@@ -159,7 +157,7 @@ export function BottomNavigation() {
           opacity: 'var(--nav-press-amount)',
         }}
       />
-      <span className="pointer-events-none absolute inset-x-6 top-0 h-px bg-white/95" />
+      <span className="pointer-events-none absolute inset-x-6 top-0 h-px bg-[var(--pf-inset-highlight)]" />
       <div className="relative z-10 grid grid-cols-4 gap-1">
         {items.map((item) => {
           const active = item.match(pathname);
@@ -173,9 +171,7 @@ export function BottomNavigation() {
               className="pf-press flex min-h-[44px] flex-col items-center justify-center gap-1 rounded-full text-[10.5px] font-medium"
               style={{
                 color: active ? ACCENT : 'var(--pf-text)',
-                textShadow: active
-                  ? `0 0 7px rgba(63,167,255,0.30)`
-                  : '0 1px 1px rgba(255,255,255,0.45), 0 0 6px rgba(255,255,255,0.28)',
+                textShadow: active ? `0 0 7px rgba(63,167,255,0.30)` : 'none',
               }}
             >
               <NavIcon icon={item.icon} active={active} />

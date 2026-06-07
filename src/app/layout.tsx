@@ -14,9 +14,21 @@ export const viewport = {
   initialScale: 1,
 };
 
+const themeScript = `
+try {
+  const savedTheme = window.localStorage.getItem('prooforio:theme');
+  document.documentElement.dataset.theme = savedTheme === 'dark' ? 'dark' : 'light';
+} catch {
+  document.documentElement.dataset.theme = 'light';
+}
+`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru">
+    <html lang="ru" data-theme="light">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
         <AppShell>{children}</AppShell>
         <BottomNavigation />

@@ -111,23 +111,21 @@ export function DashboardOverview({
   return (
     <section className="space-y-3.5">
       <div
-        className="rounded-[20px] border border-white/65 px-4 pb-4 pt-3.5 shadow-[0_10px_26px_rgba(15,23,42,0.12),inset_0_1px_0_rgba(255,255,255,0.82)]"
+        className="rounded-[20px] border border-[var(--pf-border-strong)] bg-surface px-4 pb-4 pt-3.5 shadow-card"
         style={{
-          background:
-            'linear-gradient(135deg, rgba(255,255,255,0.84) 0%, rgba(247,248,250,0.70) 58%, rgba(231,236,244,0.58) 100%)',
           backdropFilter: 'blur(10px) saturate(150%)',
           WebkitBackdropFilter: 'blur(10px) saturate(150%)',
         }}
       >
-        <p className="text-[11.5px] font-medium text-primary/75">Твоя ссылка для отзыва</p>
+        <p className="text-[11.5px] font-medium text-muted">Твоя ссылка для отзыва</p>
 
-        <div className="mt-3 flex h-[40px] items-center rounded-full bg-surface/58 pl-5 pr-1 text-[12.5px] font-medium tracking-[0.04em] text-muted shadow-[inset_0_1px_2px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.72)] ring-1 ring-accent/18">
+        <div className="mt-3 flex h-[40px] items-center rounded-full bg-[var(--pf-control-soft)] pl-5 pr-1 text-[12.5px] font-medium tracking-[0.04em] text-muted shadow-[inset_0_1px_2px_rgba(0,0,0,0.05),inset_0_1px_0_var(--pf-inset-highlight)] ring-1 ring-accent/18">
           <span className="min-w-0 flex-1 truncate">{compactReviewUrl}</span>
           <button
             type="button"
             onClick={handleCopy}
             aria-label="Скопировать ссылку"
-            className="pf-press -mr-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-surface/72 text-muted shadow-[inset_0_1px_0_rgba(255,255,255,0.70),0_2px_8px_rgba(15,23,42,0.08)] ring-1 ring-black/5"
+            className="pf-press -mr-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-control text-muted shadow-control ring-1 ring-[var(--pf-border-soft)]"
           >
             <CopyIcon />
           </button>
@@ -145,7 +143,7 @@ export function DashboardOverview({
 
           <button
             type="button"
-            className="pf-press flex h-[36px] items-center justify-center gap-2 rounded-full bg-surface/72 text-[12.5px] font-semibold text-primary/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.78),0_2px_8px_rgba(15,23,42,0.07)] ring-1 ring-black/5"
+            className="pf-press flex h-[36px] items-center justify-center gap-2 rounded-full bg-control text-[12.5px] font-semibold text-primary shadow-control ring-1 ring-[var(--pf-border-soft)]"
           >
             <QrIcon />
             QR
@@ -153,7 +151,7 @@ export function DashboardOverview({
         </div>
 
         {toastMessage ? (
-          <div className="mt-3 origin-center rounded-full bg-black/80 px-3 py-2 text-center text-[11.5px] text-white shadow-[0_8px_18px_rgba(0,0,0,0.18)] animate-[prooforioToastPop_260ms_cubic-bezier(0.18,0.89,0.32,1.28)]">
+          <div className="mt-3 origin-center rounded-full bg-primary px-3 py-2 text-center text-[11.5px] text-background shadow-control animate-[prooforioToastPop_260ms_cubic-bezier(0.18,0.89,0.32,1.28)]">
             {toastMessage}
           </div>
         ) : null}
@@ -162,15 +160,15 @@ export function DashboardOverview({
       <div className="grid grid-cols-3 gap-2">
         <div className="rounded-[16px] bg-surface px-3 py-3.5 text-center shadow-soft">
             <p className="text-[22px] font-semibold leading-none text-primary">{reviewCount}</p>
-            <p className="mt-1.5 text-[10.5px] uppercase tracking-[0.08em] text-primary/45">Отзывы</p>
+            <p className="mt-1.5 text-[10.5px] uppercase tracking-[0.08em] text-muted">Отзывы</p>
         </div>
         <div className="rounded-[16px] bg-surface px-3 py-3.5 text-center shadow-soft">
             <p className="text-[22px] font-semibold leading-none text-primary">{averageRating}</p>
-            <p className="mt-1.5 text-[10.5px] uppercase tracking-[0.08em] text-primary/45">Рейтинг</p>
+            <p className="mt-1.5 text-[10.5px] uppercase tracking-[0.08em] text-muted">Рейтинг</p>
         </div>
         <div className="rounded-[16px] bg-surface px-3 py-3.5 text-center shadow-soft">
             <p className="text-[22px] font-semibold leading-none text-primary">{recentReviewsCount}</p>
-            <p className="mt-1.5 text-[10.5px] uppercase tracking-[0.08em] text-primary/45">Новые</p>
+            <p className="mt-1.5 text-[10.5px] uppercase tracking-[0.08em] text-muted">Новые</p>
         </div>
       </div>
     </section>

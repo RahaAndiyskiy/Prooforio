@@ -50,7 +50,7 @@ export default async function ShareReviewPage({ params, searchParams }: ShareRev
 
   if (!review && !hasFallbackReview) {
     return (
-      <section className="rounded-[20px] border border-white/65 bg-surface p-5 text-center shadow-card">
+      <section className="rounded-[20px] border border-[var(--pf-border-strong)] bg-surface p-5 text-center shadow-card">
         <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-accent">Отзыв не найден</p>
         <h1 className="mt-4 text-[26px] font-semibold leading-tight text-primary">Шаблон шаринга недоступен</h1>
         <p className="mt-4 text-[14px] leading-6 text-muted">
@@ -80,7 +80,7 @@ export default async function ShareReviewPage({ params, searchParams }: ShareRev
   return (
     <>
       {isUsingFallback && (
-        <div className="rounded-[18px] border border-orange-200 bg-orange-50 p-4 text-sm text-orange-800">
+        <div className="rounded-[18px] border border-accent/25 bg-surface p-4 text-sm text-muted shadow-soft">
           <p className="font-semibold">Данные отзыва загружены из параметров ссылки.</p>
           <p>Если тут отображается некорректный отзыв, значит проблема в формировании URL.</p>
         </div>
