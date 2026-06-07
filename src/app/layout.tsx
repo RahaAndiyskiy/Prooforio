@@ -7,11 +7,30 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Prooforio',
   description: 'Собирайте отзывы с помощью персональной ссылки на обзор.',
+  applicationName: 'Prooforio',
+  manifest: '/manifest.webmanifest',
+  appleWebApp: {
+    capable: true,
+    title: 'Prooforio',
+    statusBarStyle: 'default',
+  },
+  icons: {
+    icon: [
+      { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [{ url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+  },
 };
 
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#F6F6F4' },
+    { media: '(prefers-color-scheme: dark)', color: '#242F3D' },
+  ],
 };
 
 const themeScript = `
