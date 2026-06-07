@@ -1,6 +1,6 @@
 ﻿'use client';
 
-import { useState, useSyncExternalStore } from 'react';
+import { useRef, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import type { Profile } from '@/entities/profile/types';
@@ -52,6 +52,75 @@ function CloseIcon() {
   );
 }
 
+async function createQrPngFile(
+  svgElement: SVGSVGElement,
+  compactReviewUrl: string,
+  username: string
+) {
+  const serializedSvg = new XMLSerializer().serializeToString(svgElement);
+  const svgBlob = new Blob([serializedSvg], { type: 'image/svg+xml;charset=utf-8' });
+  const svgUrl = URL.createObjectURL(svgBlob);
+
+  try {
+    const image = new Image();
+    image.decoding = 'async';
+
+    await new Promise<void>((resolve, reject) => {
+      image.onload = () => resolve();
+      image.onerror = () => reject(new Error('Failed to render QR image'));
+      image.src = svgUrl;
+    });
+
+    const canvas = document.createElement('canvas');
+    const size = 1024;
+    const qrSize = 704;
+    const qrOffset = (size - qrSize) / 2;
+    canvas.width = size;
+    canvas.height = size;
+
+    const context = canvas.getContext('2d');
+
+    if (!context) {
+      throw new Error('Canvas context is unavailable');
+    }
+
+    context.fillStyle = '#FFFFFF';
+    context.fillRect(0, 0, size, size);
+    context.drawImage(image, qrOffset, 118, qrSize, qrSize);
+    context.fillStyle = '#17212B';
+    context.font = '500 42px Inter, Arial, sans-serif';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(compactReviewUrl, size / 2, 900, 850);
+
+    const pngBlob = await new Promise<Blob>((resolve, reject) => {
+      canvas.toBlob((blob) => {
+        if (blob) {
+          resolve(blob);
+          return;
+        }
+
+        reject(new Error('Failed to create QR PNG'));
+      }, 'image/png');
+    });
+
+    return new File([pngBlob], `proofio-qr-${username}.png`, { type: 'image/png' });
+  } finally {
+    URL.revokeObjectURL(svgUrl);
+  }
+}
+
+function downloadFile(file: File) {
+  const url = URL.createObjectURL(file);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = file.name;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
 function ReviewQrModal({
   reviewUrl,
   compactReviewUrl,
@@ -61,8 +130,10 @@ function ReviewQrModal({
   reviewUrl: string;
   compactReviewUrl: string;
   onClose: () => void;
-  onShare: () => void;
+  onShare: (svgElement: SVGSVGElement) => void;
 }) {
+  const qrRef = useRef<SVGSVGElement>(null);
+
   if (typeof document === 'undefined') {
     return null;
   }
@@ -98,6 +169,7 @@ function ReviewQrModal({
 
         <div className="mt-5 grid place-items-center rounded-[20px] bg-white p-5 shadow-soft">
           <QRCodeSVG
+            ref={qrRef}
             value={reviewUrl}
             size={224}
             bgColor="#FFFFFF"
@@ -113,7 +185,11 @@ function ReviewQrModal({
 
         <button
           type="button"
-          onClick={onShare}
+          onClick={() => {
+            if (qrRef.current) {
+              onShare(qrRef.current);
+            }
+          }}
           className="pf-press mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-full bg-accent text-[13px] font-semibold text-white shadow-control"
         >
           <ShareIcon />
@@ -198,34 +274,31 @@ export function DashboardOverview({
     }
   };
 
-  const handleQrShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: 'Оставьте отзыв',
-          text: 'Буду благодарен за честный отзыв. Это займет меньше минуты.',
-          url: reviewUrl,
-        });
-        setQrOpen(false);
-      } catch (error) {
-        if (error instanceof Error && error.name === 'AbortError') {
-          return;
-        }
+  const handleQrShare = async (svgElement: SVGSVGElement) => {
+    try {
+      const qrFile = await createQrPngFile(svgElement, compactReviewUrl, profile.username);
+      const shareData = {
+        title: 'QR для отзыва',
+        text: 'Отсканируй QR-код, чтобы оставить отзыв.',
+        files: [qrFile],
+      };
 
-        console.error('QR share error', error);
-        showToast('Не удалось поделиться ссылкой');
+      if (navigator.share && navigator.canShare?.(shareData)) {
+        await navigator.share(shareData);
+        setQrOpen(false);
+        return;
       }
 
-      return;
-    }
-
-    try {
-      await navigator.clipboard.writeText(reviewUrl);
+      downloadFile(qrFile);
       setQrOpen(false);
-      showToast('Ссылка скопирована');
+      showToast('QR скачан');
     } catch (error) {
-      console.error('Failed to copy review link from QR modal', error);
-      showToast('Не удалось поделиться ссылкой');
+      if (error instanceof Error && error.name === 'AbortError') {
+        return;
+      }
+
+      console.error('QR image share error', error);
+      showToast('Не удалось поделиться QR');
     }
   };
 
