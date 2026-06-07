@@ -1,6 +1,8 @@
 ﻿'use client';
 
 import { useState, useSyncExternalStore } from 'react';
+import { createPortal } from 'react-dom';
+import { QRCodeSVG } from 'qrcode.react';
 import type { Profile } from '@/entities/profile/types';
 
 function CopyIcon() {
@@ -36,6 +38,93 @@ function QrIcon() {
   );
 }
 
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4">
+      <path
+        d="m6 6 12 12M18 6 6 18"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
+function ReviewQrModal({
+  reviewUrl,
+  compactReviewUrl,
+  onClose,
+  onShare,
+}: {
+  reviewUrl: string;
+  compactReviewUrl: string;
+  onClose: () => void;
+  onShare: () => void;
+}) {
+  if (typeof document === 'undefined') {
+    return null;
+  }
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[90] flex items-center justify-center bg-black/65 px-4 py-6 backdrop-blur-[3px]"
+      role="dialog"
+      aria-modal="true"
+      aria-label="QR-код ссылки для отзыва"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-[366px] rounded-[26px] border border-[var(--pf-border-strong)] bg-surface p-4 text-primary shadow-card"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-[20px] font-semibold leading-tight">QR для отзыва</h2>
+            <p className="mt-1 text-[12.5px] leading-snug text-muted">
+              Наведи камеру на код, чтобы открыть страницу отзыва.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Закрыть QR-код"
+            className="pf-press flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-surface-soft text-muted shadow-control"
+          >
+            <CloseIcon />
+          </button>
+        </div>
+
+        <div className="mt-5 grid place-items-center rounded-[20px] bg-white p-5 shadow-soft">
+          <QRCodeSVG
+            value={reviewUrl}
+            size={224}
+            bgColor="#FFFFFF"
+            fgColor="#17212B"
+            level="M"
+            marginSize={2}
+          />
+        </div>
+
+        <div className="mt-4 rounded-full bg-[var(--pf-control-soft)] px-4 py-3 text-center text-[12px] font-medium tracking-[0.03em] text-muted">
+          <span className="block truncate">{compactReviewUrl}</span>
+        </div>
+
+        <button
+          type="button"
+          onClick={onShare}
+          className="pf-press mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-full bg-accent text-[13px] font-semibold text-white shadow-control"
+        >
+          <ShareIcon />
+          Поделиться
+        </button>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 export function DashboardOverview({
   profile,
   reviewCount,
@@ -48,6 +137,7 @@ export function DashboardOverview({
   recentReviewsCount: number;
 }) {
   const [toastMessage, setToastMessage] = useState('');
+  const [qrOpen, setQrOpen] = useState(false);
   const reviewPath = `/review/${profile.username}`;
   const shareSupported = useSyncExternalStore(
     () => () => {},
@@ -108,6 +198,37 @@ export function DashboardOverview({
     }
   };
 
+  const handleQrShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Оставьте отзыв',
+          text: 'Буду благодарен за честный отзыв. Это займет меньше минуты.',
+          url: reviewUrl,
+        });
+        setQrOpen(false);
+      } catch (error) {
+        if (error instanceof Error && error.name === 'AbortError') {
+          return;
+        }
+
+        console.error('QR share error', error);
+        showToast('Не удалось поделиться ссылкой');
+      }
+
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(reviewUrl);
+      setQrOpen(false);
+      showToast('Ссылка скопирована');
+    } catch (error) {
+      console.error('Failed to copy review link from QR modal', error);
+      showToast('Не удалось поделиться ссылкой');
+    }
+  };
+
   return (
     <section className="space-y-3.5">
       <div
@@ -143,12 +264,23 @@ export function DashboardOverview({
 
           <button
             type="button"
+            onClick={() => setQrOpen(true)}
+            aria-label="Показать QR-код ссылки для отзыва"
             className="pf-press flex h-[36px] items-center justify-center gap-2 rounded-full bg-control text-[12.5px] font-semibold text-primary shadow-control ring-1 ring-[var(--pf-border-soft)]"
           >
             <QrIcon />
             QR
           </button>
         </div>
+
+        {qrOpen ? (
+          <ReviewQrModal
+            reviewUrl={reviewUrl}
+            compactReviewUrl={compactReviewUrl}
+            onClose={() => setQrOpen(false)}
+            onShare={handleQrShare}
+          />
+        ) : null}
 
         {toastMessage ? (
           <div className="mt-3 origin-center rounded-full bg-primary px-3 py-2 text-center text-[11.5px] text-background shadow-control animate-[prooforioToastPop_260ms_cubic-bezier(0.18,0.89,0.32,1.28)]">
