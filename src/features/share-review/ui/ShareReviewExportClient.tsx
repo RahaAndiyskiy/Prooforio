@@ -143,10 +143,10 @@ function PresetFilterGroup<T extends string>({ title, options, value, onChange }
       <select
         value={value}
         onChange={(event) => onChange(event.target.value as PresetFilterValue<T>)}
-        className="absolute inset-0 h-full w-full cursor-pointer appearance-none border-0 bg-transparent opacity-0 outline-none"
+        className="absolute inset-0 h-full w-full cursor-pointer appearance-none border-0 bg-transparent opacity-0 outline-none text-black"
       >
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option key={option.value} value={option.value} className="text-black">
             {option.value === 'all' ? title : option.label}
           </option>
         ))}
@@ -328,7 +328,7 @@ export function ShareReviewExportClient({ review, presetId }: { review?: ReviewE
       <section className="mt-3 space-y-4">
         <button
           type="button"
-          className="pf-press flex h-[46px] w-full items-center justify-between rounded-[12px] bg-control px-4 text-[22px] font-medium text-primary shadow-control"
+          className="flex h-[46px] w-full items-center justify-between rounded-[12px] bg-control px-4 text-[22px] font-medium text-primary shadow-control"
         >
           <span>Отзывы</span>
           <span className="text-[22px] leading-none">⌄</span>

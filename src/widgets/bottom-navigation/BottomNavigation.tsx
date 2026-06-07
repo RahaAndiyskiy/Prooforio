@@ -14,12 +14,6 @@ type NavItem = {
 
 const items: NavItem[] = [
   {
-    label: 'Стена',
-    href: '/',
-    icon: 'wall',
-    match: (pathname) => pathname === '/' || pathname.startsWith('/review/'),
-  },
-  {
     label: 'Отзывы',
     href: '/dashboard/reviews',
     icon: 'reviews',
@@ -158,7 +152,7 @@ export function BottomNavigation() {
         }}
       />
       <span className="pointer-events-none absolute inset-x-6 top-0 h-px bg-[var(--pf-inset-highlight)]" />
-      <div className="relative z-10 grid grid-cols-4 gap-1">
+      <div className="relative z-10 grid grid-cols-3 gap-1">
         {items.map((item) => {
           const active = item.match(pathname);
 
