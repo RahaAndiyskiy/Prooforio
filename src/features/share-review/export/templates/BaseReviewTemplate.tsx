@@ -3,7 +3,9 @@ import { getReviewExportLayoutPreset } from '../layoutPresets';
 import { getReviewExportFontPack } from '../fontPacks';
 import { AquaFrameTemplate } from './aqua-frame';
 import { CreamPlumTemplate } from './cream-plum';
+import { InstagramPopTemplate } from './instagram-pop';
 import { NoiseGreigeTemplate } from './noise-greige';
+import { StandardReviewTemplate } from './standard-review';
 import {
   TemplateCanvas,
   TemplateFooter,
@@ -19,6 +21,14 @@ export function BaseReviewTemplate(context: ReviewExportPresetRenderContext) {
 
   if (preset.meta.styleId === 'aqua-frame') {
     return <AquaFrameTemplate {...context} />;
+  }
+
+  if (preset.meta.styleId === 'instagram-pop') {
+    return <InstagramPopTemplate {...context} />;
+  }
+
+  if (preset.meta.styleId === 'clean' || preset.meta.styleId === 'bold') {
+    return <StandardReviewTemplate {...context} />;
   }
 
   const formatPreset = getReviewExportFormatPreset(preset.meta.format);

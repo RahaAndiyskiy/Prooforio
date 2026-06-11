@@ -32,6 +32,7 @@ const presetStyleLabels: Record<ReviewExportStyleId, string> = {
   clean: 'Минимализм',
   bold: 'Контраст',
   'cream-plum': 'Кремовая слива',
+  'instagram-pop': 'Instagram Pop',
   'noise-greige': 'Noise Greige',
   'aqua-frame': 'Aqua Frame',
 };
